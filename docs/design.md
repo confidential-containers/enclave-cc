@@ -104,3 +104,16 @@ several ways according to policy:
 
 Then like the usual LibOS pattern it will call the container's entry point as though the container
 was a process unto itself (rather than where it now sits like a library in the LibOS PAL process).
+
+## Local Attestation for Filesystem Decryption Key Provisioning
+
+![EnclaveCC_LA.png](images/EnclaveCC_LA.png)
+
+In most scenarios, it is one-shot transactions used for single filesystem decryption key provisioning. However, this LA protocol can easily be extended to provision multiple keys for more general purposes.
+To achieve this, it is necessary to add a key id to the second request message sent along G_a and app's report, with the ID being used to indicate which key is being requested.
+But whether the key id can be automatically enumerated or not is decided by the caller ttrpc service/client and their contexts. At this moment, the caller is not discussed yet. We hope to merge the protocol definition completed prior to the implementation. By then, we could make the final decision to add the key id into protocol or not.
+In addition to adding this ID, the generated nonce and derived AEK also expect to be in the cache on both sides to keep the secure session alive which has been established in initial transaction.
+The session's security context will hold those cached values to ensure AIC triad and freshness for subsequent key provisioning requests.
+Furthermore, agent or app. should set the expiration time of its own security context properly to minimize risk exposure.
+Upon closing of underlying ttrpc connection, the security context will be cleared accordingly.
+Please note that there is no secure transport configured between ttrpc endpoints in our case, and the LibOSes need to validate and check integrity of whatever they received. With regard to the secret in transit, it was designed to be wrapped by a shared key.
