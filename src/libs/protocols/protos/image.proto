@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package grpc;
+
+// Image defines the public APIs for managing images.
+service Image {
+    // PullImage pulls an image with authentication config.
+    rpc PullImage(PullImageRequest) returns (PullImageResponse) {}
+}
+
+message PullImageRequest {
+    // Image name, [repository]:[tag](e.g. docker.io/library/busybox:latest).
+    // The explaination for the full format of docker image name, please refer to these two link,
+    // https://docs.docker.com/engine/reference/commandline/pull/, https://docs.docker.com/registry/introduction/.
+    string image = 1;
+    // Unique image identifier, used to avoid duplication when unpacking the image layers.
+    string container_id = 2;
+    // Use USERNAME[:PASSWORD] for accessing the registry
+    string source_creds = 3;
+}
+
+message PullImageResponse {
+    // Reference to the image in use. For most runtimes, this should be an
+    // image ID or digest.
+    string image_ref = 1;
+}
+
