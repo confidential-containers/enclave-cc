@@ -1,1 +1,7 @@
 log_level = "info" # "debug" "info" "warn" "error"
+
+[containerd]
+    # Pre-installed OCI bundle for agent enclave container
+    agent_container_instance = "/opt/enclave-cc/agent-instance/"
+    # The root dir of agent enclave container running state
+    agent_container_root_dir = "/run/containerd/agentenclave"
