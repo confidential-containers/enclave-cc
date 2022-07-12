@@ -7,6 +7,7 @@ import (
 
 var (
 	RuntimeClass string
+	logLevel     string
 )
 
 func parseConfig(path string) error {
@@ -18,6 +19,7 @@ func parseConfig(path string) error {
 	}
 
 	RuntimeClass = cfg.RuntimeClass
+	logLevel = cfg.LogLevel
 
 	return nil
 }

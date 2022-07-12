@@ -1,2 +1,4 @@
 # Only support rune right now.
 runtime_class = "rune"
+
+log_level = "info" # "trace" "debug" "info" "warn" "error" "fatal" "panic"
