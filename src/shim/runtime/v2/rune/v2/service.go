@@ -116,6 +116,11 @@ type service struct {
 
 	containers map[string]*runc.Container
 
+	// id for pause container
+	pauseID string
+	// id for agent enclave container
+	agentID string
+
 	shimAddress string
 	cancel      func()
 }
@@ -355,7 +360,7 @@ func (s *service) Create(ctx context.Context, r *taskAPI.CreateTaskRequest) (_ *
 	}
 	setLogLevel(logLevel)
 
-	container, err := runc.NewContainer(ctx, s.platform, r)
+	container, err := create(ctx, s, r)
 	if err != nil {
 		return nil, err
 	}

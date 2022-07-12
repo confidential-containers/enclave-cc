@@ -2,3 +2,9 @@
 runtime_class = "rune"
 
 log_level = "info" # "trace" "debug" "info" "warn" "error" "fatal" "panic"
+
+[containerd]
+    # Pre-installed OCI bundle for agent enclave container
+    agent_container_instance = "/opt/enclave-cc/agent-instance/"
+    # The root dir of agent enclave container running state
+    agent_container_root_dir = "/run/containerd/agent-enclave/"

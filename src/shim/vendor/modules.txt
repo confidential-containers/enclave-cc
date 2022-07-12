@@ -42,7 +42,7 @@ github.com/containerd/cgroups/v2
 github.com/containerd/cgroups/v2/stats
 # github.com/containerd/console v1.0.3
 github.com/containerd/console
-# github.com/containerd/containerd v1.5.10 => github.com/confidential-containers/containerd v1.6.0-beta.0.0.20220303142103-c8f5e4509dcc
+# github.com/containerd/containerd v1.6.1 => github.com/confidential-containers/containerd v1.6.0-beta.0.0.20220303142103-c8f5e4509dcc
 ## explicit
 github.com/containerd/containerd/api/events
 github.com/containerd/containerd/api/services/ttrpc/events/v1
@@ -57,6 +57,7 @@ github.com/containerd/containerd/identifiers
 github.com/containerd/containerd/log
 github.com/containerd/containerd/mount
 github.com/containerd/containerd/namespaces
+github.com/containerd/containerd/pkg/cri/annotations
 github.com/containerd/containerd/pkg/dialer
 github.com/containerd/containerd/pkg/oom
 github.com/containerd/containerd/pkg/oom/v1
@@ -76,6 +77,10 @@ github.com/containerd/containerd/runtime/v2/task
 github.com/containerd/containerd/sys
 github.com/containerd/containerd/sys/reaper
 github.com/containerd/containerd/version
+# github.com/containerd/continuity v0.2.2
+## explicit
+github.com/containerd/continuity/fs
+github.com/containerd/continuity/sysx
 # github.com/containerd/fifo v1.0.0
 github.com/containerd/fifo
 # github.com/containerd/go-runc v1.0.0
@@ -109,6 +114,8 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
+# github.com/google/go-cmp v0.5.7
+## explicit
 # github.com/hashicorp/errwrap v1.1.0
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-multierror v1.1.1
@@ -117,10 +124,12 @@ github.com/hashicorp/go-multierror
 github.com/moby/sys/mountinfo
 # github.com/opencontainers/go-digest v1.0.0
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.0.2-0.20211117181255-693428a734f5
+# github.com/opencontainers/image-spec v1.0.2
+## explicit
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
 # github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
+## explicit
 github.com/opencontainers/runtime-spec/specs-go
 # github.com/pkg/errors v0.9.1
 ## explicit
@@ -134,9 +143,11 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
+# golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
+## explicit
 # golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 golang.org/x/sync/errgroup
-# golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e
+# golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a
 ## explicit
 golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
