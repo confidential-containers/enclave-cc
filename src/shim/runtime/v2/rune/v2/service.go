@@ -667,6 +667,18 @@ func (s *service) Kill(ctx context.Context, r *taskAPI.KillRequest) (*ptypes.Emp
 	if err := container.Kill(ctx, r); err != nil {
 		return nil, errdefs.ToGRPC(err)
 	}
+
+	if strings.EqualFold(s.pauseID, r.ID) {
+		logrus.WithField("container", s.agentID).Debug("Kill agent enclave container")
+		agentContainer, err := s.getContainer(s.agentID)
+		if err != nil {
+			return nil, err
+		}
+		if err := agentContainer.Kill(ctx, r); err != nil {
+			return nil, errdefs.ToGRPC(err)
+		}
+	}
+
 	return empty, nil
 }
 
