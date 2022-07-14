@@ -1,4 +1,4 @@
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	enclaveConfigs "github.com/inclavare-containers/rune/libenclave/configs"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
+	enclaveConfigs "github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/devices"
 	libenclaveUtils "github.com/opencontainers/runc/libcontainer/utils"

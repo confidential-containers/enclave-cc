@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/inclavare-containers/rune/libenclave"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 	"github.com/opencontainers/runc/libcontainer/logs"
 	_ "github.com/opencontainers/runc/libcontainer/nsenter"
 	"github.com/sirupsen/logrus"

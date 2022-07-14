@@ -1,12 +1,12 @@
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/inclavare-containers/rune/libenclave/configs"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
-	"github.com/inclavare-containers/rune/libenclave/internal/runtime"
-	pb "github.com/inclavare-containers/rune/libenclave/proto"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime"
+	pb "github.com/confidential-containers/enclave-cc/src/rune/libenclave/proto"
 	"github.com/opencontainers/runc/libcontainer/utils"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"

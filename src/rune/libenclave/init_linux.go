@@ -2,7 +2,7 @@
 
 // +build linux
 
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
 	"bytes"
@@ -16,9 +16,9 @@ import (
 	"unsafe"
 
 	"github.com/containerd/console"
-	enclaveConfigs "github.com/inclavare-containers/rune/libenclave/configs"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx/preload"
-	enclave_runtime_pal "github.com/inclavare-containers/rune/libenclave/internal/runtime/pal"
+	enclaveConfigs "github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx/preload"
+	enclave_runtime_pal "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/pal"
 	"github.com/opencontainers/runc/libcontainer/capabilities"
 	"github.com/opencontainers/runc/libcontainer/cgroups"
 	"github.com/opencontainers/runc/libcontainer/configs"

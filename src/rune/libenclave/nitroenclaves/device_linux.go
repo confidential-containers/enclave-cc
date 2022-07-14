@@ -1,4 +1,4 @@
-package nitroenclaves // import "github.com/inclavare-containers/rune/libenclave/nitroenclaves"
+package nitroenclaves // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/nitroenclaves"
 
 import (
 	"github.com/sirupsen/logrus"

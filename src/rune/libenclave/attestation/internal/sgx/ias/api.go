@@ -1,4 +1,4 @@
-package ias // import "github.com/inclavare-containers/rune/libenclave/attestation/sgx/internal/ias"
+package ias // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/sgx/internal/ias"
 
 const (
 	apiV3 = 3

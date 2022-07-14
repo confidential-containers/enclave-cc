@@ -1,9 +1,9 @@
-package runtime // import "github.com/inclavare-containers/rune/libenclave/internal/runtime"
+package runtime // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime"
 
 import (
-	"github.com/inclavare-containers/rune/libenclave/configs"
-	core "github.com/inclavare-containers/rune/libenclave/internal/runtime/core"
-	pal "github.com/inclavare-containers/rune/libenclave/internal/runtime/pal"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
+	core "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/core"
+	pal "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/pal"
 	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"

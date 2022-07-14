@@ -2,7 +2,7 @@
 
 // +build linux
 
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
 	"bytes"
@@ -23,7 +23,7 @@ import (
 	"unsafe"
 
 	securejoin "github.com/cyphar/filepath-securejoin"
-	enclaveConfigs "github.com/inclavare-containers/rune/libenclave/configs"
+	enclaveConfigs "github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/cgroups"
 	"github.com/opencontainers/runc/libcontainer/configs"

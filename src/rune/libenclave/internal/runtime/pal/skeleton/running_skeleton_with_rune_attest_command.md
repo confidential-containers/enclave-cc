@@ -2,8 +2,8 @@
 This guide will guide you how to use remote attestation based on SGX in skeleton with rune. **Currently `rune attest` can only run on the machines with [OOT SGX dirver](https://github.com/intel/linux-sgx-driver), we will support [DCAP driver](https://github.com/intel/SGXDataCenterAttestationPrimitives) as soon as possible**.
 
 # Before you start
-- Build a skeleton bundle according to [this guide](https://github.com/alibaba/inclavare-containers/blob/master/rune/libenclave/internal/runtime/pal/skeleton/README.md) from scratch.
-- Build rune according to [this guide](https://github.com/alibaba/inclavare-containers#rune).
+- Build a skeleton bundle according to [this guide](https://github.com/confidential-containers/enclave-cc/blob/master/rune/libenclave/internal/runtime/pal/skeleton/README.md) from scratch.
+- Build rune according to [this guide](https://github.com/confidential-containers/enclave-cc#rune).
 - Register a `SPID` and `Subscription Key` of [IAS](https://api.portal.trustedservices.intel.com/EPID-attestation) to get IAS report(optional). After the registration, Intel will respond with a SPID which is needed to communicate with IAS.
 
 # Configure skeleton bundle
@@ -84,6 +84,6 @@ rune --debug attest --isRA \
 
 where:
 - @isRA: specify the type of report is local or remote report.
-- @quote-type: specify the quote types of sgx which is the same as the parameters of [Get local report](https://github.com/alibaba/inclavare-containers/blob/master/rune/libenclave/internal/runtime/pal/skeleton/running_skeleton_with_rune_attest_command.md#get-local-report).
+- @quote-type: specify the quote types of sgx which is the same as the parameters of [Get local report](https://github.com/confidential-containers/enclave-cc/blob/master/rune/libenclave/internal/runtime/pal/skeleton/running_skeleton_with_rune_attest_command.md#get-local-report).
 - @spid: specify the `SPID`.
 - @subscription-key: specify the `Subscription Key`.

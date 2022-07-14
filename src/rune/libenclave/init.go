@@ -1,10 +1,10 @@
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
-	"github.com/inclavare-containers/rune/libenclave/configs"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
-	"github.com/inclavare-containers/rune/libenclave/jailhouse"
-	"github.com/inclavare-containers/rune/libenclave/nitroenclaves"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/jailhouse"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/nitroenclaves"
 	"net"
 	"os/user"
 )

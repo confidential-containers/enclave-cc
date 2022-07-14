@@ -1,10 +1,10 @@
-package sgx_challenger // import "github.com/inclavare-containers/rune/libenclave/attestation/internal/sgx/challenger"
+package sgx_challenger // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/sgx/challenger"
 
 import (
 	"fmt"
-	"github.com/inclavare-containers/rune/libenclave/attestation/internal/registration"
-	"github.com/inclavare-containers/rune/libenclave/attestation/internal/sgx/ias"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/registration"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/sgx/ias"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"github.com/sirupsen/logrus"
 )
 

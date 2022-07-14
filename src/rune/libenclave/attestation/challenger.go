@@ -1,9 +1,9 @@
-package attestation // import "github.com/inclavare-containers/rune/libenclave/attestation"
+package attestation // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation"
 
 import (
 	"fmt"
-	"github.com/inclavare-containers/rune/libenclave/attestation/internal/registration"
-	_ "github.com/inclavare-containers/rune/libenclave/attestation/internal/sgx/challenger" // for the registration of sgx challengers
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/registration"
+	_ "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/sgx/challenger" // for the registration of sgx challengers
 )
 
 type Challenger interface {

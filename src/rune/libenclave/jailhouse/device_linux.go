@@ -1,4 +1,4 @@
-package jailhouse // import "github.com/inclavare-containers/rune/libenclave/jailhouse"
+package jailhouse // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/jailhouse"
 
 import (
 	"github.com/sirupsen/logrus"

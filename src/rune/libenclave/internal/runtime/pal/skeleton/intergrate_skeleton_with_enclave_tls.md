@@ -4,20 +4,18 @@ This guide will show you how to use remote attestation in skeleton with rune and
 
 # Before you start
 
-- Build and install `rune` according to this [guide](https://github.com/alibaba/inclavare-containers/tree/master/rune#building).
-
-- Build and install `enclave-tls` according to this [guide](https://github.com/alibaba/inclavare-containers/blob/master/enclave-tls/README.md).
+- Build and install `rune` according to this [guide](https://github.com/confidential-containers/enclave-cc/tree/master/rune#building).
 
 # Quick Start
 
 ## Build and install the PAL of skeleton enclave runtime
 
-Please refer to [guide](https://github.com/alibaba/inclavare-containers/tree/master/rune/libenclave/internal/runtime/pal/skeleton#build-and-install-the-pal-of-skeleton-enclave-runtime) to install the dependencies of skeleton enclave runtime.
+Please refer to [guide](https://github.com/confidential-containers/enclave-cc/tree/master/rune/libenclave/internal/runtime/pal/skeleton#build-and-install-the-pal-of-skeleton-enclave-runtime) to install the dependencies of skeleton enclave runtime.
 
 Then type the following commands to build and install the PAL of the skeleton enclave runtime.
 
 ```shell
-cd "${path_to_inclavare_containers}/rune/libenclave/internal/runtime/pal/skeleton"
+cd "${path_to_enclave_cc}/rune/libenclave/internal/runtime/pal/skeleton"
 make TLS_SERVER=1
 cp liberpal-skeleton-v3.so /usr/lib
 ```
@@ -83,7 +81,7 @@ docker build . -t skeleton-enclave
 
 ## Integrate OCI Runtime rune with Docker
 
-Please refer to [guide](https://github.com/alibaba/inclavare-containers/tree/master/rune/libenclave/internal/runtime/pal/skeleton#integrate-oci-runtime-rune-with-docker) to integrate OCI runtime rune with docker.
+Please refer to [guide](https://github.com/confidential-containers/enclave-cc/tree/master/rune/libenclave/internal/runtime/pal/skeleton#integrate-oci-runtime-rune-with-docker) to integrate OCI runtime rune with docker.
 
 ## Run skeleton with TLS server
 
@@ -113,7 +111,7 @@ The following method to run skeleton bundle with rune is usually provided for de
 
 ### Run TLS server by OCI bundle
 
-Assuming you have an OCI bundle according to [previous steps](https://github.com/alibaba/inclavare-containers/blob/master/rune/libenclave/internal/runtime/pal/skeleton#create-skeleton-bundle), please add config into config.json as following:
+Assuming you have an OCI bundle according to [previous steps](https://github.com/confidential-containers/enclave-cc/blob/master/rune/libenclave/internal/runtime/pal/skeleton#create-skeleton-bundle), please add config into config.json as following:
 
 ```shell
 "cwd": "/",
@@ -125,7 +123,7 @@ Assuming you have an OCI bundle according to [previous steps](https://github.com
 }
 ```
 
-If you do NOT set runtime parameters in `enclave.runtime.args`, TLS server will run the highest priority `enclave quote/tls wrapper/crypto` instance. Please refer to this [guide](https://github.com/alibaba/inclavare-containers/blob/master/enclave-tls/README.md#run) for more information.
+If you do NOT set runtime parameters in `enclave.runtime.args`, TLS server will run the highest priority `enclave quote/tls wrapper/crypto` instance. Please refer to this [guide](https://github.com/confidential-containers/enclave-cc/blob/master/enclave-tls/README.md#run) for more information.
 
 Remember that you also need to delete the network namespace configuration in config.json to ensure you run skeleton in host network mode. After doing this, your namespaces are as following without the network type namespace:
 

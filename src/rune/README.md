@@ -14,8 +14,8 @@ Besides, `rune` depends on [SGX DCAP](https://github.com/intel/SGXDataCenterAtte
 # create $WORKSPACE folder
 mkdir -p "$WORKSPACE"
 cd "$WORKSPACE"
-git clone https://github.com/alibaba/inclavare-containers
-cd inclavare-containers/rune
+git clone https://github.com/confidential-containers/enclave-cc
+cd confidential-containers/enclave-cc/src/rune
 
 # build and install rune
 make
@@ -162,7 +162,7 @@ Some codes in rune are borrowed from [runc](https://github.com/opencontainers/ru
 | rpc | github.com/checkpoint-restore/go-criu/rpc | Apache-2.0 |
 | protobuf | google.golang.org/protobuf | BSD-3-Clause |
 | restruct | github.com/go-restruct/restruct | ISC |
-| epm-api | github.com/inclavare-containers/epm/pkg/epm-api/v1alpha1 | Apache-2.0 |
+| epm-api | github.com/confidential-containers/enclave-cc/epm/pkg/epm-api/v1alpha1 | Apache-2.0 |
 | net | golang.org/x/net | BSD-3-Clause |
 | dbus | github.com/godbus/dbus/v5 | BSD-2-Clause |
 | md2man | github.com/cpuguy83/go-md2man/v2/md2man | MIT |

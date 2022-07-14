@@ -1,8 +1,8 @@
-package enclave_runtime_core // import "github.com/inclavare-containers/rune/libenclave/internal/runtime/core"
+package enclave_runtime_core // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/core"
 
 import (
 	"fmt"
-	"github.com/inclavare-containers/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
 	"os"
 )
 

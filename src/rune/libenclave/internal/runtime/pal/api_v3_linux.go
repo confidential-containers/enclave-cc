@@ -1,4 +1,4 @@
-package enclave_runtime_pal // import "github.com/inclavare-containers/rune/libenclave/internal/runtime/pal"
+package enclave_runtime_pal // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/pal"
 
 /*
 #include <stdlib.h>
@@ -31,7 +31,7 @@ import "C"
 
 import (
 	"fmt"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"github.com/sirupsen/logrus"
 	"unsafe"
 )

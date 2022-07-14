@@ -1,4 +1,4 @@
-package preload // import "github.com/inclavare-containers/rune/libenclave/intelsgx/preload"
+package preload // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx/preload"
 
 /*
 #cgo linux LDFLAGS: -ldl

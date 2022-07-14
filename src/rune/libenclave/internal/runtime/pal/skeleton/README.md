@@ -84,7 +84,7 @@ docker build . -t skeleton-enclave
 
 The following guide provides the steps to run skeleton with Docker and OCI Runtime `rune`.
 
-- Please refer to [this guide](https://github.com/alibaba/inclavare-containers#rune) to build `rune` from scratch.
+- Please refer to [this guide](https://github.com/confidential-containers/enclave-cc#rune) to build `rune` from scratch.
 
 ### Integrate OCI Runtime rune with Docker
 
@@ -204,7 +204,7 @@ Skeleton supports the following features right now:
 ## Remote attestation
 
 ### `rune attest` command
-`rune attest` command can get the local report or IAS report of enclave runtimes, you can refer to [this guide](https://github.com/alibaba/inclavare-containers/blob/master/rune/libenclave/internal/runtime/pal/skeleton/running_skeleton_with_rune_attest_command.md) to run skeleton with `rune attest` command.
+`rune attest` command can get the local report or IAS report of enclave runtimes, you can refer to [this guide](https://github.com/confidential-containers/enclave-cc/blob/master/rune/libenclave/internal/runtime/pal/skeleton/running_skeleton_with_rune_attest_command.md) to run skeleton with `rune attest` command.
 
 Note that only liberpal-skeleton-v3.so supports `rune attest` command.
 
@@ -267,7 +267,7 @@ Enclave instant launch only support skeleton right now, it will support more enc
 
 ### Run epm service
 
-You can run epm service following with epm [README](https://github.com/alibaba/inclavare-containers/blob/master/epm/README.md).
+You can run epm service following with epm [README](https://github.com/confidential-containers/enclave-cc/blob/master/epm/README.md).
 
 ```shell
 sudo epm &
@@ -277,7 +277,7 @@ sudo epm &
 
 #### Run skeleton with epm by docker image
 
-According to previous steps about how to build [skeleton docker image](https://github.com/alibaba/inclavare-containers/tree/master/rune/libenclave/internal/runtime/pal/skeleton#build-skeleton-docker-image), you can get the image skeleton-enclave. Then type the following commands to run skeleton with epm:
+According to previous steps about how to build [skeleton docker image](https://github.com/confidential-containers/enclave-cc/tree/master/rune/libenclave/internal/runtime/pal/skeleton#build-skeleton-docker-image), you can get the image skeleton-enclave. Then type the following commands to run skeleton with epm:
 
 ```shell
 docker run -it --rm --runtime=rune \
@@ -384,6 +384,6 @@ Please modify the above device information according to the actual situation, su
 The configuration of `kvm-rootfs` takes bundle as an absolute address of rootfs, the bundle is specified in the parameters of rune.
 
 ```shell
-cp inclavare-containers/pal/skeleton/encl.{bin,ss} bundle/run/rune
+cp confidential-containers/enclave-cc/pal/skeleton/encl.{bin,ss} bundle/run/rune
 rune --debug run -b bundle test
 ```

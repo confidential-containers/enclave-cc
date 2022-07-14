@@ -1,4 +1,4 @@
-package configs // import "github.com/inclavare-containers/rune/libenclave/configs"
+package configs // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
 
 type InitEnclaveConfig struct {
 	Type                  string `json:"type"`

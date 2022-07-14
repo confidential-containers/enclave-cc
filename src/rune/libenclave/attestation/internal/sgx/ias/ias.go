@@ -1,4 +1,4 @@
-package ias // import "github.com/inclavare-containers/rune/libenclave/attestation/sgx/internal/ias"
+package ias // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/sgx/internal/ias"
 
 import (
 	"bytes"
@@ -9,10 +9,10 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	//pb "github.com/inclavare-containers/rune/libenclave/attestation/proto"
+	//pb "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/proto"
 	"encoding/binary"
 	"github.com/go-restruct/restruct"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"github.com/sirupsen/logrus"
 	"io"
 	"math/rand"

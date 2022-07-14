@@ -1,4 +1,4 @@
-module github.com/inclavare-containers/rune
+module github.com/confidential-containers/enclave-cc/src/rune
 
 go 1.14
 
@@ -12,7 +12,7 @@ require (
 	github.com/docker/go-units v0.4.0
 	github.com/go-restruct/restruct v0.0.0-20191227155143-5734170a48a1
 	github.com/golang/protobuf v1.5.0
-	github.com/inclavare-containers/epm v0.0.0-00010101000000-000000000000
+	github.com/confidential-containers/epm v0.0.0-00010101000000-000000000000
 	github.com/moby/sys/mountinfo v0.4.1
 	github.com/mrunalp/fileutils v0.5.0
 	github.com/opencontainers/runc v1.0.3
@@ -31,4 +31,4 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-replace github.com/inclavare-containers/epm => github.com/alibaba/inclavare-containers/epm v0.0.0-20210702020106-e5fad0ed1646
+replace github.com/confidential-containers/epm => github.com/confidential-containers/enclave-cc/epm v0.0.0-20210702020106-e5fad0ed1646

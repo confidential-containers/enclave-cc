@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/inclavare-containers/rune/libenclave"
-	enclaveConfigs "github.com/inclavare-containers/rune/libenclave/configs"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave"
+	enclaveConfigs "github.com/confidential-containers/enclave-cc/src/rune/libenclave/configs"
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/cgroups/systemd"
 	"github.com/opencontainers/runc/libcontainer/configs"

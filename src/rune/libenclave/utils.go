@@ -1,6 +1,6 @@
 // The codebase is inherited from runc with the modifications.
 
-package libenclave // import "github.com/inclavare-containers/rune/libenclave"
+package libenclave // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave"
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	pb "github.com/inclavare-containers/rune/libenclave/proto"
+	pb "github.com/confidential-containers/enclave-cc/src/rune/libenclave/proto"
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/stacktrace"
 	"io"

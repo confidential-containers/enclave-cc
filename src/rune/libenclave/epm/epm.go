@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/inclavare-containers/epm/pkg/epm-api/v1alpha1"
+	"github.com/confidential-containers/enclave-cc/epm/pkg/epm-api/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

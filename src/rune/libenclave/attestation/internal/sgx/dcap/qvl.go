@@ -1,4 +1,4 @@
-package dcap // import "github.com/inclavare-containers/rune/libenclave/attestation/internal/sgx/dcap"
+package dcap // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation/internal/sgx/dcap"
 
 /*
 #cgo LDFLAGS: -lsgx_dcap_quoteverify -lsgx_urts

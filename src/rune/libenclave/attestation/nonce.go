@@ -1,8 +1,8 @@
-package attestation // import "github.com/inclavare-containers/rune/libenclave/attestation"
+package attestation // import "github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation"
 
 import (
 	"encoding/binary"
-	"github.com/inclavare-containers/rune/libenclave/intelsgx"
+	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"math/rand"
 	"time"
 )

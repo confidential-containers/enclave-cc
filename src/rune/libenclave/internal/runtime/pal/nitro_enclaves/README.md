@@ -18,12 +18,12 @@ Refer to [Getting started: Hello enclave](https://docs.aws.amazon.com/enclaves/l
 
 ## Build and install rune
 
-Please refer to [this guide](https://github.com/alibaba/inclavare-containers#rune) to build `rune` from scratch.
+Please refer to [this guide](https://github.com/confidential-containers/enclave-cc#rune) to build `rune` from scratch.
 
 ## Build and install rune pal library
 
 ```shell
-cd inclavare-containers/rune/libenclave/internal/runtime/pal/nitro_enclaves
+cd confidential-containers/enclave-cc/src/rune/libenclave/internal/runtime/pal/nitro_enclaves
 make
 cp libpal_ne.so /usr/lib64/libpal_ne.so
 ```
