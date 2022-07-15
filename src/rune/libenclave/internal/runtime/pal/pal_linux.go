@@ -4,23 +4,18 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/go-restruct/restruct"
-	"github.com/confidential-containers/enclave-cc/epm/pkg/epm-api/v1alpha1"
 	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/attestation"
-	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/epm"
 	"github.com/confidential-containers/enclave-cc/src/rune/libenclave/intelsgx"
 	"log"
 	"os"
-	"strings"
 )
 
 const (
 	palApiVersion         = 3
-	InvalidEpmID   string = "InvalidEPMID"
 	EnclaveSubType string = "skeleton-0.0.0"
 )
 
 func (pal *enclaveRuntimePal) Init(args string, logLevel string) error {
-	var enclaveinfo *v1alpha1.Enclave
 	/* Assuming v1 is used */
 	api := &enclaveRuntimePalApiV1{}
 	ver := api.get_version()
@@ -29,7 +24,6 @@ func (pal *enclaveRuntimePal) Init(args string, logLevel string) error {
 	}
 
 	pal.version = ver
-	pal.enclavePoolID = InvalidEpmID
 
 	if ver < 3 {
 		return api.init(args, logLevel)
@@ -40,25 +34,7 @@ func (pal *enclaveRuntimePal) Init(args string, logLevel string) error {
 
 	apiV3 := &enclaveRuntimePalApiV3{}
 
-	no_epm := true
-	if !strings.Contains(args, "no-epm") {
-		no_epm = false
-		/* enclaveinfo.Layout retrieves from /proc/pid/mmaps, in file
-		 * mmaps sgx device mmaping address is sorted from low
-		 * address to high one. So layout[0].Addr will be minimum.
-		 */
-		pal.enclaveSubType = EnclaveSubType
-		enclaveinfo = epm.GetEnclave(pal.enclaveSubType)
-		if enclaveinfo != nil {
-			epm.SgxMmap(*enclaveinfo)
-			addr = enclaveinfo.Layout[0].Addr
-			fd = int(enclaveinfo.Fd)
-		}
-	}
 	err := apiV3.init(args, logLevel, fd, addr)
-	if err == nil && !no_epm {
-		pal.enclavePoolID = epm.SavePreCache(pal.enclaveSubType, enclaveinfo)
-	}
 
 	return err
 }
@@ -85,9 +61,6 @@ func (pal *enclaveRuntimePal) Kill(pid int, sig int) error {
 func (pal *enclaveRuntimePal) Destroy() error {
 	api := &enclaveRuntimePalApiV1{}
 
-	if pal.enclavePoolID != InvalidEpmID {
-		epm.SaveEnclave(pal.enclavePoolID, pal.enclaveSubType)
-	}
 	return api.destroy()
 }
 

@@ -255,7 +255,6 @@ func createContainer(context *cli.Context, id string, spec *specs.Spec, action C
 		}
 
 		libenclave.CreateLibenclaveMount(cwd, config, enclaveConfig.Enclave.Type)
-		libenclave.CreateLibenclaveEPMMount(cwd, config, enclaveConfig.Enclave.Type)
 		libenclave.CreateEnclaveDeviceConfig(&config.Devices, enclaveConfig.Enclave.Type)
 		libenclave.CreateEnclaveCgroupConfig(&config.Cgroups.Resources.Devices, config.Devices)
 		if err := libenclave.ValidateEnclave(enclaveConfig); err != nil {
