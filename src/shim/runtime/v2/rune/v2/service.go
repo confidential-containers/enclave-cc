@@ -336,6 +336,10 @@ func (s *service) Cleanup(ctx context.Context) (*taskAPI.DeleteResponse, error) 
 				return nil, err
 			}
 		}
+	case shimtypes.PodContainer:
+		if sandboxNamespace != shimtypes.KubeSystemNS {
+			os.RemoveAll(filepath.Join(ContainerBase, s.id))
+		}
 	}
 
 	logrus.WithFields(logrus.Fields{

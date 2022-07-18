@@ -13,3 +13,5 @@ log_level = "info" # "trace" "debug" "info" "warn" "error" "fatal" "panic"
     # TODO: After occlum releases NGO at the end of 2022, the URL will
     # switch to the Unix domain socket.
     agent_url = "tcp:/127.0.0.1:7788"
+    # Pre-installed OCI bundle for boot instance
+    boot_container_instance = "/opt/enclave-cc/boot-instance/"
