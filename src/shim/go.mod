@@ -3,6 +3,7 @@ module github.com/confidential-containers/enclave-cc/src/shim
 go 1.16
 
 require (
+	github.com/BurntSushi/toml v0.3.1
 	github.com/containerd/cgroups v1.0.3
 	github.com/containerd/containerd v1.5.10
 	github.com/containerd/go-runc v1.0.0
