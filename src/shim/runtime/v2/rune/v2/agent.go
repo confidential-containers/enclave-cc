@@ -7,15 +7,25 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/BurntSushi/toml"
+	shimconfig "github.com/confidential-containers/enclave-cc/src/shim/config"
+	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/constants"
 	types "github.com/containerd/containerd/api/types"
+	"github.com/containerd/containerd/mount"
+	"github.com/containerd/containerd/namespaces"
+	"github.com/containerd/containerd/pkg/process"
 	"github.com/containerd/containerd/runtime/v2/runc"
 	taskAPI "github.com/containerd/containerd/runtime/v2/task"
 	"github.com/containerd/continuity/fs"
+	runcC "github.com/containerd/go-runc"
+	"github.com/sirupsen/logrus"
 )
 
 const (
-	configFilename = "config.json"
-	defaultDirPerm = 0700
+	configFilename   = "config.json"
+	defaultDirPerm   = 0700
+	defaultFilePerms = 0600
+	agentIDFile      = "agent-id"
 )
 
 // The function creates agent enclave container based on a pre-installed OCI bundle
@@ -64,4 +74,55 @@ func createAgentContainer(ctx context.Context, s *service, r *taskAPI.CreateTask
 	}
 
 	return agentContainer, nil
+}
+
+// Cleanup the agent enclave container resource
+func cleanupAgentContainer(ctx context.Context, id string) error {
+	var cfg shimconfig.Config
+	if _, err := toml.DecodeFile(constants.ConfigurationPath, &cfg); err != nil {
+		return err
+	}
+	rootdir := cfg.Containerd.AgentContainerRootDir
+	path := filepath.Join(rootdir, id, "merged")
+
+	ns, err := namespaces.NamespaceRequired(ctx)
+	if err != nil {
+		return err
+	}
+
+	runtime, err := runc.ReadRuntime(path)
+	if err != nil {
+		return err
+	}
+
+	opts, err := runc.ReadOptions(path)
+	if err != nil {
+		return err
+	}
+	root := process.RuncRoot
+	if opts != nil && opts.Root != "" {
+		root = opts.Root
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"root":    root,
+		"path":    path,
+		"ns":      ns,
+		"runtime": runtime,
+	}).Debug("agent enclave Container Cleanup()")
+
+	r := process.NewRunc(root, path, ns, runtime, "", false)
+	if err := r.Delete(ctx, id, &runcC.DeleteOpts{
+		Force: true,
+	}); err != nil {
+		logrus.WithError(err).Warn("failed to remove agent enclave container")
+	}
+	if err := mount.UnmountAll(filepath.Join(path, "rootfs"), 0); err != nil {
+		logrus.WithError(err).Warn("failed to cleanup rootfs mount")
+	}
+	if err := os.RemoveAll(filepath.Join(rootdir, id)); err != nil {
+		logrus.WithError(err).Warn("failed to remove agent enclave container path")
+	}
+
+	return nil
 }
