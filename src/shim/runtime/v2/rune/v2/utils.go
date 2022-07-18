@@ -17,6 +17,7 @@ var (
 	agentContainerRootDir string
 	agentContainerPath    string
 	AgentUrl              string
+	bootContainerPath     string
 )
 
 func parseConfig(path string) error {
@@ -32,13 +33,16 @@ func parseConfig(path string) error {
 	agentContainerPath = cfg.Containerd.AgentContainerInstance
 	agentContainerRootDir = cfg.Containerd.AgentContainerRootDir
 	AgentUrl = cfg.Containerd.AgentUrl
+	bootContainerPath = cfg.Containerd.BootContainerInstance
 
-	fi, err := os.Stat(agentContainerPath)
-	if err != nil {
-		return fmt.Errorf("pre-installed OCI bundle should provided in %s", agentContainerPath)
-	}
-	if !fi.IsDir() {
-		return fmt.Errorf("not a directory: %s", agentContainerPath)
+	for _, dir := range []string{agentContainerPath, bootContainerPath} {
+		fi, err := os.Stat(dir)
+		if err != nil {
+			return fmt.Errorf("pre-installed OCI bundle should exist in %q", dir)
+		}
+		if !fi.IsDir() {
+			return fmt.Errorf("not a directory: %q", dir)
+		}
 	}
 
 	return nil

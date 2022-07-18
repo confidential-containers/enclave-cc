@@ -19,3 +19,26 @@ func LoadSpec(cPath string) (spec *specs.Spec, err error) {
 	}
 	return spec, nil
 }
+
+func SaveSpec(cPath string, spec *specs.Spec) error {
+	data, err := json.Marshal(spec)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(cPath, data, 0644)
+}
+
+func UpdateRootPathConfig(cPath string, rPath string) error {
+	spec, err := LoadSpec(cPath)
+	if err != nil {
+		return err
+	}
+
+	spec.Root.Path = rPath
+
+	if err := SaveSpec(cPath, spec); err != nil {
+		return err
+	}
+
+	return nil
+}
