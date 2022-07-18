@@ -66,6 +66,11 @@ func handlePodSandbox(ctx context.Context, s *service, r *taskAPI.CreateTaskRequ
 		s.agentID = ar.ID
 		s.pauseID = r.ID
 		s.containers[ar.ID] = agentContainer
+		s.agent = &agent{
+			ID:     agentContainer.ID,
+			Bundle: agentContainer.Bundle,
+			URL:    AgentUrl,
+		}
 	}
 
 	return container, nil

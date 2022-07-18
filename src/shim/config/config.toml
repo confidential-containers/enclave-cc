@@ -8,3 +8,8 @@ log_level = "info" # "trace" "debug" "info" "warn" "error" "fatal" "panic"
     agent_container_instance = "/opt/enclave-cc/agent-instance/"
     # The root dir of agent enclave container running state
     agent_container_root_dir = "/run/containerd/agent-enclave/"
+    # The listening address of the agent container
+    # Note that the default URL will listen on all network interfaces.
+    # TODO: After occlum releases NGO at the end of 2022, the URL will
+    # switch to the Unix domain socket.
+    agent_url = "tcp:/127.0.0.1:7788"
