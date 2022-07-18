@@ -125,6 +125,8 @@ type service struct {
 	// id for agent enclave container
 	agentID string
 
+	agent *agent
+
 	shimAddress string
 	cancel      func()
 }

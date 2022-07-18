@@ -1,3 +1,5 @@
+// The codebase is inherited from kata-containers with the modifications.
+
 package v2
 
 import (
@@ -6,10 +8,15 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sync"
+	"time"
 
 	"github.com/BurntSushi/toml"
 	shimconfig "github.com/confidential-containers/enclave-cc/src/shim/config"
+	agentClient "github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/agent/client"
+	grpc "github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/agent/grpc"
 	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/constants"
+	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/image"
 	types "github.com/containerd/containerd/api/types"
 	"github.com/containerd/containerd/mount"
 	"github.com/containerd/containerd/namespaces"
@@ -18,15 +25,165 @@ import (
 	taskAPI "github.com/containerd/containerd/runtime/v2/task"
 	"github.com/containerd/continuity/fs"
 	runcC "github.com/containerd/go-runc"
+	"github.com/gogo/protobuf/proto"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc/codes"
+	grpcStatus "google.golang.org/grpc/status"
 )
 
 const (
-	configFilename   = "config.json"
-	defaultDirPerm   = 0700
-	defaultFilePerms = 0600
-	agentIDFile      = "agent-id"
+	configFilename       = "config.json"
+	defaultDirPerm       = 0700
+	defaultFilePerms     = 0600
+	agentIDFile          = "agent-id"
+	grpcPullImageRequest = "grpc.PullImageRequest"
 )
+
+var (
+	defaultRequestTimeout = 60 * time.Second
+)
+
+type agent struct {
+	// ID of the container
+	ID string
+	// Bundle path
+	Bundle string
+
+	// lock protects the client pointer
+	sync.Mutex
+
+	reqHandlers map[string]reqFunc
+	URL         string
+	dialTimout  uint32
+	dead        bool
+	client      *agentClient.AgentClient
+}
+
+func (c *agent) Logger() *logrus.Entry {
+	return logrus.WithField("source", "agent_enclave_container")
+}
+
+func (c *agent) connect(ctx context.Context) error {
+	if c.dead {
+		return errors.New("Dead agent")
+	}
+	// lockless quick pass
+	if c.client != nil {
+		return nil
+	}
+
+	// This is for the first connection only, to prevent race
+	c.Lock()
+	defer c.Unlock()
+	if c.client != nil {
+		return nil
+	}
+
+	c.Logger().WithField("url", c.URL).Info("New client")
+	client, err := agentClient.NewAgentClient(ctx, c.URL, c.dialTimout)
+	if err != nil {
+		c.dead = true
+		return err
+	}
+
+	c.installReqFunc(client)
+	c.client = client
+
+	return nil
+}
+
+func (c *agent) disconnect(ctx context.Context) error {
+	c.Lock()
+	defer c.Unlock()
+
+	if c.client == nil {
+		return nil
+	}
+
+	if err := c.client.Close(); err != nil && grpcStatus.Convert(err).Code() != codes.Canceled {
+		return err
+	}
+
+	c.client = nil
+	c.reqHandlers = nil
+
+	return nil
+}
+
+type reqFunc func(context.Context, interface{}) (interface{}, error)
+
+func (c *agent) installReqFunc(client *agentClient.AgentClient) {
+	c.reqHandlers = make(map[string]reqFunc)
+	c.reqHandlers[grpcPullImageRequest] = func(ctx context.Context, req interface{}) (interface{}, error) {
+		return c.client.ImageServiceClient.PullImage(ctx, req.(*grpc.PullImageRequest))
+	}
+}
+
+func (c *agent) sendReq(spanCtx context.Context, request interface{}) (interface{}, error) {
+	if err := c.connect(spanCtx); err != nil {
+		return nil, err
+	}
+
+	defer c.disconnect(spanCtx)
+
+	msgName := proto.MessageName(request.(proto.Message))
+
+	c.Lock()
+
+	if c.reqHandlers == nil {
+		c.Unlock()
+		return nil, errors.New("Client has already disconnected")
+	}
+
+	handler := c.reqHandlers[msgName]
+	if msgName == "" || handler == nil {
+		c.Unlock()
+		return nil, errors.New("Invalid request type")
+	}
+
+	c.Unlock()
+
+	message := request.(proto.Message)
+	ctx, cancel := context.WithTimeout(spanCtx, defaultRequestTimeout)
+	if cancel != nil {
+		defer cancel()
+	}
+	c.Logger().WithField("name", msgName).WithField("req", message.String()).Trace("sending request")
+
+	return handler(ctx, request)
+}
+
+func (c *agent) PullImage(ctx context.Context, req *image.PullImageReq) (*image.PullImageResp, error) {
+	cid, err := getContainerID(req.Image)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create dir for store unionfs image (based on sefs)
+	sefsDir := filepath.Join(c.Bundle, "rootfs/images/", cid, "sefs")
+	lowerDir := filepath.Join(sefsDir, "lower")
+	upperDir := filepath.Join(sefsDir, "upper")
+	for _, dir := range []string{lowerDir, upperDir} {
+		if err := os.MkdirAll(dir, defaultDirPerm); err != nil {
+			return nil, err
+		}
+	}
+
+	r := &grpc.PullImageRequest{
+		Image:       req.Image,
+		ContainerId: cid,
+	}
+	resp, err := c.sendReq(ctx, r)
+	if err != nil {
+		c.Logger().WithError(err).Error("agent enclave container pull image")
+		return nil, err
+	}
+	response := resp.(*grpc.PullImageResponse)
+	return &image.PullImageResp{
+		ImageRef: response.ImageRef,
+	}, nil
+}
 
 // The function creates agent enclave container based on a pre-installed OCI bundle
 func createAgentContainer(ctx context.Context, s *service, r *taskAPI.CreateTaskRequest) (*runc.Container, error) {

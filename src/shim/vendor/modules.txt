@@ -87,6 +87,7 @@ github.com/containerd/fifo
 ## explicit
 github.com/containerd/go-runc
 # github.com/containerd/ttrpc v1.1.0
+## explicit
 github.com/containerd/ttrpc
 # github.com/containerd/typeurl v1.0.2
 ## explicit
@@ -153,9 +154,10 @@ golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
+# google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.43.0
+## explicit
 google.golang.org/grpc/codes
 google.golang.org/grpc/internal/status
 google.golang.org/grpc/metadata
@@ -194,3 +196,4 @@ google.golang.org/protobuf/types/known/timestamppb
 # gotest.tools/v3 v3.1.0
 ## explicit
 # github.com/containerd/containerd => github.com/confidential-containers/containerd v1.6.0-beta.0.0.20220303142103-c8f5e4509dcc
+# google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
