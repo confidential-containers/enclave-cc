@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/constants"
 	"github.com/containerd/cgroups"
 	cgroupsv2 "github.com/containerd/cgroups/v2"
 	eventstypes "github.com/containerd/containerd/api/events"
@@ -64,6 +65,10 @@ func New(ctx context.Context, id string, publisher shim.Publisher, shutdown func
 		ep  oom.Watcher
 		err error
 	)
+	err = parseConfig(constants.ConfigurationPath)
+	if err != nil {
+		return nil, err
+	}
 	if cgroups.Mode() == cgroups.Unified {
 		ep, err = oomv2.New(publisher)
 	} else {
@@ -313,10 +318,35 @@ func (s *service) Cleanup(ctx context.Context) (*taskAPI.DeleteResponse, error) 
 	}, nil
 }
 
+func setOCIRuntime(ctx context.Context, r *taskAPI.CreateTaskRequest) (err error) {
+	var opts options.Options
+	// read options to get OCI Runtime
+	if r.Options != nil {
+		v, err := typeurl.UnmarshalAny(r.Options)
+		if err != nil {
+			return err
+		}
+		opts = *v.(*options.Options)
+	}
+	if opts.BinaryName != RuntimeClass {
+		opts.BinaryName = RuntimeClass
+		r.Options, err = typeurl.MarshalAny(&opts)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Create a new initial process and container with the underlying OCI runtime
 func (s *service) Create(ctx context.Context, r *taskAPI.CreateTaskRequest) (_ *taskAPI.CreateTaskResponse, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	err = setOCIRuntime(ctx, r)
+	if err != nil {
+		return nil, err
+	}
 
 	container, err := runc.NewContainer(ctx, s.platform, r)
 	if err != nil {

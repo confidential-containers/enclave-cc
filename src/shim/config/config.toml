@@ -1,0 +1,2 @@
+# Only support rune right now.
+runtime_class = "rune"
