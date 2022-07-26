@@ -16,10 +16,12 @@ require (
 	github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a
 	google.golang.org/grpc v1.43.0
 	gotest.tools/v3 v3.1.0 // indirect
+	github.com/prashantv/gostub v1.1.0
 )
 
 replace (
