@@ -1,0 +1,13 @@
+package config
+
+type Containerd struct {
+	AgentContainerInstance string `toml:"agent_container_instance"`
+	AgentContainerRootDir  string `toml:"agent_container_root_dir"`
+	AgentUrl               string `toml:"agent_url"`
+	BootContainerInstance  string `toml:"boot_container_instance"`
+}
+
+type Config struct {
+	LogLevel   string     `toml:"log_level"`
+	Containerd Containerd `toml:"containerd"`
+}
