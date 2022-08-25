@@ -1,4 +1,7 @@
 use std::env;
+use std::fs;
+use std::fs::File;
+use std::io::prelude::*;
 use std::path::Path;
 use std::sync::Arc;
 
@@ -16,10 +19,9 @@ use ttrpc::asynchronous::Server;
 use ttrpc::{self, error::get_rpc_status as ttrpc_error};
 
 const CONTAINER_BASE: &str = "/run/enclave-cc/containers";
-const CC_IMAGE_WORK_DIR: &str = "/run/image/";
 
 // TODO: will replace with unix socket
-const SOCK_ADDR: &str = "tcp://0.0.0.0:7788";
+const TCP_SOCK_ADDR: &str = "tcp://0.0.0.0:7788";
 
 struct ImageService {
     image_client: Arc<Mutex<ImageClient>>,
@@ -27,7 +29,6 @@ struct ImageService {
 
 impl ImageService {
     fn new() -> Self {
-        env::set_var("CC_IMAGE_WORK_DIR", CC_IMAGE_WORK_DIR);
         let new_config = ImageConfig {
             default_snapshot: snapshots::SnapshotType::OcclumUnionfs,
             ..Default::default()
@@ -56,14 +57,48 @@ impl ImageService {
             validate::verify_id(&cid)?;
         }
 
+        let keyprovider_config = Path::new("/etc").join("ocicrypt_keyprovider_native.conf");
+        if !keyprovider_config.exists() {
+            let config = r#"
+            {
+                "key-providers": {
+                    "attestation-agent": {
+                        "native": "attestation-agent"
+                    }
+                }
+            }
+            "#;
+            File::create(&keyprovider_config)?.write_all(config.as_bytes())?;
+        }
+        std::env::set_var("OCICRYPT_KEYPROVIDER_CONFIG", keyprovider_config);
+
+        let mut config: String = String::new();
+        let args: Vec<String> = env::args().collect();
+        // If config file specified in the args, read contents from config file
+        let config_position = args.iter().position(|a| a == "--decrypt-config" || a == "-c");
+        if let Some(config_position) = config_position {
+            if let Some(config_file) = args.get(config_position + 1) {
+                config = fs::read_to_string(config_file).expect("Config file not found");
+            } else {
+                panic!("The config argument wasn't formed properly: {:?}", args);
+            }
+        }
+
+        let decrypt_config = if !config.is_empty() {
+            Some(config.as_str())
+        } else {
+            None
+        };
+
         let source_creds = (!req.get_source_creds().is_empty()).then(|| req.get_source_creds());
 
         let bundle_path = Path::new(CONTAINER_BASE).join(&cid);
 
+        println!("Pulling {:?}", image);
         self.image_client
             .lock()
             .await
-            .pull_image(image, &bundle_path, &source_creds, &None)
+            .pull_image(image, &bundle_path, &source_creds, &decrypt_config)
             .await?;
 
         Ok(image.to_owned())
@@ -92,7 +127,7 @@ impl protocols::image_ttrpc::Image for ImageService {
 }
 
 #[tokio::main(worker_threads = 1)]
-async fn main() {
+async fn main() -> Result<()> {
     let matches = App::new("Enclave agent")
         .version(crate_version!())
         .author(crate_authors!())
@@ -101,38 +136,47 @@ async fn main() {
                 .short("l")
                 .long("listen")
                 .value_name("sockaddr")
-                .help(
-                    ("Specify the socket listen addr. Default is ".to_string()
-                        + format!("{}", SOCK_ADDR).as_str())
-                    .as_str(),
-                )
+                .help(&format!(
+                    "{}{}",
+                    "Specify the socket listen addr. Default is ", TCP_SOCK_ADDR
+                ))
                 .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("decrypt-config")
+                .short("c")
+                .long("decrypt-config")
+                .help(&format!("The decrypt config file path"))
+                .takes_value(true)
+                .required(false),
         )
         .get_matches();
 
-    let mut sockaddr = SOCK_ADDR;
-    if matches.is_present("listen") {
-        sockaddr = matches.value_of("listen").unwrap();
-    }
+    let sockaddr = if let Some(addr) = matches.value_of("listen") {
+        addr
+    } else {
+        TCP_SOCK_ADDR
+    };
 
     let image_service = Box::new(ImageService::new()) as Box<dyn image_ttrpc::Image + Send + Sync>;
 
     let image_service = image_ttrpc::create_image(Arc::new(image_service));
 
     let mut server = Server::new()
-        .bind(sockaddr)
-        .unwrap()
+        .bind(sockaddr)?
         .register_service(image_service);
 
-    let mut interrupt = signal(SignalKind::interrupt()).unwrap();
-    server.start().await.unwrap();
+    let mut interrupt = signal(SignalKind::interrupt())?;
+    server.start().await?;
 
     println!("ttRPC server started: {:?}", sockaddr);
 
     tokio::select! {
         _ = interrupt.recv() => {
             println!("shutdown the server");
-            server.shutdown().await.unwrap();
+            server.shutdown().await?;
         }
     };
+
+    Ok(())
 }
