@@ -20,8 +20,8 @@ ctrlc = { version = "3.0", features = ["termination"] }
 tokio = { version = "1.14.0", features = ["full"] }
 async-trait = "0.1.42"
 
-image-rs = { git = "https://github.com/zhiwei-intel-h/image-rs", branch = "dev-occlum-adaption", features = ["occlum_feature"], default-features = false }
-kata-sys-util = { git = "https://github.com/kata-containers/kata-containers" }
+image-rs = { git = "https://github.com/confidential-containers/image-rs", features = ["occlum_feature"], default-features = false }
+kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 
 anyhow = "1.0.32"
 clap = "2.33.3"
