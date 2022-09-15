@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const testConfigJson = `
+const testConfigJSON = `
 {
 	"ociVersion": "1.0.1-dev",
 	"process": {},
@@ -26,7 +26,7 @@ func TestUpdateRootPathConfig(t *testing.T) {
 	path := filepath.Join("/tmp", "config.json")
 	defer os.Remove(path)
 
-	err := os.WriteFile(path, []byte(testConfigJson), 0644)
+	err := os.WriteFile(path, []byte(testConfigJSON), 0644)
 	assert.NoError(err)
 
 	rpath := "test-path"

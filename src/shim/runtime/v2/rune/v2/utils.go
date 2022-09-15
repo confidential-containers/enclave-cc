@@ -16,7 +16,7 @@ var (
 	logLevel              string
 	agentContainerRootDir string
 	agentContainerPath    string
-	AgentUrl              string
+	AgentURL              string
 	bootContainerPath     string
 )
 
@@ -32,7 +32,7 @@ func parseConfig(path string) error {
 	logLevel = cfg.LogLevel
 	agentContainerPath = cfg.Containerd.AgentContainerInstance
 	agentContainerRootDir = cfg.Containerd.AgentContainerRootDir
-	AgentUrl = cfg.Containerd.AgentUrl
+	AgentURL = cfg.Containerd.AgentURL
 	bootContainerPath = cfg.Containerd.BootContainerInstance
 
 	for _, dir := range []string{agentContainerPath, bootContainerPath} {

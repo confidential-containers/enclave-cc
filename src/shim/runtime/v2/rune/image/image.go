@@ -15,7 +15,7 @@ type PullImageResp struct {
 	ImageRef string
 }
 
-type ImageService interface {
+type Service interface {
 	// pull image in guest
 	PullImage(ctx context.Context, req *PullImageReq) (*PullImageResp, error)
 }

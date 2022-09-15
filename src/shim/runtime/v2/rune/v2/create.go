@@ -70,7 +70,7 @@ func handlePodSandbox(ctx context.Context, s *service, r *taskAPI.CreateTaskRequ
 			return nil, err
 		}
 
-		if err := writeAgentIdFile(r.Bundle, ar.ID); err != nil {
+		if err := writeAgentIDFile(r.Bundle, ar.ID); err != nil {
 			return nil, err
 		}
 
@@ -80,7 +80,7 @@ func handlePodSandbox(ctx context.Context, s *service, r *taskAPI.CreateTaskRequ
 		s.agent = &agent{
 			ID:     agentContainer.ID,
 			Bundle: agentContainer.Bundle,
-			URL:    AgentUrl,
+			URL:    AgentURL,
 		}
 
 	}
@@ -146,8 +146,8 @@ func handlePodContainer(ctx context.Context, s *service, r *taskAPI.CreateTaskRe
 	return container, nil
 }
 
-// ReadAgentIdFile reads the agent container id information from the path
-func readAgentIdFile(path string) (string, error) {
+// readAgentIDFile reads the agent container id information from the path
+func readAgentIDFile(path string) (string, error) {
 	data, err := os.ReadFile(filepath.Join(path, agentIDFile))
 	if err != nil {
 		return "", err
@@ -155,7 +155,7 @@ func readAgentIdFile(path string) (string, error) {
 	return string(data), nil
 }
 
-// WriteAgentIdFile writes the agent container id information into the path
-func writeAgentIdFile(path, id string) error {
+// writeAgentIDFile writes the agent container id information into the path
+func writeAgentIDFile(path, id string) error {
 	return os.WriteFile(filepath.Join(path, agentIDFile), []byte(id), defaultFilePerms)
 }
