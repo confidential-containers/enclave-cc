@@ -39,7 +39,7 @@ const (
 )
 
 //go:embed testdata/busybox.json
-var busyboxConfigJson []byte
+var busyboxConfigJSON []byte
 
 func SetupOCIConfigFile(t *testing.T) (rootPath string, bundlePath, ociConfigFile string) {
 	assert := assert.New(t)
@@ -51,7 +51,7 @@ func SetupOCIConfigFile(t *testing.T) (rootPath string, bundlePath, ociConfigFil
 	assert.NoError(err)
 
 	ociConfigFile = filepath.Join(bundlePath, configFilename)
-	err = os.WriteFile(ociConfigFile, busyboxConfigJson, testFileMode)
+	err = os.WriteFile(ociConfigFile, busyboxConfigJSON, testFileMode)
 	assert.NoError(err)
 
 	return tmpdir, bundlePath, ociConfigFile

@@ -4,7 +4,7 @@ containerd-shim-rune-v2 is a shim for Enclave CC.
 
 ## Introduction
 
-![shim-rune](docs/images/shim-rune.png)
+![shim-rune](../../docs/images/shim.png)
 
 ## Build requirements
 

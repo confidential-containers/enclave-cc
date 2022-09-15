@@ -326,7 +326,7 @@ func (s *service) Cleanup(ctx context.Context) (*taskAPI.DeleteResponse, error) 
 	switch containerType {
 	case shimtypes.PodSandbox:
 		if sandboxNamespace != shimtypes.KubeSystemNS {
-			agentID, err := readAgentIdFile(path)
+			agentID, err := readAgentIDFile(path)
 			if err != nil {
 				return nil, err
 			}

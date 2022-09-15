@@ -27,7 +27,7 @@ var agentClientFields = logrus.Fields{
 }
 
 const (
-	TcpSocketScheme = "tcp"
+	TCPSocketScheme = "tcp"
 )
 
 var agentClientLog = logrus.WithFields(agentClientFields)
@@ -47,13 +47,13 @@ func NewAgentClient(ctx context.Context, sock string, timeout uint32) (*AgentCli
 	if err != nil {
 		return nil, err
 	}
-	if addr.Scheme != TcpSocketScheme {
+	if addr.Scheme != TCPSocketScheme {
 		return nil, grpcStatus.Errorf(codes.InvalidArgument, "Invalid scheme: %s, only support tcp scheme", sock)
 	}
 	if addr.Host == "" {
 		return nil, grpcStatus.Errorf(codes.InvalidArgument, "Invalid tcp sock scheme: %s", sock)
 	}
-	grpcAddr := TcpSocketScheme + ":" + addr.Host
+	grpcAddr := TCPSocketScheme + ":" + addr.Host
 
 	dialTimeout := defaultDialTimeout
 	if timeout > 0 {
@@ -62,7 +62,7 @@ func NewAgentClient(ctx context.Context, sock string, timeout uint32) (*AgentCli
 	}
 
 	var conn net.Conn
-	conn, err = TcpDialer(grpcAddr, dialTimeout)
+	conn, err = TCPDialer(grpcAddr, dialTimeout)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func commonDialer(timeout time.Duration, dialFunc func() (net.Conn, error), time
 	return conn, nil
 }
 
-func TcpDialer(sock string, timeout time.Duration) (net.Conn, error) {
+func TCPDialer(sock string, timeout time.Duration) (net.Conn, error) {
 	sock = strings.TrimPrefix(sock, "tcp:")
 
 	dialFunc := func() (net.Conn, error) {
