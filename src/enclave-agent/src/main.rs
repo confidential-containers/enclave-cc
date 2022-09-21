@@ -1,5 +1,4 @@
 use std::env;
-use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -72,20 +71,35 @@ impl ImageService {
         }
         std::env::set_var("OCICRYPT_KEYPROVIDER_CONFIG", keyprovider_config);
 
-        let mut config: String = String::new();
         let args: Vec<String> = env::args().collect();
         // If config file specified in the args, read contents from config file
         let config_position = args.iter().position(|a| a == "--decrypt-config" || a == "-c");
-        if let Some(config_position) = config_position {
+        let config = if let Some(config_position) = config_position {
             if let Some(config_file) = args.get(config_position + 1) {
-                config = fs::read_to_string(config_file).expect("Config file not found");
+                let cfg = File::open(config_file)?;
+                let cfg_parsed: serde_json::Value = serde_json::from_reader(cfg)?;
+                Some(cfg_parsed)
             } else {
-                panic!("The config argument wasn't formed properly: {:?}", args);
+                panic!("The config argument wasn't formed properly: {:?}", args)
             }
-        }
+        } else {
+            None
+        };
 
-        let decrypt_config = if !config.is_empty() {
-            Some(config.as_str())
+        let decrypt_config = if let Some(cfg) = config.clone() {
+            if let Some(v) = cfg["security_validate"].as_bool() {
+                std::env::set_var("ENABLE_SECURITY_VALIDATE", &format!("{}", v));
+            } else {
+                panic!("Expect bool true or false ");
+            }
+
+            cfg["key_provider"].clone()
+        } else {
+            serde_json::Value::Null
+        };
+
+        let dec_cfg = if !decrypt_config.is_null() {
+            decrypt_config.as_str()
         } else {
             None
         };
@@ -98,7 +112,7 @@ impl ImageService {
         self.image_client
             .lock()
             .await
-            .pull_image(image, &bundle_path, &source_creds, &decrypt_config)
+            .pull_image(image, &bundle_path, &source_creds, &dec_cfg)
             .await?;
 
         Ok(image.to_owned())
