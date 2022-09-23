@@ -4,6 +4,7 @@ package v2
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -26,7 +27,6 @@ import (
 	"github.com/containerd/continuity/fs"
 	runcC "github.com/containerd/go-runc"
 	"github.com/gogo/protobuf/proto"
-	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	grpcStatus "google.golang.org/grpc/status"
