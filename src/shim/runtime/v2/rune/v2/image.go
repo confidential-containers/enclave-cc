@@ -4,13 +4,13 @@ package v2
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/image"
 	"github.com/containerd/containerd/plugin"
 	"github.com/containerd/containerd/runtime/v2/shim"
 	"github.com/containerd/containerd/runtime/v2/task"
 	"github.com/containerd/ttrpc"
-	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -30,7 +30,7 @@ type ImageService struct {
 func initImageService(ic *plugin.InitContext) (interface{}, error) {
 	i, err := ic.GetByID(plugin.TTRPCPlugin, "task")
 	if err != nil {
-		return nil, errors.Errorf("get task plugin error. %v", err)
+		return nil, fmt.Errorf("get task plugin error. %w", err)
 	}
 	task := i.(shim.TaskService)
 	s := task.TaskService.(*service)
