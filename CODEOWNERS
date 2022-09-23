@@ -5,4 +5,5 @@
 # to learn more about CODEOWNERS file.
 
 # Global Owners
-* @jiazhang0 @YangLiang3
+*       @confidential-containers/enclave-cc-maintainers
+
