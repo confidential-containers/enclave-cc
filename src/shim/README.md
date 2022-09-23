@@ -31,5 +31,6 @@ Modify the containerd configuration file (`/etc/containerd/config.toml`) and add
 #...
       [plugins.cri.containerd.runtimes.rune]
         runtime_type = "io.containerd.rune.v2"
+        cri_handler = "cc"
 #...
 ```
