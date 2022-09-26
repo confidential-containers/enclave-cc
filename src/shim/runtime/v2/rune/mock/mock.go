@@ -4,6 +4,7 @@ package mock
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/url"
@@ -14,6 +15,7 @@ import (
 )
 
 var testMockAgentSockURLTempl = "tcp://127.0.0.1:8822"
+var errMock = errors.New("mock error")
 
 func GenerateMockAgentSock() (string, error) {
 	return testMockAgentSockURLTempl, nil
@@ -35,7 +37,7 @@ func (st *SockTTRPCMock) ttrpcRegister(s *ttrpc.Server) {
 // Start starts the ttrpc-based mock server
 func (st *SockTTRPCMock) Start(socketAddr string) error {
 	if socketAddr == "" {
-		return fmt.Errorf("missing Socket Address")
+		return fmt.Errorf("%w: missing Socket Address", errMock)
 	}
 
 	url, err := url.Parse(socketAddr)
@@ -65,7 +67,7 @@ func (st *SockTTRPCMock) Start(socketAddr string) error {
 // Stop stops the ttrpc-based mock server
 func (st *SockTTRPCMock) Stop() error {
 	if st.listener == nil {
-		return fmt.Errorf("missing mock sock listener")
+		return fmt.Errorf("%w: missing mock sock listener", errMock)
 	}
 
 	return st.listener.Close()
