@@ -42,6 +42,7 @@ const (
 
 var (
 	defaultRequestTimeout = 60 * time.Second
+	errAgent              = errors.New("Agent error")
 )
 
 type agent struct {
@@ -66,7 +67,7 @@ func (c *agent) Logger() *logrus.Entry {
 
 func (c *agent) connect(ctx context.Context) error {
 	if c.dead {
-		return errors.New("Dead agent")
+		return fmt.Errorf("%w: Dead agent", errAgent)
 	}
 	// lockless quick pass
 	if c.client != nil {
@@ -133,13 +134,13 @@ func (c *agent) sendReq(spanCtx context.Context, request interface{}) (interface
 
 	if c.reqHandlers == nil {
 		c.Unlock()
-		return nil, errors.New("Client has already disconnected")
+		return nil, fmt.Errorf("%w: Client has already disconnected", errAgent)
 	}
 
 	handler := c.reqHandlers[msgName]
 	if msgName == "" || handler == nil {
 		c.Unlock()
-		return nil, errors.New("Invalid request type")
+		return nil, fmt.Errorf("%w: Invalid request type", errAgent)
 	}
 
 	c.Unlock()

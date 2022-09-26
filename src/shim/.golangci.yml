@@ -4,6 +4,7 @@ linters:
     - varcheck
     - staticcheck
     - unconvert
+    - goerr113
     - gofmt
     - goimports
     - revive
