@@ -4,4 +4,4 @@ targets:
   - target: /bin/
     copy:
       - files:
-        - ${INIT_DIR}/target/release/init
+        - ../init

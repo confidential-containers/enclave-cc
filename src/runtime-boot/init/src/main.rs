@@ -20,8 +20,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // TODO: Get the rootfs key and other parameters through RA/LA or PAL
     let rootfs_key = b"c7-32-b3-ed-44-df-ec-7b-25-2d-9a-32-38-8d-58-61";
-    let rootfs_upper_layer = "../gen_rootfs_instance/mnt_unionfs/upper";
-    let rootfs_lower_layer = "../gen_rootfs_instance/mnt_unionfs/lower";
+    let rootfs_upper_layer = "/sefs/upper";
+    let rootfs_lower_layer = "/sefs/lower";
     let rootfs_entry = "/bin";
 
     // Get the key of FS image if needed
