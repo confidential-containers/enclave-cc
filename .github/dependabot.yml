@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Dependencies listed in go.mod
+  - package-ecosystem: "gomod"
+    directory: "/src/shim" # Location of shim's go.mod
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "github.com/containerd/containerd"
+
+  # Check updates to action versions in .github/workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: "daily"
