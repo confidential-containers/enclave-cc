@@ -141,7 +141,7 @@ github.com/pmezard/go-difflib/difflib
 # github.com/prashantv/gostub v1.1.0
 ## explicit
 github.com/prashantv/gostub
-# github.com/sirupsen/logrus v1.8.1
+# github.com/sirupsen/logrus v1.9.0
 ## explicit
 github.com/sirupsen/logrus
 # github.com/stretchr/testify v1.7.0
@@ -157,7 +157,7 @@ go.opencensus.io/trace/tracestate
 ## explicit
 # golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 golang.org/x/sync/errgroup
-# golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a
+# golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
 ## explicit
 golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
