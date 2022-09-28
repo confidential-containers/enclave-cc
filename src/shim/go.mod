@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
-	google.golang.org/grpc v1.43.0
+	google.golang.org/grpc v1.49.0
 	gotest.tools/v3 v3.1.0 // indirect
 )
 
