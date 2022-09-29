@@ -1,0 +1,3 @@
+.resource_limits.user_space_size = "600MB" |
+.resource_limits.kernel_space_stack_size= "2MB" |
+.metadata.debuggable = false

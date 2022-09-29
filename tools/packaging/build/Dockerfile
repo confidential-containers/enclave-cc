@@ -1,0 +1,24 @@
+ARG IMAGE
+FROM ${IMAGE:-registry.centos.org/centos}:7
+ARG ENCLAVE_CC_ARTIFACTS=./enclave-cc-static.tar.xz
+ARG DESTINATION=/opt/enclave-cc-artifacts
+
+COPY ${ENCLAVE_CC_ARTIFACTS} ${WORKDIR}
+
+RUN \
+yum -y update && \
+yum -y install xz && \
+yum clean all && \
+mkdir -p ${DESTINATION} && \
+tar xvf ${ENCLAVE_CC_ARTIFACTS} -C ${DESTINATION} && \
+rm ${WORKDIR}/${ENCLAVE_CC_ARTIFACTS}
+
+# hadolint will deny echo -e, heredocs don't work in Dockerfiles, shell substitution doesn't work with $'...'
+RUN \
+echo "[kubernetes]" >> /etc/yum.repos.d/kubernetes.repo && \
+echo "name=Kubernetes" >> /etc/yum.repos.d/kubernetes.repo && \
+echo "baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$(uname -m)" >> /etc/yum.repos.d/kubernetes.repo && \
+echo "gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" >> /etc/yum.repos.d/kubernetes.repo && \
+yum -y install kubectl && \
+yum clean all
+WORKDIR ${DESTINATION}

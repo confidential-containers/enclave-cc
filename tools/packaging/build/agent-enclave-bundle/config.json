@@ -1,0 +1,216 @@
+{
+        "ociVersion": "1.0.2-dev",
+        "process": {
+                "terminal": false,
+                "user": {
+                        "uid": 0,
+                        "gid": 0
+                },
+                "args": [
+                        "/run/rune/occlum_instance/build/bin/occlum-run",
+                        "/bin/enclave-agent",
+                        "-l",
+                        "tcp://127.0.0.1:7788"
+                ],
+                "env": [
+                        "OCCLUM_RELEASE_ENCLAVE=1",
+                        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                        "TERM=xterm"
+                ],
+                "cwd": "/run/rune/occlum_instance",
+                "capabilities": {
+                        "bounding": [
+                                "CAP_AUDIT_WRITE",
+                                "CAP_KILL",
+                                "CAP_NET_BIND_SERVICE"
+                        ],
+                        "effective": [
+                                "CAP_AUDIT_WRITE",
+                                "CAP_KILL",
+                                "CAP_NET_BIND_SERVICE"
+                        ],
+                        "inheritable": [
+                                "CAP_AUDIT_WRITE",
+                                "CAP_KILL",
+                                "CAP_NET_BIND_SERVICE"
+                        ],
+                        "permitted": [
+                                "CAP_AUDIT_WRITE",
+                                "CAP_KILL",
+                                "CAP_NET_BIND_SERVICE"
+                        ],
+                        "ambient": [
+                                "CAP_AUDIT_WRITE",
+                                "CAP_KILL",
+                                "CAP_NET_BIND_SERVICE"
+                        ]
+                },
+                "rlimits": [
+                        {
+                                "type": "RLIMIT_NOFILE",
+                                "hard": 65535,
+                                "soft": 65535
+                        }
+                ],
+                "noNewPrivileges": true
+        },
+        "root": {
+                "path": "rootfs"
+        },
+        "hostname": "rune",
+        "mounts": [
+                {
+                        "destination": "/proc",
+                        "type": "proc",
+                        "source": "proc"
+                },
+                {
+                        "destination": "/etc/resolv.conf",
+                        "type": "bind",
+                        "source": "/etc/resolv.conf",
+                        "options": [
+                                "rbind",
+                                "rprivate",
+                                "ro"
+                        ]
+                },
+                {
+                        "destination": "/etc/hostname",
+                        "type": "bind",
+                        "source": "/etc/hostname",
+                        "options": [
+                                "rbind",
+                                "rprivate",
+                                "ro"
+                        ]
+                },
+                {
+                        "destination": "/dev",
+                        "type": "tmpfs",
+                        "source": "tmpfs",
+                        "options": [
+                                "nosuid",
+                                "strictatime",
+                                "mode=755",
+                                "size=65536k"
+                        ]
+                },
+                {
+                        "destination": "/dev/pts",
+                        "type": "devpts",
+                        "source": "devpts",
+                        "options": [
+                                "nosuid",
+                                "noexec",
+                                "newinstance",
+                                "ptmxmode=0666",
+                                "mode=0620",
+                                "gid=5"
+                        ]
+                },
+                {
+                        "destination": "/dev/shm",
+                        "type": "tmpfs",
+                        "source": "shm",
+                        "options": [
+                                "nosuid",
+                                "noexec",
+                                "nodev",
+                                "mode=1777",
+                                "size=65536k"
+                        ]
+                },
+                {
+                        "destination": "/dev/mqueue",
+                        "type": "mqueue",
+                        "source": "mqueue",
+                        "options": [
+                                "nosuid",
+                                "noexec",
+                                "nodev"
+                        ]
+                },
+                {
+                        "destination": "/sys",
+                        "type": "sysfs",
+                        "source": "sysfs",
+                        "options": [
+                                "nosuid",
+                                "noexec",
+                                "nodev",
+                                "ro"
+                        ]
+                },
+                {
+                        "destination": "/sys/fs/cgroup",
+                        "type": "cgroup",
+                        "source": "cgroup",
+                        "options": [
+                                "nosuid",
+                                "noexec",
+                                "nodev",
+                                "relatime",
+                                "ro"
+                        ]
+                }
+        ],
+        "linux": {
+		"devices": [
+			{
+				"path": "/dev/sgx_enclave",
+				"type": "c",
+				"major": 10,
+				"minor": 125,
+				"fileMode": 438
+			}
+		],
+                "resources": {
+                        "devices": [
+                                {
+                                        "allow": false,
+                                        "access": "rwm"
+                                },
+				{
+					"allow": true,
+					"type": "c",
+					"major": 10,
+					"minor": 125,
+					"access": "rwm"
+				}
+                        ]
+                },
+                "namespaces": [
+                        {
+                                "type": "pid"
+                        },
+                        {
+                                "type": "ipc"
+                        },
+                        {
+                                "type": "uts"
+                        },
+                        {
+                                "type": "mount"
+                        }
+                ],
+                "maskedPaths": [
+                        "/proc/acpi",
+                        "/proc/asound",
+                        "/proc/kcore",
+                        "/proc/keys",
+                        "/proc/latency_stats",
+                        "/proc/timer_list",
+                        "/proc/timer_stats",
+                        "/proc/sched_debug",
+                        "/sys/firmware",
+                        "/proc/scsi"
+                ],
+                "readonlyPaths": [
+                        "/proc/bus",
+                        "/proc/fs",
+                        "/proc/irq",
+                        "/proc/sys",
+                        "/proc/sysrq-trigger"
+                ]
+        }
+}

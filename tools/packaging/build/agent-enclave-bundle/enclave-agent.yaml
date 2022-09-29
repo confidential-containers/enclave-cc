@@ -1,0 +1,17 @@
+includes:
+  - base.yaml
+targets:
+  - target: /bin
+    copy:
+      - files:
+        - /run/enclave-agent/enclave-agent
+  # copy libnss_files
+  - target: /opt/occlum/glibc/lib
+    copy:
+      - files:
+         - /opt/occlum/glibc/lib/libnss_files.so.2
+         - /opt/occlum/glibc/lib/libnss_dns.so.2
+  - target: /usr/lib/ssl
+    copy:
+      - dirs:
+        - /etc/ssl/certs
