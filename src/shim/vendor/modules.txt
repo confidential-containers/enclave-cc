@@ -2,7 +2,7 @@
 ## explicit
 github.com/BurntSushi/toml
 github.com/BurntSushi/toml/internal
-# github.com/Microsoft/go-winio v0.5.1
+# github.com/Microsoft/go-winio v0.5.2
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/pkg/guid
 github.com/Microsoft/go-winio/pkg/security
@@ -78,7 +78,7 @@ github.com/containerd/containerd/runtime/v2/task
 github.com/containerd/containerd/sys
 github.com/containerd/containerd/sys/reaper
 github.com/containerd/containerd/version
-# github.com/containerd/continuity v0.2.2
+# github.com/containerd/continuity v0.3.0
 ## explicit
 github.com/containerd/continuity/fs
 github.com/containerd/continuity/sysx
