@@ -1,17 +1,16 @@
-# Only support rune right now.
-runtime_class = "rune"
+runtime_class = "runc"
 
 log_level = "info" # "trace" "debug" "info" "warn" "error" "fatal" "panic"
 
 [containerd]
     # Pre-installed OCI bundle for agent enclave container
-    agent_container_instance = "/opt/enclave-cc/agent-instance/"
+    agent_container_instance = "/opt/confidential-containers/share/enclave-cc-agent-instance/"
     # The root dir of agent enclave container running state
     agent_container_root_dir = "/run/containerd/agent-enclave/"
     # The listening address of the agent container
     # Note that the default URL will listen on all network interfaces.
     # TODO: After occlum releases NGO at the end of 2022, the URL will
     # switch to the Unix domain socket.
-    agent_url = "tcp:/127.0.0.1:7788"
+    agent_url = "tcp://127.0.0.1:7788"
     # Pre-installed OCI bundle for boot instance
-    boot_container_instance = "/opt/enclave-cc/boot-instance/"
+    boot_container_instance = "/opt/confidential-containers/share/enclave-cc-boot-instance/"
