@@ -65,7 +65,7 @@ WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
     rm -rf /run/enclave-agent
 
-RUN apt-get remove -y wget gnupg tzdata jq occlum make binutils libfuse2 libfuse3-3 ca-certificates rsync && apt-get autoremove -y
+RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
     ldconfig
 

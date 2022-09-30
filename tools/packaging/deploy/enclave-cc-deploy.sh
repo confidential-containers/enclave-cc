@@ -111,7 +111,11 @@ function remove_artifacts() {
 	rm -rf \
 	       /opt/confidential-containers/share/enclave-cc-agent-instance/ \
 	       /opt/confidential-containers/share/enclave-cc-boot-instance/ \
+	       /run/containerd/agent-enclave \
 	       /opt/confidential-containers/bin/containerd-shim-rune-v2
+
+	rmdir --ignore-fail-on-non-empty -p /opt/confidential-containers/bin
+	rmdir --ignore-fail-on-non-empty -p /opt/confidential-containers/share
 }
 
 function cleanup_cri_runtime() {
@@ -122,15 +126,14 @@ function cleanup_cri_runtime() {
 function cleanup_containerd() {
 	rm -f $containerd_conf_file
 	if [ -f "$containerd_conf_file_backup" ]; then
-		mv "$containerd_conf_file_backup" "$containerd_conf_file"
+		cp "$containerd_conf_file_backup" "$containerd_conf_file"
 	fi
 }
 
 function reset_runtime() {
-	kubectl label node "$NODE_NAME" confidentialcontainers.org/enclave-cc=
+	kubectl label node "$NODE_NAME" confidentialcontainers.org/enclave-cc-
 	systemctl daemon-reload
 	systemctl restart "$1"
-	systemctl restart kubelet
 }
 
 function main() {
