@@ -66,7 +66,7 @@ WORKDIR /run/rune
 RUN tar xzf /run/occlum/boot_instance/boot_instance.tar.gz && \
     rm -rf /run/occlum
 
-RUN apt-get remove -y wget gnupg make tzdata jq occlum occlum-toolchains-glibc binutils libfuse2 libfuse3-3 rsync && apt-get autoremove -y
+RUN apt-get purge -y wget gnupg make tzdata jq occlum occlum-toolchains-glibc binutils libfuse2 libfuse3-3 rsync && apt-get autoremove -y
 RUN echo "/run/rune/boot_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
     ldconfig
 
