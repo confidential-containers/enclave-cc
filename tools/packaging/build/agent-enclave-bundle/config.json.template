@@ -13,7 +13,6 @@
                         "tcp://127.0.0.1:7788"
                 ],
                 "env": [
-                        "OCCLUM_RELEASE_ENCLAVE=1",
                         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
                         "TERM=xterm"
                 ],
@@ -155,28 +154,12 @@
                 }
         ],
         "linux": {
-		"devices": [
-			{
-				"path": "/dev/sgx_enclave",
-				"type": "c",
-				"major": 10,
-				"minor": 125,
-				"fileMode": 438
-			}
-		],
                 "resources": {
                         "devices": [
                                 {
                                         "allow": false,
                                         "access": "rwm"
-                                },
-				{
-					"allow": true,
-					"type": "c",
-					"major": 10,
-					"minor": 125,
-					"access": "rwm"
-				}
+                                }
                         ]
                 },
                 "namespaces": [
