@@ -1,0 +1,21 @@
+if $ENV.SGX_MODE == "SIM" then
+.process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=0"]
+else
+.process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=1"] |
+.linux.devices |= . +
+[{
+	"path": "/dev/sgx_enclave",
+	"type": "c",
+	"major": 10,
+	"minor": 125,
+	"fileMode": 438
+}] |
+.linux.resources.devices |= . +
+[{
+	"allow": true,
+	"type": "c",
+	"major": 10,
+	"minor": 125,
+	"access": "rwm"
+}]
+end
