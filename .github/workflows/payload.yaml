@@ -21,9 +21,12 @@ jobs:
           password: ${{ secrets.COCO_QUAY_DEPLOYER_PASSWORD }}
 
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # This is needed in order to keep the commit ids history
       - name: Build Enclave CC Payload using SGX_MODE=${{ matrix.asset }}
         run: |
           ./tools/packaging/build/build_payload.sh 
         env:
           SGX_MODE: ${{ matrix.asset }}
           CI: yes
+          PUSH: yes
