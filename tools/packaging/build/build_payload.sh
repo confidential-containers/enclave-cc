@@ -5,8 +5,10 @@ CI=${CI:-no}
 SGX_MODE=${SGX_MODE:-HW}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
+	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-latest
 else
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-$(git describe --tags --abbrev=0)
+	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-latest
 fi
 IMAGE=${IMAGE:-${DEFAULT_IMAGE}}
 
@@ -42,7 +44,7 @@ cp ${SCRIPT_ROOT}/../deploy/enclave-cc-deploy.sh ${PAYLOAD_ARTIFACTS}/scripts
 pushd $PAYLOAD_ARTIFACTS
 tar cfJ enclave-cc-static.tar.xz *
 cp ${SCRIPT_ROOT}/Dockerfile .
-docker build . -t ${IMAGE}
+docker build . -t ${IMAGE} -t ${DEFAULT_LATEST_IMAGE}
 popd
 
 #cleanup
