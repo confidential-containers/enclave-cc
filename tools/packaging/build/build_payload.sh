@@ -6,7 +6,7 @@ SGX_MODE=${SGX_MODE:-HW}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
 else
-	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc=${SGX_MODE}-$(git describe --tags --abbrev=0)
+	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-$(git describe --tags --abbrev=0)
 fi
 IMAGE=${IMAGE:-${DEFAULT_IMAGE}}
 
