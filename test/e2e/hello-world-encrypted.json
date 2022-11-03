@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "name": "hello-world-encrypted-container"
+  },
+  "image":{
+    "image": "docker.io/mylinen/hello-world-encrypted:samplekbc2"
+  },
+  "envs": [
+    {"key": "OCCLUM_RELEASE_ENCLAVE", "value": "0"}
+  ],
+  "command": [
+    "/run/rune/boot_instance/build/bin/occlum-run",
+    "/bin/hello_world"
+  ],
+  "working_dir": "/run/rune/boot_instance/",
+  "log_path":"hello.log",
+  "linux": {
+  }
+}

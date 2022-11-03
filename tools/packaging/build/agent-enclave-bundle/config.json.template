@@ -9,6 +9,8 @@
                 "args": [
                         "/run/rune/occlum_instance/build/bin/occlum-run",
                         "/bin/enclave-agent",
+                        "-c",
+                        "/etc/decrypt_config.conf",
                         "-l",
                         "tcp://127.0.0.1:7788"
                 ],

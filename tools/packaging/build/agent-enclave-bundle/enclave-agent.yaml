@@ -15,3 +15,7 @@ targets:
     copy:
       - dirs:
         - /etc/ssl/certs
+  - target: /etc
+    copy:
+      - files:
+        - /run/enclave-agent/decrypt_config.conf
