@@ -18,8 +18,8 @@ docker rmi ${IMAGE} -f
 export SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export ENCLAVE_CC_ROOT="${SCRIPT_ROOT}/../../../"
 
-mkdir -p payload_artifacts/scripts
 export PAYLOAD_ARTIFACTS="${SCRIPT_ROOT}/payload_artifacts"
+mkdir -p ${PAYLOAD_ARTIFACTS}
 
 # build pre-installed OCI bundle for agent enclave container
 pushd ${SCRIPT_ROOT}/agent-enclave-bundle
