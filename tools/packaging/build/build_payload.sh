@@ -10,7 +10,7 @@ else
 fi
 IMAGE=${IMAGE:-${DEFAULT_IMAGE}}
 
-docker rmi ${IMAGEE} -f
+docker rmi ${IMAGE} -f
 
 export SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export ENCLAVE_CC_ROOT="${SCRIPT_ROOT}/../../../"
