@@ -2,6 +2,7 @@
 set -e
 
 CI=${CI:-no}
+PUSH=${PUSH:-no}
 SGX_MODE=${SGX_MODE:-HW}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
@@ -45,6 +46,10 @@ pushd $PAYLOAD_ARTIFACTS
 tar cfJ enclave-cc-static.tar.xz *
 cp ${SCRIPT_ROOT}/Dockerfile .
 docker build . -t ${IMAGE} -t ${DEFAULT_LATEST_IMAGE}
+if [ "${PUSH}" == "yes" ]; then
+	docker push ${IMAGE}
+	docker push ${DEFAULT_LATEST_IMAGE}
+fi
 popd
 
 #cleanup

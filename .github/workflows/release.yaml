@@ -27,3 +27,4 @@ jobs:
         env:
           SGX_MODE: ${{ matrix.asset }}
           CI: no
+          PUSH: yes
