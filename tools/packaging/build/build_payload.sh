@@ -39,7 +39,7 @@ cp ./bin/containerd-shim-rune-v2 ${PAYLOAD_ARTIFACTS}
 cp ./config/config.toml ${PAYLOAD_ARTIFACTS}/shim-rune-config.toml
 popd
 
-cp ${SCRIPT_ROOT}/../deploy/enclave-cc-deploy.sh ${PAYLOAD_ARTIFACTS}/scripts
+install -D ${SCRIPT_ROOT}/../deploy/enclave-cc-deploy.sh ${PAYLOAD_ARTIFACTS}/scripts/enclave-cc-deploy.sh
 
 # prepare payload artifacts static tarball
 pushd $PAYLOAD_ARTIFACTS
