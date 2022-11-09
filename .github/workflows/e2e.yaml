@@ -111,3 +111,14 @@ jobs:
           sudo crictl stopp $SANDBOX_ID
           sudo crictl rmp $SANDBOX_ID
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
+
+      - name: Test image decryption
+        run: |
+          SANDBOX_ID=$(sudo crictl runp --runtime enclavecc sandbox.json)
+          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-encrypted.json sandbox.json)
+          sudo crictl start $CONTAINER_ID
+          sleep 5
+          sudo crictl logs $CONTAINER_ID
+          sudo crictl stopp $SANDBOX_ID
+          sudo crictl rmp $SANDBOX_ID
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
