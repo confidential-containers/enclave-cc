@@ -52,7 +52,6 @@ WORKDIR /run/enclave-agent
 COPY --from=builder /enclave-cc/src/enclave-agent/target/release/enclave-agent .
 ADD enclave-agent.yaml .
 ADD jq.filter .
-ADD decrypt_config.conf .
 
 ARG SGX_MODE=HW
 RUN export PATH="$PATH:/opt/occlum/build/bin" && \
@@ -72,6 +71,7 @@ RUN export PATH="$PATH:/opt/occlum/build/bin" && \
 WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
     rm -rf /run/enclave-agent
+ADD decrypt_config.conf occlum_instance/configs/
 
 RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
