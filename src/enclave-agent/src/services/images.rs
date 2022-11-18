@@ -4,7 +4,7 @@ use std::io::prelude::*;
 use std::path::Path;
 use std::sync::Arc;
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 use image_rs::config::ImageConfig;
 use image_rs::image::ImageClient;
@@ -36,19 +36,7 @@ impl ImageService {
 
     async fn pull_image(&self, req: &image::PullImageRequest) -> Result<String> {
         let image = req.get_image();
-        let mut cid = req.get_container_id().to_string();
-
-        if cid.is_empty() {
-            let v: Vec<&str> = image.rsplit('/').collect();
-            if !v[0].is_empty() {
-                // ':' have special meaning for umoci during upack
-                cid = v[0].replace(":", "_");
-            } else {
-                return Err(anyhow!("Invalid image name: {:?}", image));
-            }
-        } else {
-            validate::verify_id(&cid)?;
-        }
+        let cid = self.get_container_id(req)?;
 
         let keyprovider_config = Path::new("/etc").join("ocicrypt_keyprovider_native.conf");
         if !keyprovider_config.exists() {
@@ -111,6 +99,14 @@ impl ImageService {
 
         Ok(image.to_owned())
     }
+
+    fn get_container_id(&self, req: &image::PullImageRequest) -> Result<String> {
+        let cid = req.get_container_id().to_string() ;
+        // keep consistent with the kata container convention, more details
+        // are described in https://github.com/confidential-containers/enclave-cc/issues/15
+        validate::verify_id(&cid)?;
+        Ok(cid)
+    }
 }
 
 #[async_trait]
@@ -130,6 +126,54 @@ impl protocols::image_ttrpc::Image for ImageService {
             Err(e) => {
                 return Err(ttrpc_error(ttrpc::Code::INTERNAL, e.to_string()));
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_get_container_id() {
+        struct ParseCase{
+            req: image::PullImageRequest,
+            is_ok: bool,
+        }
+        let cases: Vec<ParseCase> = vec![
+            ParseCase{ 
+                req: image::PullImageRequest{ 
+                    container_id: "redis".to_string(), 
+                    ..Default::default()
+                }, 
+                is_ok: true, 
+            },
+            ParseCase{ 
+                req: image::PullImageRequest{ 
+                    container_id: "redis_1.3".to_string(), 
+                    ..Default::default()
+                }, 
+                is_ok: true, 
+            },
+            ParseCase{ 
+                req: image::PullImageRequest{ 
+                    container_id: "redis:1.3".to_string(), 
+                    ..Default::default()
+                }, 
+                is_ok: false, 
+            },
+            ParseCase{ 
+                req: image::PullImageRequest{ 
+                    container_id: "".to_string(), 
+                    ..Default::default()
+                }, 
+                is_ok: false, 
+            },
+        ];
+
+        let is = ImageService::new();
+        for c in cases {
+            assert_eq!(is.get_container_id(&c.req).is_ok(), c.is_ok);
         }
     }
 }
