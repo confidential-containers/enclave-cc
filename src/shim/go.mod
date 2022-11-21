@@ -15,8 +15,8 @@ require (
 	github.com/prashantv/gostub v1.1.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
-	google.golang.org/grpc v1.50.1
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f
+	google.golang.org/grpc v1.51.0
 )
 
 require (
@@ -41,7 +41,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	go.opencensus.io v0.23.0 // indirect
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
