@@ -1,0 +1,47 @@
+includes:
+  - base.yaml
+targets:
+  # copy the enclave-agent binary to the /bin of the rootfs
+  # of the occlum instance
+  - target: /bin
+    copy:
+      - files:
+        - ../enclave-agent/target/release/enclave-agent
+  - target: /opt/occlum/glibc/lib
+    copy:
+      - files:
+          - /opt/occlum/glibc/lib/libnss_files.so.2
+          - /opt/occlum/glibc/lib/libnss_dns.so.2
+  - target: /usr/lib/ssl
+    copy:
+      - dirs:
+        - /etc/ssl/certs
+  # copy the config for crate ocicrypt-rs
+  - target: /etc
+    copy:
+      - files:
+          - [path-to-config-for-ocicrypt-rs]/ocicrypt.conf
+  # copy the config for the enclave agent
+  - target: /etc
+    copy:
+      - files:
+          - [path-to-config-for-enclave-agent]/agent.conf
+
+  - target: /usr/local/lib
+    copy:
+      - dirs:
+          - [rats-tls-path]/rats-tls
+
+  - target: /usr/lib/x86_64-linux-gnu/
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libcurl.so.4
+
+  - target: /usr/lib/x86_64-linux-gnu/
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libsgx_dcap_quoteverify.so
+  # it is a basic config for simply pulling encrypted images, 
+  # if the dependencies can not be found, install them and refer
+  # them correctly. And more items will be added for specific 
+  # use cases
