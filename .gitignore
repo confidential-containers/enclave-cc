@@ -3,3 +3,17 @@ src/*/target
 src/libs/Cargo.lock
 src/libs/protocols/src/image.rs
 src/libs/protocols/src/image_ttrpc.rs
+
+tools/debug/Cargo.lock
+tools/debug/target/
+tools/debug/protocols/asynchronous/empty.rs
+tools/debug/protocols/asynchronous/image.rs
+tools/debug/protocols/asynchronous/image_ttrpc.rs
+tools/debug/protocols/asynchronous/oci.rs
+tools/debug/protocols/asynchronous/types.rs
+
+tools/debug/protocols/sync/empty.rs
+tools/debug/protocols/sync/image.rs
+tools/debug/protocols/sync/image_ttrpc.rs
+tools/debug/protocols/sync/oci.rs
+tools/debug/protocols/sync/types.rs

@@ -1,0 +1,35 @@
+[package]
+name = "debug-example"
+version = "0.2.0"
+edition = "2018"
+license = "Apache-2.0"
+keywords = ["ttrpc", "protobuf", "rpc"]
+readme = "README.md"
+description = "An example of ttrpc."
+
+[dependencies]
+protobuf = { version = "=2.14.0", features = ["with-serde"] }
+bytes = "0.4.11"
+#libc = "0.2.79"
+libc = "0.2.58"
+byteorder = "1.3.2"
+log = "0.4.11"
+simple-logging = "2.0.2"
+nix = "0.23.0"
+ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
+
+ctrlc = { version = "3.0", features = ["termination"] }
+# Async runtime
+tokio = { version = "1.14.0", features = ["full"] }
+async-trait = "0.1.42"
+image-rs = { git = "https://github.com/confidential-containers/image-rs", tag = "v0.2.0", features = ["occlum_feature"], default-features = false }
+anyhow = "1.0.32"
+clap = "2.33.3"
+chrono = { version = "0.4", features = ["serde", "rustc-serialize"] }
+
+[[example]]
+name = "async-client"
+path = "./async-client.rs"
+
+[build-dependencies]
+ttrpc-codegen = "0.2.0"
