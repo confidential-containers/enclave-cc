@@ -1,10 +1,7 @@
 FROM rust:1.63-bullseye as builder
 
-RUN git clone --depth 1 -b enclave-cc https://github.com/occlum/occlum.git
-
-WORKDIR occlum/demos/runtime_boot/init
-ADD v1-0001-init-code-change.patch .
-RUN GIT_COMMITTER_EMAIL=foo@example.com git am v1-0001-init-code-change.patch && \
+COPY src/ /enclave-cc/src/
+RUN cd /enclave-cc/src/runtime-boot/init && \
     rustup component add rustfmt && \
     cargo build --release
 
@@ -47,10 +44,10 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     occlum
 
 WORKDIR /run/occlum
-COPY --from=builder /occlum/demos/runtime_boot/init/target/release/init .
-COPY --from=builder /occlum/demos/runtime_boot/boot_template.yaml .
-ADD init.yaml .
-ADD jq.filter .
+COPY --from=builder /enclave-cc/src/runtime-boot/init/target/release/init .
+COPY --from=builder /enclave-cc/src/runtime-boot/boot_template.yaml .
+COPY --from=builder /enclave-cc/src/runtime-boot/init.yaml .
+COPY tools/packaging/build/boot-instance-bundle/jq.filter .
 
 ARG SGX_MODE=HW
 RUN export PATH="$PATH:/opt/occlum/build/bin" && \

@@ -84,13 +84,20 @@ jobs:
       - name: Build agent-enclave bundle
         run: |
           mkdir $PAYLOAD_ARTIFACTS
-          ./gen_bundle.sh agent-enclave-bundle:build
+          docker build . -f tools/packaging/build/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t agent-instance:build
+          docker export $(docker create agent-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/agent-instance.tar
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
+
+      - name: Install config.json for agent-enclave bundle
+        run: |
+          jq -a -f sgx-mode-config.filter config.json.template | tee ${PAYLOAD_ARTIFACTS}/config.json
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/tools/packaging/build/agent-enclave-bundle
 
       - name: Build boot-instance bundle
         run: |
-          ./gen_bundle.sh boot-instance-bundle:build
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/tools/packaging/build/boot-instance-bundle
+          docker build . -f tools/packaging/build/boot-instance-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t boot-instance:build
+          docker export $(docker create boot-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/boot-instance.tar
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
       - name: Install enclave-cc bundles
         run: |
