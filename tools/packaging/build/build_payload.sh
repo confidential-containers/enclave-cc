@@ -4,6 +4,7 @@ set -e
 CI=${CI:-no}
 PUSH=${PUSH:-no}
 SGX_MODE=${SGX_MODE:-HW}
+GO_VERSION=${GO_VERSION:-1.19}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
 	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-latest
@@ -33,7 +34,7 @@ popd
 
 # build shim-rune binary: "containerd-shim-rune-v2"
 pushd ${ENCLAVE_CC_ROOT}/src/shim
-make binaries
+docker run --pull always -t -v ${PWD}:/build --workdir /build golang:${GO_VERSION}-bullseye make binaries
 cp ./bin/containerd-shim-rune-v2 ${PAYLOAD_ARTIFACTS}
 # prepare shim-rune configuration.
 cp ./config/config.toml ${PAYLOAD_ARTIFACTS}/shim-rune-config.toml
