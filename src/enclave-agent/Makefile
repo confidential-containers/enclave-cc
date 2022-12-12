@@ -11,4 +11,4 @@ all:
 	$(RUST_FLAGS) cargo build $(release)
 
 clean:
-	cargo clean && rm -f Cargo.lock
+	cargo clean
