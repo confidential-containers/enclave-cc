@@ -4,8 +4,8 @@ FROM rust:1.63-bullseye as builder
 RUN apt-get update && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y \
     protobuf-compiler
-RUN git clone --depth 1 https://github.com/confidential-containers/enclave-cc.git && \
-    cd enclave-cc/src/enclave-agent && \
+COPY src/ /enclave-cc/src/
+RUN cd /enclave-cc/src/enclave-agent && \
     rustup component add rustfmt && \
     make
 
@@ -50,9 +50,9 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
 
 WORKDIR /run/enclave-agent
 COPY --from=builder /enclave-cc/src/enclave-agent/target/release/enclave-agent .
-ADD enclave-agent.yaml .
-ADD jq.filter .
-ADD decrypt_config.conf .
+COPY tools/packaging/build/agent-enclave-bundle/enclave-agent.yaml .
+COPY tools/packaging/build/agent-enclave-bundle/jq.filter .
+COPY tools/packaging/build/agent-enclave-bundle/decrypt_config.conf .
 
 ARG SGX_MODE=HW
 RUN export PATH="$PATH:/opt/occlum/build/bin" && \
