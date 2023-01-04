@@ -1,22 +1,13 @@
-FROM rust:1.63-bullseye as builder
+FROM ubuntu:20.04 as builder
 
-# Build enclave-agent
-RUN apt-get update && \
-    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    protobuf-compiler
-COPY src/ /enclave-cc/src/
-RUN cd /enclave-cc/src/enclave-agent && \
-    rustup component add rustfmt && \
-    make
-
-# Start preparing enclave-agent "bundle"
-FROM ubuntu:20.04
 RUN apt-get update && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y \
     make \
+    curl \
     wget \
     gnupg
 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main" | tee -a /etc/apt/sources.list.d/intel-sgx.list \
  && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | gpg --dearmor --output /usr/share/keyrings/intel-sgx.gpg \
  && apt-get update \
@@ -49,6 +40,7 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     libfuse2 \
     libfuse3-3 \
     ca-certificates \
+    protobuf-compiler \
     rsync \
     occlum-runtime \
     occlum-toolchains-glibc \
@@ -59,8 +51,12 @@ RUN git clone --depth 1 https://github.com/inclavare-containers/rats-tls.git && 
     cmake -DRATS_TLS_BUILD_MODE="occlum" -DBUILD_SAMPLES=on -H. -Bbuild && \
     make -C build install
 
+COPY src/ /enclave-cc/src/
+RUN cd /enclave-cc/src/enclave-agent && \
+    . $HOME/.cargo/env && \
+    make
+
 WORKDIR /run/enclave-agent
-COPY --from=builder /enclave-cc/src/enclave-agent/target/release/enclave-agent .
 COPY tools/packaging/build/agent-enclave-bundle/enclave-agent.yaml .
 COPY tools/packaging/build/agent-enclave-bundle/jq.filter .
 COPY tools/packaging/build/agent-enclave-bundle/decrypt_config.conf .
@@ -82,6 +78,7 @@ WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
     rm -rf /run/enclave-agent
 
+RUN rm -r $HOME/.cargo
 RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
     echo "/opt/sgxsdk/lib64" | tee /etc/ld.so.conf.d/sgxsdk.conf && \

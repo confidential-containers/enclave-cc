@@ -4,7 +4,7 @@ targets:
   - target: /bin
     copy:
       - files:
-        - /run/enclave-agent/enclave-agent
+        - /enclave-cc/src/enclave-agent/target/release/enclave-agent
   # copy libnss_files
   - target: /opt/occlum/glibc/lib
     copy:
