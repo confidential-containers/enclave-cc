@@ -55,7 +55,9 @@ impl ImageService {
 
         let args: Vec<String> = env::args().collect();
         // If config file specified in the args, read contents from config file
-        let config_position = args.iter().position(|a| a == "--decrypt-config" || a == "-c");
+        let config_position = args
+            .iter()
+            .position(|a| a == "--decrypt-config" || a == "-c");
         let config = if let Some(config_position) = config_position {
             if let Some(config_file) = args.get(config_position + 1) {
                 let cfg = File::open(config_file)?;
@@ -101,7 +103,7 @@ impl ImageService {
     }
 
     fn get_container_id(&self, req: &image::PullImageRequest) -> Result<String> {
-        let cid = req.get_container_id().to_string() ;
+        let cid = req.get_container_id().to_string();
         // keep consistent with the kata container convention, more details
         // are described in https://github.com/confidential-containers/enclave-cc/issues/15
         validate::verify_id(&cid)?;
@@ -118,7 +120,7 @@ impl protocols::image_ttrpc::Image for ImageService {
     ) -> ttrpc::Result<image::PullImageResponse> {
         match self.pull_image(&req).await {
             Ok(r) => {
-                println!("Pull image {:?} successfully", r.clone());
+                println!("Pull image {:?} successfully", r);
                 let mut resp = image::PullImageResponse::new();
                 resp.image_ref = r;
                 return Ok(resp);
@@ -136,38 +138,38 @@ mod test {
 
     #[test]
     fn test_get_container_id() {
-        struct ParseCase{
+        struct ParseCase {
             req: image::PullImageRequest,
             is_ok: bool,
         }
         let cases: Vec<ParseCase> = vec![
-            ParseCase{ 
-                req: image::PullImageRequest{ 
-                    container_id: "redis".to_string(), 
+            ParseCase {
+                req: image::PullImageRequest {
+                    container_id: "redis".to_string(),
                     ..Default::default()
-                }, 
-                is_ok: true, 
+                },
+                is_ok: true,
             },
-            ParseCase{ 
-                req: image::PullImageRequest{ 
-                    container_id: "redis_1.3".to_string(), 
+            ParseCase {
+                req: image::PullImageRequest {
+                    container_id: "redis_1.3".to_string(),
                     ..Default::default()
-                }, 
-                is_ok: true, 
+                },
+                is_ok: true,
             },
-            ParseCase{ 
-                req: image::PullImageRequest{ 
-                    container_id: "redis:1.3".to_string(), 
+            ParseCase {
+                req: image::PullImageRequest {
+                    container_id: "redis:1.3".to_string(),
                     ..Default::default()
-                }, 
-                is_ok: false, 
+                },
+                is_ok: false,
             },
-            ParseCase{ 
-                req: image::PullImageRequest{ 
-                    container_id: "".to_string(), 
+            ParseCase {
+                req: image::PullImageRequest {
+                    container_id: "".to_string(),
                     ..Default::default()
-                }, 
-                is_ok: false, 
+                },
+                is_ok: false,
             },
         ];
 

@@ -33,7 +33,7 @@ async fn main() -> Result<()> {
             Arg::with_name("decrypt-config")
                 .short("c")
                 .long("decrypt-config")
-                .help(&format!("The decrypt config file path"))
+                .help("The decrypt config file path".as_ref())
                 .takes_value(true)
                 .required(false),
         )
