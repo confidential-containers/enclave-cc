@@ -1,6 +1,3 @@
-use std::env;
-use std::fs::File;
-use std::io::prelude::*;
 use std::path::Path;
 use std::sync::Arc;
 
@@ -14,19 +11,24 @@ use protocols::image;
 use tokio::sync::Mutex;
 use ttrpc::{self, error::get_rpc_status as ttrpc_error};
 
+use crate::config::DecryptConfig;
+
 const CONTAINER_BASE: &str = "/run/enclave-cc/containers";
 
 pub struct ImageService {
+    dc: DecryptConfig,
     image_client: Arc<Mutex<ImageClient>>,
 }
 
 impl ImageService {
-    pub fn new() -> Self {
+    pub fn new(dc: DecryptConfig) -> Self {
         let new_config = ImageConfig {
             default_snapshot: snapshots::SnapshotType::OcclumUnionfs,
+            security_validate: dc.security_validate.map_or(true, |v| v),
             ..Default::default()
         };
         Self {
+            dc,
             image_client: Arc::new(Mutex::new(ImageClient {
                 config: new_config,
                 ..Default::default()
@@ -37,66 +39,25 @@ impl ImageService {
     async fn pull_image(&self, req: &image::PullImageRequest) -> Result<String> {
         let image = req.get_image();
         let cid = self.get_container_id(req)?;
-
-        let keyprovider_config = Path::new("/etc").join("ocicrypt_keyprovider_native.conf");
-        if !keyprovider_config.exists() {
-            let config = r#"
-            {
-                "key-providers": {
-                    "attestation-agent": {
-                        "native": "attestation-agent"
-                    }
-                }
-            }
-            "#;
-            File::create(&keyprovider_config)?.write_all(config.as_bytes())?;
-        }
-        std::env::set_var("OCICRYPT_KEYPROVIDER_CONFIG", keyprovider_config);
-
-        let args: Vec<String> = env::args().collect();
-        // If config file specified in the args, read contents from config file
-        let config_position = args
-            .iter()
-            .position(|a| a == "--decrypt-config" || a == "-c");
-        let config = if let Some(config_position) = config_position {
-            if let Some(config_file) = args.get(config_position + 1) {
-                let cfg = File::open(config_file)?;
-                let cfg_parsed: serde_json::Value = serde_json::from_reader(cfg)?;
-                Some(cfg_parsed)
-            } else {
-                panic!("The config argument wasn't formed properly: {:?}", args)
-            }
-        } else {
-            None
-        };
-
-        let decrypt_config = if let Some(cfg) = config.clone() {
-            if let Some(v) = cfg["security_validate"].as_bool() {
-                std::env::set_var("ENABLE_SECURITY_VALIDATE", &format!("{}", v));
-            } else {
-                panic!("Expect bool true or false ");
-            }
-
-            cfg["key_provider"].clone()
-        } else {
-            serde_json::Value::Null
-        };
-
-        let dec_cfg = if !decrypt_config.is_null() {
-            decrypt_config.as_str()
-        } else {
-            None
-        };
-
         let source_creds = (!req.get_source_creds().is_empty()).then(|| req.get_source_creds());
-
         let bundle_path = Path::new(CONTAINER_BASE).join(&cid);
+
+        let dc_string = self
+            .dc
+            .key_provider
+            .to_owned()
+            .map_or(String::default(), |v| v);
+        let dc_str = if dc_string.is_empty() {
+            None
+        } else {
+            Some(dc_string.as_str())
+        };
 
         println!("Pulling {:?}", image);
         self.image_client
             .lock()
             .await
-            .pull_image(image, &bundle_path, &source_creds, &dec_cfg)
+            .pull_image(image, &bundle_path, &source_creds, &dc_str)
             .await?;
 
         Ok(image.to_owned())
@@ -173,7 +134,11 @@ mod test {
             },
         ];
 
-        let is = ImageService::new();
+        let dc = DecryptConfig::load_from_file(
+            &"test_data/decrypt_config/decrypt_config_normal.conf".to_string(),
+        )
+        .unwrap();
+        let is = ImageService::new(dc);
         for c in cases {
             assert_eq!(is.get_container_id(&c.req).is_ok(), c.is_ok);
         }

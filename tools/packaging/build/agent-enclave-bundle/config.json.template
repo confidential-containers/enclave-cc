@@ -11,6 +11,8 @@
                         "/bin/enclave-agent",
                         "-c",
                         "/etc/decrypt_config.conf",
+                        "-o",
+                        "/etc/ocicrypt.conf",
                         "-l",
                         "tcp://127.0.0.1:7788"
                 ],
