@@ -63,6 +63,7 @@ WORKDIR /run/enclave-agent
 COPY tools/packaging/build/agent-enclave-bundle/enclave-agent.yaml .
 COPY tools/packaging/build/agent-enclave-bundle/jq.filter .
 COPY tools/packaging/build/agent-enclave-bundle/decrypt_config.conf .
+COPY tools/packaging/build/agent-enclave-bundle/ocicrypt.conf .
 
 ARG SGX_MODE=HW
 RUN export PATH="$PATH:/opt/occlum/build/bin" && \

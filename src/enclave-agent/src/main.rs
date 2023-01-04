@@ -7,6 +7,9 @@ use protocols::image_ttrpc;
 use tokio::signal::unix::{signal, SignalKind};
 use ttrpc::asynchronous::Server;
 
+mod config;
+use config::{DecryptConfig, OcicryptConfig, DEFAULT_OCICRYPT_CONFIG_PATH};
+
 mod services;
 use services::images::ImageService;
 
@@ -37,6 +40,14 @@ async fn main() -> Result<()> {
                 .takes_value(true)
                 .required(false),
         )
+        .arg(
+            Arg::with_name("ocicrypt-config")
+                .short("o")
+                .long("ocicrypt-config")
+                .help("The ocicrypt config file path".as_ref())
+                .takes_value(true)
+                .required(false),
+        )
         .get_matches();
 
     let sockaddr = if let Some(addr) = matches.value_of("listen") {
@@ -45,7 +56,21 @@ async fn main() -> Result<()> {
         TCP_SOCK_ADDR
     };
 
-    let image_service = Box::new(ImageService::new()) as Box<dyn image_ttrpc::Image + Send + Sync>;
+    let dc = if let Some(file_path) = matches.value_of("decrypt-config") {
+        DecryptConfig::load_from_file(&file_path.to_string())?
+    } else {
+        DecryptConfig::default()
+    };
+
+    let oc = if let Some(file_path) = matches.value_of("ocicrypt-config") {
+        OcicryptConfig::new(file_path.to_string())?
+    } else {
+        OcicryptConfig::new(DEFAULT_OCICRYPT_CONFIG_PATH.to_string())?
+    };
+    oc.export_to_env();
+
+    let image_service =
+        Box::new(ImageService::new(dc)) as Box<dyn image_ttrpc::Image + Send + Sync>;
 
     let image_service = image_ttrpc::create_image(Arc::new(image_service));
 

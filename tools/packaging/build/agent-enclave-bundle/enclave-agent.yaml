@@ -35,3 +35,4 @@ targets:
     copy:
       - files:
         - /run/enclave-agent/decrypt_config.conf
+        - /run/enclave-agent/ocicrypt.conf
