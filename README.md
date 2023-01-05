@@ -96,7 +96,7 @@ can be deployed. Below is the workflow of running an application workload:
 - enclave-agent sends workload's config in encryption to app enclave(design ongoing)
 - LibOS boot init procedure receives and decrypts the config; abstracts the fuse key to decrypt the
   FUSE encrypted file system(design ongoing)
-- LibOS boot init procedure mounts decrypted workload roots, builds workload running config and
+- LibOS boot init procedure mounts decrypted workload rootfs, builds workload running config and
   starts app enclave container
 
 
