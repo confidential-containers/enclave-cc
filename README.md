@@ -82,7 +82,7 @@ can be deployed. Below is the workflow of running an application workload:
   to  [the example](https://github.com/confidential-containers/documentation/blob/main/quickstart.md#creating-a-sample-coco-workload-using-enclave-cc)
 - end user deploys the POD into Kubernetes and the request is propagated to containerd
 - shim-rune gets sandbox and container creation request from containerd and creates pause container
-- shim-rune creates agent enclave container with runc; runc references OCI spec and roots in host
+- shim-rune creates agent enclave container with runc; runc references OCI spec and rootfs in host
   preinstalled by operator to start the container with LibOS
 - shim-rune asks enclave-agent to pull encrypted workload image via TTRPC request
 - enclave-agent receives image pull request, verifies the image signature by getting verification
