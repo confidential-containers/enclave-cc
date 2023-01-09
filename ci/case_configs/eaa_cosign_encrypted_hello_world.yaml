@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: enclave-cc-pod
+spec:
+  containers:
+  - image: docker.io/eqmcc/helloworld_enc
+    name: hello-world
+    workingDir: "/run/rune/boot_instance/"
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        sgx.intel.com/epc: 600Mi
+    env:
+    - name: OCCLUM_RELEASE_ENCLAVE
+      value: "1"
+    command:
+    - /run/rune/boot_instance/build/bin/occlum-run
+    - /bin/hello_world
+  runtimeClassName: enclave-cc
+  
