@@ -1,0 +1,9 @@
+name: hlc-test
+run-name: test-secrets
+on: push
+jobs:
+  output secret env vars:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "usr: $QUAY_USR_HLC"
+      - run: echo "nonexist: $ABC"
