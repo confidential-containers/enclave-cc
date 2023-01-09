@@ -5,6 +5,8 @@ jobs:
   output-secret-env-vars:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "usr: $QUAY_USR_HLC"
-      - run: echo "nonexist: $ABC"
+      - name: step 1
+        run: echo "usr: $QUAY_USR_HLC"
+      - name: step 2
+        run: echo "nonexist: $ABC"
       
