@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: step 1
-        run: echo "usr: $QUAY_USR_HLC"
+        run: echo usr: $QUAY_USR_HLC
       - name: step 2
-        run: echo "nonexist: $ABC"
+        run: echo nonexist: $ABC
       
