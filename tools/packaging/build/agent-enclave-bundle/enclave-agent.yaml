@@ -14,7 +14,7 @@ targets:
          - /lib/x86_64-linux-gnu/libdl.so.2
          - /usr/lib/x86_64-linux-gnu/libssl.so.1.1
          - /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
-  - target: /usr/local/lib/rats-tls
+  - target: /usr/local/lib
     copy:
       - dirs:
         - /usr/local/lib/rats-tls
@@ -22,6 +22,15 @@ targets:
     copy:
       - dirs:
         - /etc/ssl/certs
+  - target: /usr/lib
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libcurl.so.4
+  - target: /usr/lib/x86_64-linux-gnu/
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libsgx_dcap_quoteverify.so
+          - /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
   - target: /etc
     copy:
       - files:

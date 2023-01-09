@@ -1,5 +1,7 @@
 FROM ubuntu:20.04 as builder
 
+ARG RATS_TLS_REV=5de6fc308f2a18f4105429451c85e6173b42ab9d
+
 RUN apt-get update && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y \
     make \
@@ -46,8 +48,9 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     occlum-toolchains-glibc \
     occlum
 
-RUN git clone --depth 1 https://github.com/inclavare-containers/rats-tls.git && \
+RUN git clone https://github.com/inclavare-containers/rats-tls.git && \
     cd rats-tls && \
+    git checkout $RATS_TLS_REV && \
     cmake -DRATS_TLS_BUILD_MODE="occlum" -DBUILD_SAMPLES=on -H. -Bbuild && \
     make -C build install
 
@@ -83,5 +86,4 @@ RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make bi
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
     echo "/opt/sgxsdk/lib64" | tee /etc/ld.so.conf.d/sgxsdk.conf && \
     ldconfig
-
 ENTRYPOINT ["/bin/enclave-agent"]
