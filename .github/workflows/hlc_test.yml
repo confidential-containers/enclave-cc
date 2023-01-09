@@ -8,7 +8,11 @@ jobs:
       - name: step 0
         run: echo hello, world!
       - name: step 1
-        run: echo usr $QUAY_USR_HLC
+        run: echo usr
+      - name: step 1.5
+        run: echo $QUAY_USR_HLC
       - name: step 2
         run: echo nonexist $ABC
+      - name: step 2.5
+        run: echo $ABC
       
