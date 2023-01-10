@@ -13,9 +13,7 @@ jobs:
           password: ${{ secrets.QUAY_PWD_HLC }}
 
       - name: echo secrets
-        run: |
-          "echo quay_usr_hlc: ${{ secrets.QUAY_USR_HLC }}"
+        run: "echo quay_usr_hlc: ${{ secrets.QUAY_USR_HLC }}"
 
       - name: build and push payload
-        run: |
-          "echo current dir: $(pwd)"
+        run: "echo current dir: $(pwd)"
