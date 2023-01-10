@@ -109,7 +109,7 @@ function uninstall_enclave_cc_runtimeclass(){
 
     logs=$(timeout $TIMEOUT_SECS kubectl delete -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
     rtn_code=$?
-    if [ $rtv_code = 124 ]
+    if [ $rtn_code = 124 ]
     then
         echo "[Error] Timeout when uninstalling Enclave-CC runtime."
         if [ $CI_DEBUG_MODE = true ]
