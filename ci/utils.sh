@@ -36,13 +36,11 @@ function check_cc_operator_controller_manager_pod_ready(){
         while [ true ]
         do
             pod_ready_status=$(kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-controller-manager | awk '"'"'{print $2}'"'"')
-            if [ $CI_DEBUG_MODE = true ]
-            then
+            if [ $CI_DEBUG_MODE = true ]; then
                 echo "[Debug] pod_ready_status: $pod_ready_status"
             fi
 
-            if [ $pod_ready_status = "2/2" ]
-            then
+            if [ $pod_ready_status = "2/2" ]; then
                 break
             fi
             sleep 1
@@ -70,22 +68,25 @@ function check_enclave_cc_runtimeclass_exist() {
         while [ $counter -lt $TIMEOUT_SECS ]
         do
             kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME > /dev/null
-            if [ $? = 0 ]
-            then
+            if [ $? = 0 ]; then
                 exit 0
             fi
             sleep 1
             (( counter++ ))
         done ' $TIMEOUT_SECS $ECC_RC_NAME
     rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when installing enclave-cc runtimeclass."
-        return 1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when installing enclave-cc runtimeclass."
-        return 1
-    elif [ $rtn_code = 0 ]; then
-        echo "[OK] Successfully install enclave-cc runtimeclass."
-    fi
+    case $rtn_code in
+        124)
+            echo "[Error] Timeout when installing enclave-cc runtimeclass."
+            return 1
+        ;;
+        1)
+            echo "[Error] Something is wrong when installing enclave-cc runtimeclass."
+            return 1
+        ;;
+        0)
+            echo "[OK] Successfully install enclave-cc runtimeclass."
+        ;;
+    esac
     return 0
 }
