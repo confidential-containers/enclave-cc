@@ -5,14 +5,16 @@ jobs:
   runtime-class:
     runs-on: self-hosted
     steps: 
-      -name: install operator
-       run: ./runtimeclass_ci.sh install_coco_operator
-      -name: install enclave-cc-runtimeclass
-       run: ./runtimeclass_ci.sh install_enclave_cc_runtimeclass
-      -name: uninstall enclave-cc-runtimeclass
-       run: ./runtimeclass_ci.sh uninstall_enclave_cc_runtimeclass
-      -name: uninstall operator
-       run: ./runtimeclass_ci.sh uninstall_coco_operator
+      - name: step 0
+        run: ./runtimeclass.sh install_coco_operator
+      - name: step 1
+        run: echo usr
+      - name: step 1.5
+        run: echo $QUAY_USR_HLC
+      - name: step 2
+        run: echo nonexist $ABC
+      - name: step 2.5
+        run: echo $ABC
       
     
   
