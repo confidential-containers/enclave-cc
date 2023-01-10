@@ -15,16 +15,18 @@ function install_coco_operator(){
     fi
 
     logs=$(timeout $TIMEOUT_SECS kubectl apply -k github.com/confidential-containers/operator/config/release?ref=$ECC_RC_VER 2>&1 )
-    rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when installing operator."
-        echo "$logs"
-        exit 1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when installing operator."
-        echo "$logs"
-        exit 1
-    fi
+    case $? in 
+        124)
+            echo "[Error] Timeout when installing operator."
+            echo "$logs"
+            exit 1
+        ;;
+        1)
+            echo "[Error] Something is wrong when installing operator."
+            echo "$logs"
+            exit 1
+        ;;
+    esac
     
     if ! check_cc_operator_controller_manager_pod_ready; then 
         exit 1
@@ -41,16 +43,18 @@ function install_enclave_cc_runtimeclass(){
     fi
 
     logs=$(timeout $TIMEOUT_SECS kubectl apply -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
-    rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when installing enclave-cc runtimeclass."
-        echo "$logs"
-        return  1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when installing  enclave-cc runtimeclass."
-        echo "$logs"
-        return  1
-    fi
+    case $? in 
+        124)
+            echo "[Error] Timeout when installing enclave-cc runtimeclass."
+            echo "$logs"
+            exit  1
+        ;;
+        1)
+            echo "[Error] Something is wrong when installing  enclave-cc runtimeclass."
+            echo "$logs"
+            exit  1
+        ;;
+    esac
 
     if ! check_enclave_cc_runtimeclass_exist; then 
         exit 1
@@ -66,21 +70,24 @@ function uninstall_coco_operator(){
         echo "[Debug] Start to delete operator..."
     fi
     logs=$(timeout $TIMEOUT_SECS kubectl delete -k github.com/confidential-containers/operator/config/release?ref=$ECC_RC_VER 2>&1)
-    rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when uninstalling operator."
-        echo "$logs"
-        exit 1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when uninstalling operator."
-        echo "$logs"
-        exit 1
-    fi
+    case $? in 
+        124)
+            echo "[Error] Timeout when uninstalling operator."
+            echo "$logs"
+            exit 1
+        ;;
+        1)   
+            echo "[Error] Something is wrong when uninstalling operator."
+            echo "$logs"
+            exit 1
+        ;;
+    esac
     if [ $CI_DEBUG_MODE = true ]; then
         echo "[Debug] Successfully delete operator..."
     fi 
     exit 0
 }
+
 function uninstall_enclave_cc_runtimeclass(){
     if is_enclave_cc_runtimeclass_exist; then 
         exit 1
@@ -91,20 +98,23 @@ function uninstall_enclave_cc_runtimeclass(){
 
     logs=$(timeout $TIMEOUT_SECS kubectl delete -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
     rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when uninstalling enclave-cc runtimeclass."
-        if [ $CI_DEBUG_MODE = true ]; then
-            echo "[Debug] Start to delete kubernetes stuck CRD deletion..."
-            kubectl get ccruntimes.confidentialcontainers.org -o yaml 2>&1 | sed '/finalizer/{n;d;}'
-            kubectl apply -f /home/ecc/operator/hlc/my-resource.yaml
-        fi
-        echo "$logs"
-        exit  1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when uninstalling enclave-cc runtimeclass."
-        echo "$logs"
-        exit 1
-    fi
+    case $? in 
+       124)
+            echo "[Error] Timeout when uninstalling enclave-cc runtimeclass."
+            if [ $CI_DEBUG_MODE = true ]; then
+                echo "[Debug] Start to delete kubernetes stuck CRD deletion..."
+                kubectl get ccruntimes.confidentialcontainers.org -o yaml 2>&1 | sed '/finalizer/{n;d;}'
+                kubectl apply -f /home/ecc/operator/hlc/my-resource.yaml
+            fi
+            echo "$logs"
+            exit  1
+        ;;
+        1)
+            echo "[Error] Something is wrong when uninstalling enclave-cc runtimeclass."
+            echo "$logs"
+            exit 1
+        ;;
+    esac
     if [ $CI_DEBUG_MODE = true ]; then
         echo "[Debug] Successfully delete runtimeclass..."
     fi 
