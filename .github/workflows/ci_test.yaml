@@ -11,17 +11,17 @@ jobs:
      
       - name: uninstall enclave-cc 
         run: |
-          ./.github/workflows/runtimeclass_ci.sh uninstall_enclave_cc_runtimeclass
+          ./ci/runtimeclass_ci.sh uninstall_enclave_cc_runtimeclass
       - name: uninstall operator
         run: |
-          ./.github/workflows/runtimeclass_ci.sh uninstall_coco_operator
+          ./ci/runtimeclass_ci.sh uninstall_coco_operator
       - name: install operator
         run: |
           echo $pwd
-          ./.github/workflows/runtimeclass_ci.sh install_coco_operator
+          ./ci/runtimeclass_ci.sh install_coco_operator
       - name: install enclave-cc
         run: |
-          ./.github/workflows/runtimeclass_ci.sh install_enclave_cc_runtimeclass
+          ./ci/runtimeclass_ci.sh install_enclave_cc_runtimeclass
       - name: step 5
         run: echo "finish"
       
