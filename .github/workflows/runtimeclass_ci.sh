@@ -1,5 +1,5 @@
 #!/bin/bash
-# utils.sh
+source  ./.github/workflows/utils.sh
 
 if [ ! -n "$1" ] ;then
     echo "error: missing input parameter, such as install_coco_operator."
