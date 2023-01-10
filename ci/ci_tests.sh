@@ -7,7 +7,6 @@ if [ ! -n "$1" ]; then
 fi
 
 function install_coco_operator(){
-    echo "hello "
     if ! is_cc_operator_controller_manager_pod_exist; then 
         exit 1
     fi
