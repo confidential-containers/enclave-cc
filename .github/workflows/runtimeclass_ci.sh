@@ -52,12 +52,12 @@ function install_enclave_cc_runtimeclass(){
     rtn_code=$?
     if [ $rtn_code = 124 ]
     then
-        echo "[Error] Timeout when installing Enclave-CC runtime."
+        echo "[Error] Timeout when installing enclave-cc runtimeclass."
         echo "$logs"
         return  1
     elif [ $rtn_code != 0 ]
     then
-        echo "[Error] Something is wrong when installing Enclave-CC runtime."
+        echo "[Error] Something is wrong when installing  enclave-cc runtimeclass."
         echo "$logs"
         return  1
     fi
@@ -93,7 +93,7 @@ function uninstall_coco_operator(){
     fi
     if [ $CI_DEBUG_MODE = true ]
     then
-        echo "[Debug] Successfully delete runtimeclass..."
+        echo "[Debug] Successfully delete operator..."
     fi 
     exit 0
 }
@@ -104,14 +104,14 @@ function uninstall_enclave_cc_runtimeclass(){
     fi
     if [ $CI_DEBUG_MODE = true ]
     then
-        echo "[Debug] Start to delete runtimeclass..."
+        echo "[Debug] Start to delete enclave-cc runtimeclass..."
     fi
 
     logs=$(timeout $TIMEOUT_SECS kubectl delete -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
     rtn_code=$?
     if [ $rtn_code = 124 ]
     then
-        echo "[Error] Timeout when uninstalling Enclave-CC runtime."
+        echo "[Error] Timeout when uninstalling enclave-cc runtimeclass."
         if [ $CI_DEBUG_MODE = true ]
         then
             echo "[Debug] Start to delete kubernetes stuck CRD deletion..."
@@ -122,7 +122,7 @@ function uninstall_enclave_cc_runtimeclass(){
         exit  1
     elif [ $rtn_code != 0 ]
     then
-        echo "[Error] Something is wrong when uninstalling Enclave-CC runtime."
+        echo "[Error] Something is wrong when uninstalling enclave-cc runtimeclass."
         echo "$logs"
         exit 1
     fi
