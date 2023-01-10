@@ -7,16 +7,18 @@ jobs:
     steps: 
       - name: install operator
         run: |
-          ./runtimeclass_ci.sh install_coco_operator
+          ./.github/workflows/runtimeclass_ci.sh install_coco_operator
       - name: install enclave-cc
         run: |
-          ./runtimeclass_ci.sh install_enclave_cc_runtimeclass
-      - name: step 1.5
-        run: echo $QUAY_USR_HLC
-      - name: step 2
-        run: echo nonexist $ABC
-      - name: step 2.5
-        run: echo $ABC
+          ./.github/workflows/runtimeclass_ci.sh install_enclave_cc_runtimeclass
+      - name: uninstall enclave-cc 
+        run: |
+          ./.github/workflows/runtimeclass_ci.sh uninstall_enclave_cc_runtimeclass
+      - name: install operator
+        run: |
+          ./.github/workflows/runtimeclass_ci.sh uninstall_coco_operator
+      - name: step 5
+        run: echo "finish"
       
     
   
