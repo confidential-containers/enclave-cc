@@ -1,0 +1,21 @@
+name: hlc-test
+run-name: test-secrets
+on: push
+jobs:
+  build_payload_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USR_HLC }}
+          password: ${{ secrets.QUAY_PWD_HLC }}
+
+      - name: echo secrets
+        run: |
+          "echo quay_usr_hlc: ${{ secrets.QUAY_USR_HLC }}"
+
+      - name: build and push payload
+        run: |
+          "echo current dir: $(pwd)"
