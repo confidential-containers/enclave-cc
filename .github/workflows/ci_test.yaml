@@ -1,0 +1,18 @@
+name: ci-test
+run-name: test runtimeclass 
+on: push
+jobs: 
+  runtime-class:
+    runs-on: self-hosted
+    steps: 
+      -name: install operator
+       run: ./runtimeclass_ci.sh install_coco_operator
+      -name: install enclave-cc-runtimeclass
+       run: ./runtimeclass_ci.sh install_enclave_cc_runtimeclass
+      -name: uninstall enclave-cc-runtimeclass
+       run: ./runtimeclass_ci.sh uninstall_enclave_cc_runtimeclass
+      -name: uninstall operator
+       run: ./runtimeclass_ci.sh uninstall_coco_operator
+      
+    
+  
