@@ -106,7 +106,7 @@ function uninstall_enclave_cc_runtimeclass(){
                 kubectl apply -f /home/ecc/operator/hlc/my-resource.yaml
             fi
             echo "$logs"
-            exit  1
+            exit  0
         ;;
         1)
             echo "[Error] Something is wrong when uninstalling enclave-cc runtimeclass."
