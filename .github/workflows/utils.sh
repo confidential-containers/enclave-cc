@@ -1,7 +1,7 @@
 #!/bin/bash
 ECC_RC_NAME="enclave-cc"
 ECC_RC_VER="v0.2.0"
-TIMEOUT_SECS=60
+TIMEOUT_SECS=120
 CI_DEBUG_MODE=true
 
 function is_enclave_cc_runtimeclass_exist() {
@@ -20,10 +20,7 @@ function is_enclave_cc_runtimeclass_exist() {
 
 function is_cc_operator_controller_manager_pod_exist() {
     operator_pod_info=$(kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-controller-manager)
-    #operator_pod_status=$(kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-controller-manager| awk '{print $2}')
-    #operator_pod_status=$operator_pod_info | awk '{print $2}'
     if [ $? = 0  ]
-    #if [ $operator_pod_status = "2/2" ]
     then
         echo "Found operator pod :"
         echo "$operator_pod_info"
@@ -56,16 +53,16 @@ function check_cc_operator_controller_manager_pod_ready(){
     rtn_code=$?
     if [ $rtn_code = 124 ]
     then
-        echo "[Error] Timeout when installing operator pod."
+        echo "[Error] Timeout when installing operator."
         return 1
     elif [ $rtn_code != 0 ]
     then
-        echo "[Error] Something is wrong when installing operator pod."
+        echo "[Error] Something is wrong when installing operator."
         return 1
     fi
     if [ CI_DEBUG_MODE=true ]
     then
-        echo "[Debug] Succefully installed the operator pod."
+        echo "[Debug] Succefully installed the operator."
     fi
     return 0
 }
@@ -88,15 +85,15 @@ function check_enclave_cc_runtimeclass_exist() {
     rtn_code=$?
     if [ $rtn_code = 124 ]
     then
-        echo "[Error] Timeout when installing Enclave-CC runtime."
+        echo "[Error] Timeout when installing enclave-cc runtimeclass."
         return 1
     elif [ $rtn_code != 0 ]
     then
-        echo "[Error] Something is wrong when installing Enclave-CC runtime."
+        echo "[Error] Something is wrong when installing enclave-cc runtimeclass."
         return 1
     elif [ $rtn_code = 0 ]
     then
-        echo "[OK] Successfully install Enclave-CC runtime."
+        echo "[OK] Successfully install enclave-cc runtimeclass."
     fi
     return 0
 }
