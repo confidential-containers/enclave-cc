@@ -6,9 +6,11 @@ jobs:
     runs-on: self-hosted
     steps: 
       - name: install operator
-        run: ./runtimeclass_ci.sh install_coco_operator
+        run: |
+          ./runtimeclass_ci.sh install_coco_operator
       - name: install enclave-cc
-        run: ./runtimeclass_ci.sh install_enclave_cc_runtimeclass
+        run: |
+          ./runtimeclass_ci.sh install_enclave_cc_runtimeclass
       - name: step 1.5
         run: echo $QUAY_USR_HLC
       - name: step 2
