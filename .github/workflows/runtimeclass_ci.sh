@@ -6,20 +6,6 @@ if [ ! -n "$1" ] ;then
     exit 1
 fi
 
-# function main(){
-#     echo "hello "
-#     echo $1
-#     $1
-#     #check_cc_operator_controller_manager_pod_ready
-#     # if  uninstall_enclave_cc_runtimelcass
-#     # then 
-#     #     echo "hello enclave_cc_runtimeclass"
-#     # fi
-    
-# }
-# main
-
-
 function install_coco_operator(){
     echo "hello "
     if ! is_cc_operator_controller_manager_pod_exist
