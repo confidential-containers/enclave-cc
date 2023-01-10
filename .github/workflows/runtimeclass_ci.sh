@@ -1,5 +1,5 @@
 #!/bin/bash
-source utils.sh
+# utils.sh
 
 if [ ! -n "$1" ] ;then
     echo "error: missing input parameter, such as install_coco_operator."
