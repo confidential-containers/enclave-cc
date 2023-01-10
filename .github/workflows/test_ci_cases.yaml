@@ -25,7 +25,7 @@ jobs:
       - name: Uninstall Enclave-CC runtimeclass payload 
         run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
 
-      - name: Uninstall coCo operator
+      - name: Uninstall CoCo operator
         run: ./ci/ci_tests.sh uninstall_coco_operator      
     
   
