@@ -46,14 +46,16 @@ function check_cc_operator_controller_manager_pod_ready(){
             sleep 1
         done
     ' $CI_DEBUG_MODE
-    rtn_code=$?
-    if [ $rtn_code = 124 ]; then
-        echo "[Error] Timeout when installing operator."
-        return 1
-    elif [ $rtn_code != 0 ]; then
-        echo "[Error] Something is wrong when installing operator."
-        return 1
-    fi
+    case $? in 
+        124)
+            echo "[Error] Timeout when installing operator."
+            return 1
+        ;;
+        1)
+            echo "[Error] Something is wrong when installing operator."
+            return 1
+        ;;
+    esac
     if [ CI_DEBUG_MODE=true ]; then
         echo "[Debug] Succefully installed the operator."
     fi
