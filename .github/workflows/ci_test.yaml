@@ -7,7 +7,7 @@ jobs:
     steps: 
       - name: install operator
         run: |
-          echo pwd
+          echo $pwd
           ./.github/workflows/runtimeclass_ci.sh install_coco_operator
       - name: install enclave-cc
         run: |
