@@ -49,8 +49,8 @@ function install_enclave_cc_runtimeclass(){
     fi
 
     logs=$(timeout $TIMEOUT_SECS kubectl apply -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
-    rtv_code=$?
-    if [ $rtv_code = 124 ]
+    rtn_code=$?
+    if [ $rtn_code = 124 ]
     then
         echo "[Error] Timeout when installing Enclave-CC runtime."
         echo "$logs"
