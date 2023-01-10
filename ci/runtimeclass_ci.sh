@@ -1,27 +1,12 @@
 #!/bin/bash
-source utils.sh
+source ./ci/utils.sh
 
 if [ ! -n "$1" ] ;then
     echo "error: missing input parameter, such as install_coco_operator."
     exit 1
 fi
 
-# function main(){
-#     echo "hello "
-#     echo $1
-#     $1
-#     #check_cc_operator_controller_manager_pod_ready
-#     # if  uninstall_enclave_cc_runtimelcass
-#     # then 
-#     #     echo "hello enclave_cc_runtimeclass"
-#     # fi
-    
-# }
-# main
-
-
 function install_coco_operator(){
-    echo "hello "
     if ! is_cc_operator_controller_manager_pod_exist
     then 
         exit 1
@@ -63,15 +48,15 @@ function install_enclave_cc_runtimeclass(){
     fi
 
     logs=$(timeout $TIMEOUT_SECS kubectl apply -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
-    rtv_code=$?
-    if [ $rtv_code = 124 ]
+    rtn_code=$?
+    if [ $rtn_code = 124 ]
     then
-        echo "[Error] Timeout when installing Enclave-CC runtime."
+        echo "[Error] Timeout when installing enclave-cc runtimeclass."
         echo "$logs"
         return  1
     elif [ $rtn_code != 0 ]
     then
-        echo "[Error] Something is wrong when installing Enclave-CC runtime."
+        echo "[Error] Something is wrong when installing enclave-cc runtimeclass."
         echo "$logs"
         return  1
     fi
@@ -107,7 +92,7 @@ function uninstall_coco_operator(){
     fi
     if [ $CI_DEBUG_MODE = true ]
     then
-        echo "[Debug] Successfully delete runtimeclass..."
+        echo "[Debug] Successfully delete operator..."
     fi 
     exit 0
 }
@@ -123,7 +108,7 @@ function uninstall_enclave_cc_runtimeclass(){
 
     logs=$(timeout $TIMEOUT_SECS kubectl delete -f https://raw.githubusercontent.com/confidential-containers/operator/main/config/samples/enclave-cc/base/ccruntime-enclave-cc.yaml 2>&1)
     rtn_code=$?
-    if [ $rtv_code = 124 ]
+    if [ $rtn_code = 124 ]
     then
         echo "[Error] Timeout when uninstalling Enclave-CC runtime."
         if [ $CI_DEBUG_MODE = true ]
