@@ -1,6 +1,7 @@
-name: hlc-test
-run-name: test-secrets
+name: generate-payload
+run-name: test generate payload
 on: push
+
 jobs:
   build_payload_and_push:
     runs-on: ubuntu-latest
@@ -22,3 +23,7 @@ jobs:
 
       - name: build and push payload
         run: ./tools/packaging/build/build_payload.sh
+        env:
+            SGX_MODE: HW
+            CI: yes
+            PUSH: yes
