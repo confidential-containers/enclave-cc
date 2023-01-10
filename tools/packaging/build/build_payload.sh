@@ -48,10 +48,10 @@ cp ${SCRIPT_ROOT}/Dockerfile .
 docker build . -t quay.io/swhlc/payload:hlc
 docker push quay.io/swhlc/payload:hlc
 # docker build . -t ${IMAGE} -t ${DEFAULT_LATEST_IMAGE}
-if [ "${PUSH}" == "yes" ]; then
-	docker push ${IMAGE}
-	docker push ${DEFAULT_LATEST_IMAGE}
-fi
+# if [ "${PUSH}" == "yes" ]; then
+# 	docker push ${IMAGE}
+# 	docker push ${DEFAULT_LATEST_IMAGE}
+# fi
 popd
 
 #cleanup

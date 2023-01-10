@@ -1,0 +1,31 @@
+name: CI tests
+# run-name:   // give a dynamic name, or leave empty
+on: 
+  push:
+     branches: [ "main" ] 
+
+jobs: 
+  CI tests:
+    runs-on: self-hosted
+    steps: 
+      - name: Checkout latest enclave-cc source code
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Install CoCo operator
+        run: ./ci/ci_tests.sh install_coco_operator
+
+      - name: Install Enclave-CC runtimeclass payload
+        run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
+
+      - name: Pull and run a workload image signed by cosign
+        run: echo to be done
+     
+      - name: Uninstall Enclave-CC runtimeclass payload 
+        run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
+
+      - name: Uninstall coCo operator
+        run: ./ci/ci_tests.sh uninstall_coco_operator      
+    
+  
