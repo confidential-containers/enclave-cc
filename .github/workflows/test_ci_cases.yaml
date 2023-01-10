@@ -12,13 +12,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-          
-      - name: Uninstall Enclave-CC runtimeclass payload 
-        run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
-
-      - name: Uninstall CoCo operator
-        run: ./ci/ci_tests.sh uninstall_coco_operator 
-        
+                
       - name: Install CoCo operator
         run: ./ci/ci_tests.sh install_coco_operator
 
