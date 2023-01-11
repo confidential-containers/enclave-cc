@@ -20,7 +20,7 @@ ctrlc = { version = "3.0", features = ["termination"] }
 tokio = { version = "1.14.0", features = ["full"] }
 async-trait = "0.1.42"
 
-image-rs = { git = "https://github.com/confidential-containers/image-rs", features = ["occlum_feature"], default-features = false, rev = "cf1f7f96eb60ec4cc4aaa671c04d574a4ea0e441" }
+image-rs = { git = "https://github.com/fidencio/image-rs", features = ["occlum_feature"], default-features = false, rev = "b73af7f" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 
 anyhow = "1.0.32"
