@@ -55,11 +55,11 @@ wait_enclave_cc_runtimeclass_terminating() {
         while [ true ]
         do
             kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-daemon-install
-            is_cc_pod_exist=$?  
+            is_cc_pod_destroy=$?  
             kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME
-            is_cc_runtimeclass_exist=$? 
+            is_cc_runtimeclass_destroy=$? 
 
-            if (( ! $is_operator_exist && ! $is_runtimeclass_exist )); then
+            if (( $is_cc_pod_destroy && $is_cc_runtimeclass_destroy )); then
                 break
             fi
             sleep 1
