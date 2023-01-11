@@ -56,7 +56,7 @@ wait_enclave_cc_runtimeclass_terminating() {
         do
             kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-controller-manager
             is_operator_exit=$?  
-            kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME > /dev/null
+            kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME
             is_runtimeclass_exit=$? 
 
             if (( $is_operator_exit && $is_runtimeclass_exit )); then
