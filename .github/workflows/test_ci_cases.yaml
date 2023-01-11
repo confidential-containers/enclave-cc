@@ -1,5 +1,5 @@
 name: CI tests
-# run-name:   // give a dynamic name, or leave empty
+# run-name:   // give a dynamic name, or leave it empty
 on: 
   push:
      branches: [ "main" ] 

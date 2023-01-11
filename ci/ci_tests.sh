@@ -1,4 +1,5 @@
 #!/bin/bash
+
 source  ./ci/utils.sh
 
 install_coco_operator() {
@@ -144,7 +145,7 @@ function uninstall_enclave_cc_runtimeclass(){
 
             # workaround
             echo "[Debug] Start to delete kubernetes stuck CRD..."
-            kubectl get ccruntimes.confidentialcontainers.org -o yaml | sed '/finalizers/{s/$/[]/;n;d;}' > /home/ecc/operator/hlc/my-resource.yaml
+            kubectl get ccruntimes.confidentialcontainers.org -o yaml | sed '/finalizers/{s/$/ []/;n;d;}' > /home/ecc/operator/hlc/my-resource.yaml
             kubectl apply -f /home/ecc/operator/hlc/my-resource.yaml
 
             # return 1
@@ -159,7 +160,7 @@ function uninstall_enclave_cc_runtimeclass(){
     # todo: wait enclave-cc runtimeclass deleted
 
     if [ $CI_DEBUG_MODE = true ]; then
-        echo "[Debug] Successfully delete runtimeclass..."
+        echo "[Debug] Successfully delete runtimeclass."
     fi 
 
     return 0
