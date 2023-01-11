@@ -39,6 +39,9 @@ install_coco_operator() {
         ;;
     esac
 
+    # workaround
+    # todo: check cc-operator-pre-install-daemon status
+
     if [ $CI_DEBUG_MODE = true  ]; then
         echo "Successfully install CoCo operator."
     fi
