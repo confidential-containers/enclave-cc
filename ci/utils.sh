@@ -48,3 +48,22 @@ wait_enclave_cc_runtimeclass_ready() {
     ' $ECC_RC_NAME
     return $?
 }
+
+wait_enclave_cc_runtimeclass_terminating() {
+    timeout $TIMEOUT_SECS bash -c '
+        ECC_RC_NAME=$0
+        while [ true ]
+        do
+            kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-controller-manager
+            is_operator_exit=$?  
+            kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME > /dev/null
+            is_runtimeclass_exit=$? 
+
+            if (( $is_operator_exit && $is_runtimeclass_exit )); then
+                break
+            fi
+            sleep 1
+        done 
+    ' $ECC_RC_NAME
+    return $?
+}
