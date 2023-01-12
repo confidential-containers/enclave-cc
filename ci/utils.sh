@@ -29,6 +29,25 @@ wait_cc_operator_controller_manager_pod_ready() {
     return $?
 }
 
+wait_cc_operator_pre_install_daemon(){
+    timeout $TIMEOUT_SECS bash -c '
+        CI_DEBUG_MODE=$0
+        while [ true ]
+        do
+            pod_ready_status=$(kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-pre-install-daemon | awk '"'"'{print $2}'"'"')
+            if [ $CI_DEBUG_MODE = true ]; then
+                echo "[Debug] pod_ready_status: $pod_ready_status"
+            fi
+
+            if [ $pod_ready_status = "1/1" ]; then
+                break
+            fi
+            sleep 1
+        done
+    ' $CI_DEBUG_MODE
+    return $?
+}
+
 is_enclave_cc_runtimeclass_exist() {
     ecc_rc_info=$(kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME)
     return $?
