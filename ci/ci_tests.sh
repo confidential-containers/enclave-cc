@@ -192,6 +192,9 @@ uninstall_enclave_cc_runtimeclass() {
 }
 
 apply_eaa_cosign_encryped_hello_world_workload() {
+    # workaround
+    
+
     kubectl apply -f ./ci/case_configs/eaa_cosign_encrypted_hello_world.yaml
     wait_workload_output
     if [ $? != 0 ]; then
