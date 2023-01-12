@@ -9,16 +9,16 @@ jobs:
     runs-on: self-hosted
     steps: 
 
-      - name: Checkout latest enclave-cc source code
-        uses: actions/checkout@v3
-        with:
-          ref: main
+      # - name: Checkout latest enclave-cc source code
+      #   uses: actions/checkout@v3
+      #   with:
+      #     ref: main
                 
-      - name: Install CoCo operator
-        run: ./ci/ci_tests.sh install_coco_operator
+      # - name: Install CoCo operator
+      #   run: ./ci/ci_tests.sh install_coco_operator
 
-      - name: Install Enclave-CC runtimeclass payload
-        run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
+      # - name: Install Enclave-CC runtimeclass payload
+      #   run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
 
       - name: Pull and run a workload image signed by cosign
         run: ./ci/ci_tests.sh apply_eaa_cosign_encryped_hello_world_workload
