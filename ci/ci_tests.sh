@@ -124,7 +124,7 @@ uninstall_coco_operator() {
     return 0
 }
 
-function uninstall_enclave_cc_runtimeclass(){
+uninstall_enclave_cc_runtimeclass() {
     if ! is_enclave_cc_runtimeclass_exist; then
         echo "[Error] Not found enclave-cc runtimeclass."
         return 1
@@ -135,7 +135,7 @@ function uninstall_enclave_cc_runtimeclass(){
     fi
 
     # workaround
-    if [ ! -f /opt/confidential-containers/bin ]; then
+    if [ ! -d /opt/confidential-containers/bin ]; then
         echo "[Debug] The directory doesn't exist. Start to create /opt/confidential-containers/bin dir."
         mkdir /opt/confidential-containers/bin
     fi
@@ -148,8 +148,8 @@ function uninstall_enclave_cc_runtimeclass(){
 
             # workaround
             echo "[Debug] Start to delete kubernetes stuck CRD..."
-            kubectl get ccruntimes.confidentialcontainers.org -o yaml | sed '/finalizers/{s/$/ []/;n;d;}' > /home/ecc/operator/hlc/my-resource.yaml
-            kubectl apply -f /home/ecc/operator/hlc/my-resource.yaml
+            kubectl get ccruntimes.confidentialcontainers.org -o yaml | sed '/finalizers/{s/$/ []/;n;d;}' > /tmp/my-resource.yaml
+            kubectl apply -f /tmp/my-resource.yaml
 
             # return 1
         ;;
@@ -171,7 +171,6 @@ function uninstall_enclave_cc_runtimeclass(){
             return 1
         ;;
     esac
-        
 
     if [ $CI_DEBUG_MODE = true ]; then
         echo "[Debug] Successfully delete runtimeclass."
@@ -180,8 +179,29 @@ function uninstall_enclave_cc_runtimeclass(){
     return 0
 }
 
+apply_eaa_cosign_encryped_hello_world_workload() {
+    kubectl apply -f ./ci/case_configs/eaa_cosign_encrypted_hello_world.yaml
+    wait_workload_output
+    if [ $? != 0 ]; then
+        echo "[Error] Fail to run the eaa cosign encrypted hello-world workload"
+        return 1
+    fi
+    echo "[OK] Successfully run the eaa cosign encrypted hello-world workload."
+    return 0
+}
+
+delete_eaa_cosign_encrypted_hello_world_workload() {
+    kubectl delete -f eaa_cosign_encrypted_hello_world.yaml
+    if [ $? != 0 ]; then
+        echo "[Error] Fail to delete the eaa cosign encrypted hello-world workload"
+        return 1
+    fi
+    echo "[OK] Successfully apply the eaa cosign encrypted hello-world workload."
+    return 0
+}
+
 if [ $# != 1 ]; then
-    echo "[CI script error] Please specify a task."
+    echo "[CI script error] Please specify one task."
     exit 1
 fi
 

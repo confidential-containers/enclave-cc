@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: enclave-cc-pod
+spec:
+  containers:
+  - image: docker.io/eqmcc/helloworld_enc
+    name: hello-world
+    workingDir: "/run/rune/boot_instance/"
+    volumeMounts:
+    - mountPath: /dev/sgx/enclave
+      name: sgx-enclave
+    - mountPath: /dev/sgx/provision
+      name: sgx-provision
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        sgx.intel.com/epc: 600Mi
+    env:
+    - name: OCCLUM_RELEASE_ENCLAVE
+      value: "1"
+    command:
+    - /run/rune/boot_instance/build/bin/occlum-run
+    - /bin/hello_world
+  runtimeClassName: enclave-cc
+  volumes:
+  - name: sgx-enclave
+    hostPath:
+      path: /dev/sgx_enclave
+  - name: sgx-provision
+    hostPath:
+      path: /dev/sgx_provision
+      
