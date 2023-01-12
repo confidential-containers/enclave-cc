@@ -57,7 +57,7 @@ function install_artifacts() {
 
 	cp shim-rune-config.toml /etc/enclave-cc/config.toml
 
-	install -D -m0755 ${shim_rune_binary} /opt/confidential-containers/bin/
+	install -D -m0755 ${shim_rune_binary} /opt/confidential-containers/bin/${shim_rune_binary}
 	ln -sf /opt/confidential-containers/bin/${shim_rune_binary} "${install_path}/${shim_rune_binary}"
 }
 
