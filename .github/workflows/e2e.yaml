@@ -103,10 +103,16 @@ jobs:
         run: |
           sudo mkdir -p /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
           sudo tar -xf agent-instance.tar -C /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
-          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
           sudo cp config.json /opt/confidential-containers/share/enclave-cc-agent-instance/
+          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
           sudo tar -xf boot-instance.tar -C /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
         working-directory: ${{env.PAYLOAD_ARTIFACTS}}
+
+      - name: Install decrypt_config.conf and ocicrypt.conf for agent-enclave bundle
+        run: |
+          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs
+          sudo cp *.conf /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs/
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
 
       - name: Test image pull and unpack
         run: |

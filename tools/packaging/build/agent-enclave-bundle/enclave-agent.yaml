@@ -31,8 +31,3 @@ targets:
       - files:
           - /usr/lib/x86_64-linux-gnu/libsgx_dcap_quoteverify.so
           - /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
-  - target: /etc
-    copy:
-      - files:
-        - /run/enclave-agent/decrypt_config.conf
-        - /run/enclave-agent/ocicrypt.conf
