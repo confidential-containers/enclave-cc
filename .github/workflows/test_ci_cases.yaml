@@ -26,20 +26,20 @@ jobs:
       - name: Install CoCo operator
         run: ./ci/ci_tests.sh install_coco_operator
 
-      # - name: Install Enclave-CC runtimeclass payload
-      #   run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
+      - name: Install Enclave-CC runtimeclass payload
+        run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
 
-      # - name: Pull and run a workload image signed by cosign
-      #   run: ./ci/ci_tests.sh apply_eaa_cosign_encryped_hello_world_workload
+#       - name: Pull and run a workload image signed by cosign
+#         run: ./ci/ci_tests.sh apply_eaa_cosign_encryped_hello_world_workload
 
-      # - name: delete workload
-      #   run: ./ci/ci_tests.sh delete_eaa_cosign_encrypted_hello_world_workload
+#       - name: delete workload
+#         run: ./ci/ci_tests.sh delete_eaa_cosign_encrypted_hello_world_workload
         
-      # - name: Uninstall Enclave-CC runtimeclass payload 
-      #   run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
+#       - name: Uninstall Enclave-CC runtimeclass payload 
+#         run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
 
-      # - name: Uninstall CoCo operator
-      #   run: ./ci/ci_tests.sh uninstall_coco_operator 
+#       - name: Uninstall CoCo operator
+#         run: ./ci/ci_tests.sh uninstall_coco_operator 
      
      
     
