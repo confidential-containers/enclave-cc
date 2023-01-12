@@ -69,16 +69,17 @@ wait_enclave_cc_runtimeclass_ready() {
 }
 
 wait_enclave_cc_runtimeclass_terminating() {
+    # add detect cc-operator-post-uninstall-daemon, cc-operator-pre-install
     timeout $TIMEOUT_SECS bash -c '
         ECC_RC_NAME=$0
         while [ true ]
         do
-            kubectl get pods -n confidential-containers-system 2>&1 | grep cc-operator-daemon-install
-            is_cc_pod_destroy=$?  
-            kubectl get runtimeclass 2>&1 | grep $ECC_RC_NAME
-            is_cc_runtimeclass_destroy=$? 
+            kubectl get pods -n confidential-containers-system 2>&1 | grep "cc-operator-daemon-install"
+            is_cc_pod_exist=$?  
+            kubectl get runtimeclass 2>&1 | grep "enclave-cc"
+            is_cc_runtimeclass_exist=$? 
 
-            if (( $is_cc_pod_destroy && $is_cc_runtimeclass_destroy )); then
+            if [[ $is_cc_pod_exist != 0 && $is_cc_runtimeclass_exist != 0 ]]; then
                 break
             fi
             sleep 1

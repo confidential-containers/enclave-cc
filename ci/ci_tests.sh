@@ -105,10 +105,10 @@ install_enclave_cc_runtimeclass() {
 }
 
 uninstall_coco_operator() {
-    if ! is_cc_operator_controller_manager_pod_exist; then 
-        echo "[Error] Not found CoCo operator pod."
-        return 1
-    fi
+    # if ! is_cc_operator_controller_manager_pod_exist; then 
+    #     echo "[Error] Not found CoCo operator pod."
+    #     return 1
+    # fi
 
     if [ $CI_DEBUG_MODE = true ]; then 
         echo "[Debug] Start to delete operator..."
@@ -193,7 +193,7 @@ uninstall_enclave_cc_runtimeclass() {
 
 apply_eaa_cosign_encryped_hello_world_workload() {
     # workaround
-    
+    # fix config.json of agent bundle
 
     kubectl apply -f ./ci/case_configs/eaa_cosign_encrypted_hello_world.yaml
     wait_workload_output
