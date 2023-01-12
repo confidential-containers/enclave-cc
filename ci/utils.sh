@@ -2,7 +2,7 @@
 
 ECC_RC_NAME="enclave-cc"
 ECC_RC_VER="v0.2.0"
-TIMEOUT_SECS=120
+TIMEOUT_SECS=300
 CI_DEBUG_MODE=true
 
 is_cc_operator_controller_manager_pod_exist() {
