@@ -15,6 +15,9 @@ jobs:
           username: ${{ secrets.QUAY_USR_HLC }}
           password: ${{ secrets.QUAY_PWD_HLC }}
 
+      - name: Echo current user
+        run: whoami
+
       - name: Checkout latest enclave-cc source code
         uses: actions/checkout@v3
         with:
