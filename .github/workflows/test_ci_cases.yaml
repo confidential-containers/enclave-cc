@@ -8,15 +8,6 @@ jobs:
   CI-tests:
     runs-on: self-hosted
     steps: 
-      - name: Echo current user
-        run: whoami
-        
-#       - name: Login to Quay.io
-#         uses: docker/login-action@v2
-#         with:
-#           registry: quay.io
-#           username: ${{ secrets.QUAY_USR_HLC }}
-#           password: ${{ secrets.QUAY_PWD_HLC }}
 
       - name: Checkout latest enclave-cc source code
         uses: actions/checkout@v3
@@ -29,11 +20,11 @@ jobs:
       - name: Install Enclave-CC runtimeclass payload
         run: ./ci/ci_tests.sh install_enclave_cc_runtimeclass
 
-#       - name: Pull and run a workload image signed by cosign
-#         run: ./ci/ci_tests.sh apply_eaa_cosign_encryped_hello_world_workload
+      - name: Pull and run a workload image signed by cosign
+        run: ./ci/ci_tests.sh apply_eaa_cosign_encryped_hello_world_workload
 
-#       - name: delete workload
-#         run: ./ci/ci_tests.sh delete_eaa_cosign_encrypted_hello_world_workload
+      - name: delete workload
+        run: ./ci/ci_tests.sh delete_eaa_cosign_encrypted_hello_world_workload
         
 #       - name: Uninstall Enclave-CC runtimeclass payload 
 #         run: ./ci/ci_tests.sh uninstall_enclave_cc_runtimeclass
