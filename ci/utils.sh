@@ -86,3 +86,17 @@ wait_enclave_cc_runtimeclass_terminating() {
     ' $ECC_RC_NAME
     return $?
 }
+
+wait_workload_output() {
+    timeout $TIMEOUT_SECS bash -c '
+        while [ true ]
+        do
+            kubectl logs enclave-cc-pod | head -n 5 | grep "Hello world!"
+            if [ $? = 0 ]; then
+                break
+            fi
+            sleep 1
+        done
+    '
+    return $?
+}
