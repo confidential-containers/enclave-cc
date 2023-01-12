@@ -4,10 +4,18 @@ else
 .process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=1"] |
 .linux.devices |= . +
 [{
-	"path": "/dev/sgx_enclave",
+	"path": "/dev/sgx/enclave",
 	"type": "c",
 	"major": 10,
 	"minor": 125,
+	"fileMode": 438
+}] |
+.linux.devices |= . +
+[{
+	"path": "/dev/sgx/provision",
+	"type": "c",
+	"major": 10,
+	"minor": 126,
 	"fileMode": 438
 }] |
 .linux.resources.devices |= . +
@@ -17,5 +25,24 @@ else
 	"major": 10,
 	"minor": 125,
 	"access": "rwm"
+}] |
+.linux.resources.devices |= . +
+[{
+	"allow": true,
+	"type": "c",
+	"major": 10,
+	"minor": 126,
+	"access": "rwm"
+}] |
+.mounts |= . +
+[{
+	"destination": "/etc/sgx_default_qcnl.conf",
+	"type": "bind",
+	"source": "/etc/sgx_default_qcnl.conf",
+	"options": [
+		"rbind",
+		"rprivate",
+		"ro"
+	]
 }]
 end
