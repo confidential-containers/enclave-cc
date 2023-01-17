@@ -9,12 +9,6 @@ if [ $CI_DEBUG_MODE = true ]; then
 fi
 
 install_coco_operator() {
-    # if is_cc_operator_controller_manager_pod_exist; then 
-    #     echo "[Error] Found CcCo operator pod."
-    #     echo "Please uninstall operator pod to ensure a clean CI environment."
-    #     return 1
-    # fi
-
     if [ $CI_DEBUG_MODE = true ]; then
         echo "[Debug] Start to install the operator..."
     fi
@@ -60,12 +54,6 @@ install_coco_operator() {
 }
 
 install_enclave_cc_runtimeclass() {
-    # if is_enclave_cc_runtimeclass_exist; then
-    #     echo "[Error] Found enclave-cc runtimeclass."
-    #     echo "Please uninstall enclave-cc runtime to ensure a clean CI environment."
-    #     return 1
-    # fi
-
     if [ $CI_DEBUG_MODE = true ]; then
         echo "[Debug] Start to install enclave-cc runtimeclass."
     fi
