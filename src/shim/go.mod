@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/BurntSushi/toml v1.2.1
-	github.com/containerd/cgroups v1.0.4
+	github.com/containerd/cgroups v1.1.0
 	github.com/containerd/containerd v1.6.1
 	github.com/containerd/continuity v0.3.0
 	github.com/containerd/go-runc v1.0.0
@@ -22,7 +22,7 @@ require (
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/Microsoft/hcsshim v0.9.3 // indirect
-	github.com/cilium/ebpf v0.7.0 // indirect
+	github.com/cilium/ebpf v0.9.1 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/containerd/fifo v1.0.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
