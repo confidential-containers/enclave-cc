@@ -97,50 +97,23 @@ impl protocols::image_ttrpc::Image for ImageService {
 mod test {
     use super::*;
 
-    #[test]
-    fn test_get_container_id() {
-        struct ParseCase {
-            req: image::PullImageRequest,
-            is_ok: bool,
-        }
-        let cases: Vec<ParseCase> = vec![
-            ParseCase {
-                req: image::PullImageRequest {
-                    container_id: "redis".to_string(),
-                    ..Default::default()
-                },
-                is_ok: true,
-            },
-            ParseCase {
-                req: image::PullImageRequest {
-                    container_id: "redis_1.3".to_string(),
-                    ..Default::default()
-                },
-                is_ok: true,
-            },
-            ParseCase {
-                req: image::PullImageRequest {
-                    container_id: "redis:1.3".to_string(),
-                    ..Default::default()
-                },
-                is_ok: false,
-            },
-            ParseCase {
-                req: image::PullImageRequest {
-                    container_id: "".to_string(),
-                    ..Default::default()
-                },
-                is_ok: false,
-            },
-        ];
+    #[rstest::rstest]
+    #[case("redis", true)]
+    #[case("redis_1.3", true)]
+    #[case("redis:1.3", false)]
+    #[case("", false)]
+    fn test_get_container_id(#[case] container_id: &str, #[case] is_ok: bool) {
+        let req = image::PullImageRequest {
+            container_id: container_id.to_string(),
+            ..Default::default()
+        };
 
         let dc = DecryptConfig::load_from_file(
             &"test_data/decrypt_config/decrypt_config_normal.conf".to_string(),
         )
         .unwrap();
         let is = ImageService::new(dc);
-        for c in cases {
-            assert_eq!(is.get_container_id(&c.req).is_ok(), c.is_ok);
-        }
+        let res = is.get_container_id(&req);
+        assert_eq!(res.is_ok(), is_ok, "err: {:?}", res);
     }
 }
