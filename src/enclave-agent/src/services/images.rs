@@ -7,6 +7,7 @@ use image_rs::config::ImageConfig;
 use image_rs::image::ImageClient;
 use image_rs::snapshots;
 use kata_sys_util::validate;
+use log::info;
 use protocols::image;
 use tokio::sync::Mutex;
 use ttrpc::{self, error::get_rpc_status as ttrpc_error};
@@ -53,7 +54,7 @@ impl ImageService {
             Some(dc_string.as_str())
         };
 
-        println!("Pulling {:?}", image);
+        info!("Pulling {:?}", image);
         self.image_client
             .lock()
             .await
@@ -81,7 +82,7 @@ impl protocols::image_ttrpc::Image for ImageService {
     ) -> ttrpc::Result<image::PullImageResponse> {
         match self.pull_image(&req).await {
             Ok(r) => {
-                println!("Pull image {:?} successfully", r);
+                info!("Pull image {:?} successfully", r);
                 let mut resp = image::PullImageResponse::new();
                 resp.image_ref = r;
                 return Ok(resp);

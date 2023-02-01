@@ -12,6 +12,10 @@ byteorder = "1.3.2"
 bytes = "0.4.11"
 clap = "2.33.3"
 ctrlc = { version = "3.0", features = ["termination"] }
+
+# logger module
+env_logger = "0.10.0"
+
 image-rs = { git = "https://github.com/confidential-containers/image-rs", features = ["occlum_feature", "cosign"], default-features = false, rev = "v0.3.0" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 libc = "0.2.58"
