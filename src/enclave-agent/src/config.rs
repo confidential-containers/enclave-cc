@@ -46,64 +46,51 @@ impl OcicryptConfig {
 mod test {
     use super::*;
 
-    #[test]
-    fn test_load_decrypt_config() {
-        struct ConfigCase {
-            path: String,
-            load_fail: bool,
-            result_key_provider: Option<String>,
-            result_security_validate: Option<bool>,
-        }
-        let decrypt_opt = "provider:attestation-agent:eaa_kbc::127.0.0.1:1234";
-        let config_dir = "test_data/decrypt_config";
-        let config_cases: Vec<ConfigCase> = vec![
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_not_existing.conf"),
-                load_fail: true,
-                result_key_provider: Some(decrypt_opt.to_string()),
-                result_security_validate: Some(true),
-            },
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_format_invalid.conf"),
-                load_fail: true,
-                result_key_provider: Some(decrypt_opt.to_string()),
-                result_security_validate: Some(true),
-            },
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_normal.conf"),
-                load_fail: false,
-                result_key_provider: Some(decrypt_opt.to_string()),
-                result_security_validate: Some(true),
-            },
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_disable_validate.conf"),
-                load_fail: false,
-                result_key_provider: Some(decrypt_opt.to_string()),
-                result_security_validate: Some(false),
-            },
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_default_validate.conf"),
-                load_fail: false,
-                result_key_provider: Some(decrypt_opt.to_string()),
-                result_security_validate: Some(true),
-            },
-            ConfigCase {
-                path: format!("{}/{}", config_dir, "decrypt_config_empty.conf"),
-                load_fail: false,
-                result_key_provider: None,
-                result_security_validate: Some(true),
-            },
-        ];
+    const CONFIG_DIR: &str = "test_data/decrypt_config";
+    const DECRYPT_OPT: &str = "provider:attestation-agent:eaa_kbc::127.0.0.1:1234";
 
-        for case in config_cases {
-            let result = DecryptConfig::load_from_file(&case.path);
-            if case.load_fail {
-                assert!(result.is_err());
-            } else {
-                let c = result.unwrap();
-                assert_eq!(c.key_provider, case.result_key_provider);
-                assert_eq!(c.security_validate, case.result_security_validate);
-            }
+    #[rstest::rstest]
+    #[case(
+        "decrypt_config_not_existing.conf",
+        true,
+        Some(DECRYPT_OPT),
+        Some(true)
+    )]
+    #[case(
+        "decrypt_config_format_invalid.conf",
+        true,
+        Some(DECRYPT_OPT),
+        Some(true)
+    )]
+    #[case("decrypt_config_normal.conf", false, Some(DECRYPT_OPT), Some(false))]
+    #[case(
+        "decrypt_config_disable_validate.conf",
+        false,
+        Some(DECRYPT_OPT),
+        Some(false)
+    )]
+    #[case(
+        "decrypt_config_default_validate.conf",
+        false,
+        Some(DECRYPT_OPT),
+        Some(true)
+    )]
+    #[case("decrypt_config_empty.conf", false, None, Some(true))]
+    fn test_load_decrypt_config(
+        #[case] path: &str,
+        #[case] load_fail: bool,
+        #[case] result_key_provider: Option<&str>,
+        #[case] result_security_validate: Option<bool>,
+    ) {
+        let path = format!("{CONFIG_DIR}/{path}");
+
+        let result = DecryptConfig::load_from_file(&path);
+        if load_fail {
+            assert!(result.is_err());
+        } else {
+            let c = result.unwrap();
+            assert_eq!(c.key_provider.as_deref(), result_key_provider);
+            assert_eq!(c.security_validate, result_security_validate);
         }
     }
 

@@ -3,6 +3,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use clap::{crate_authors, crate_version, App, Arg};
+use log::info;
 use protocols::image_ttrpc;
 use tokio::signal::unix::{signal, SignalKind};
 use ttrpc::asynchronous::Server;
@@ -18,6 +19,8 @@ const TCP_SOCK_ADDR: &str = "tcp://0.0.0.0:7788";
 
 #[tokio::main(worker_threads = 1)]
 async fn main() -> Result<()> {
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
+
     let matches = App::new("Enclave agent")
         .version(crate_version!())
         .author(crate_authors!())
@@ -81,11 +84,11 @@ async fn main() -> Result<()> {
     let mut interrupt = signal(SignalKind::interrupt())?;
     server.start().await?;
 
-    println!("ttRPC server started: {:?}", sockaddr);
+    info!("ttRPC server started: {:?}", sockaddr);
 
     tokio::select! {
         _ = interrupt.recv() => {
-            println!("shutdown the server");
+            info!("shutdown the server");
             server.shutdown().await?;
         }
     };
