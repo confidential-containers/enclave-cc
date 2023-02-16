@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let rootfs_key = b"c7-32-b3-ed-44-df-ec-7b-25-2d-9a-32-38-8d-58-61";
     let rootfs_upper_layer = "/sefs/upper";
     let rootfs_lower_layer = "/sefs/lower";
-    let rootfs_entry = "/bin";
+    let rootfs_entry = "/";
 
     // Get the key of FS image if needed
     let key = {
