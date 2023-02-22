@@ -13,7 +13,7 @@ clap = "2.33.3"
 # logger module
 env_logger = "0.10.0"
 
-image-rs = { git = "https://github.com/confidential-containers/image-rs", features = ["occlum_feature", "cosign"], default-features = false, rev = "v0.3.0" }
+image-rs = { git = "https://github.com/confidential-containers/image-rs", features = ["enclave-cc"], default-features = false, rev = "948db858579be538724266a650e840e75e7e824d" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.11"
 protocols = { path = "../libs/protocols" }
@@ -21,7 +21,7 @@ serde = ">=1.0.9"
 serde_json = ">=1.0.9"
 
 # Async runtime
-tokio = { version = "1.14.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.14.0", features = ["rt-multi-thread", "macros", "signal"] }
 
 ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
 
