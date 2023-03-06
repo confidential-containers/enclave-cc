@@ -8,17 +8,28 @@ on:
       - main
 
 env:
-  CRICTL_VERSION: v1.25.0
-  SGX_MODE: "SIM"
-  PAYLOAD_ARTIFACTS: /tmp/payload_artifacts
+  CONTAINERD_VERSION: 1.6.8.1
 
 permissions:
   contents: read
 
 jobs:
   e2e:
-    name: setup and run enclave-cc e2e tests
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: sgx
+            sgx_mode: HW
+          - runner: ubuntu-22.04
+            sgx_mode: SIM
+
+    name: SGX_MODE=${{ matrix.sgx_mode }}
+    runs-on: ${{ matrix.runner }}
+    env:
+      SGX_MODE: ${{ matrix.sgx_mode }}
+      PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
+
     steps:
       - uses: actions/setup-go@v3
         with:
@@ -28,38 +39,13 @@ jobs:
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
-      - name: Checkout confidential-containers/containerd
-        uses: actions/checkout@v3
-        with:
-          path: ${{ github.workspace }}/src/github.com/confidential-containers/containerd
-          ref: v1.6.6.0
-          repository: confidential-containers/containerd
-
-      - name: Install build dependencies needed by containerd
+      - name: Install confidential-containers/containerd
+        if: ${{ matrix.runner == 'ubuntu-22.04' }}
         run: |
-          sudo apt-get update
-          sudo apt-get -y install libbtrfs-dev libseccomp-dev
-
-      - name: Install containerd
-        run: |
-          make bin/containerd
-          sudo make install COMMANDS=containerd
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/containerd
-
-      - name: Install CNI
-        shell: bash
-        run: |
-          sudo -E PATH=$PATH script/setup/install-cni $(grep containernetworking/plugins go.mod | awk '{print $2}')
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/containerd
-
-      - name: Install crictl
-        run: |
-          wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$CRICTL_VERSION/crictl-$CRICTL_VERSION-linux-amd64.tar.gz
-          sudo tar zxvf crictl-$CRICTL_VERSION-linux-amd64.tar.gz -C /usr/local/bin
-          rm -f crictl-$CRICTL_VERSION-linux-amd64.tar.gz
-          echo "runtime-endpoint: unix:///run/containerd-test/containerd.sock" | sudo tee /etc/crictl.yaml
+          curl -fsSL https://github.com/confidential-containers/containerd/releases/download/v$CONTAINERD_VERSION/cri-containerd-cni-$CONTAINERD_VERSION-linux-amd64.tar.gz | sudo tar zx -C /
 
       - name: Configure and start containerd
+        if: ${{ matrix.runner == 'ubuntu-22.04' }}
         run: |
           sudo mkdir /run/containerd-test
           /usr/local/bin/containerd config default | sed -e 's:\(/[a-z]*/containerd\):\1-test:'| tee $PWD/containerd-test.toml
@@ -68,17 +54,26 @@ jobs:
             cri_handler = "cc"
             runtime_type = "io.containerd.rune.v2"
           EOF
+          echo "runtime-endpoint: unix:///run/containerd-test/containerd.sock" | sudo tee /etc/crictl.yaml
           sudo /usr/local/bin/containerd -c $PWD/containerd-test.toml -l debug &
           sleep 5
+
+      - name: Test containerd is running
+        run: |
           sudo crictl info
           test $(sudo crictl info | jq '.config.containerd.runtimes.enclavecc|length') != 0
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
 
       - name: Install io.containerd.rune.v2
         run: |
           make binaries
-          sudo make install
-          sudo install -D config/config.toml /etc/enclave-cc/config.toml
+          sudo ln -sf $PWD/bin/containerd-shim-rune-v2 /usr/local/bin/containerd-shim-rune-v2
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim
+
+      - name: Configure io.containerd.rune.v2
+        if: ${{ matrix.runner == 'ubuntu-22.04' }}
+        run: |
+          sudo mkdir /etc/enclave-cc
+          sed -e 's#\(.*container_instance = "\)\(.*\)$#\1'$PAYLOAD_ARTIFACTS'\2#g' config/config.toml | sudo tee /etc/enclave-cc/config.toml
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim
 
       - name: Build agent-enclave bundle
@@ -101,37 +96,38 @@ jobs:
 
       - name: Install enclave-cc bundles
         run: |
-          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
-          sudo tar -xf agent-instance.tar -C /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
-          sudo cp config.json /opt/confidential-containers/share/enclave-cc-agent-instance/
-          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
-          sudo tar -xf boot-instance.tar -C /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
+          mkdir -p opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
+          sudo tar -xf agent-instance.tar -C opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
+          cp config.json opt/confidential-containers/share/enclave-cc-agent-instance/
+          mkdir -p opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
+          sudo tar -xf boot-instance.tar -C opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
         working-directory: ${{env.PAYLOAD_ARTIFACTS}}
 
       - name: Install decrypt_config.conf and ocicrypt.conf for agent-enclave bundle
         run: |
-          sudo mkdir -p /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs
-          sudo cp *.conf /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs/
+          sudo install -D -t $PAYLOAD_ARTIFACTS/opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs ocicrypt.conf
+          sudo install decrypt_config-$SGX_MODE.conf $PAYLOAD_ARTIFACTS/opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs/decrypt_config.conf
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
 
       - name: Test image pull and unpack
+        if: ${{ matrix.sgx_mode == 'SIM' }}
         run: |
           SANDBOX_ID=$(sudo crictl runp --runtime enclavecc sandbox.json)
-          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-unencrypted.json sandbox.json)
+          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-unencrypted-$SGX_MODE.json sandbox.json)
           sudo crictl start $CONTAINER_ID
           sleep 5
           sudo crictl logs $CONTAINER_ID
-          sudo crictl stopp $SANDBOX_ID
-          sudo crictl rmp $SANDBOX_ID
+          sudo crictl -t 10s stopp $SANDBOX_ID || true
+          sudo crictl -t 10s rmp $SANDBOX_ID || true
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
 
       - name: Test image decryption
         run: |
           SANDBOX_ID=$(sudo crictl runp --runtime enclavecc sandbox.json)
-          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-encrypted.json sandbox.json)
+          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-encrypted-$SGX_MODE.json sandbox.json)
           sudo crictl start $CONTAINER_ID
           sleep 5
           sudo crictl logs $CONTAINER_ID
-          sudo crictl stopp $SANDBOX_ID
-          sudo crictl rmp $SANDBOX_ID
+          sudo crictl -t 10s stopp $SANDBOX_ID || true
+          sudo crictl -t 10s rmp $SANDBOX_ID || true
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
