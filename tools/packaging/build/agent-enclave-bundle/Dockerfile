@@ -3,8 +3,9 @@ FROM ubuntu:20.04 as builder
 ARG RATS_TLS_REV=5de6fc308f2a18f4105429451c85e6173b42ab9d
 
 RUN apt-get update && \
-    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     make \
+    ca-certificates \
     curl \
     wget \
     gnupg
@@ -85,8 +86,8 @@ WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
     rm -rf /run/enclave-agent
 
-RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc
-RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y
+RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc && sed -e '/cargo/d' -i /root/.profile && sed -e '/cargo/d' -i /root/.bashrc
+RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-pal occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
     ldconfig
 ENTRYPOINT ["/bin/enclave-agent"]
