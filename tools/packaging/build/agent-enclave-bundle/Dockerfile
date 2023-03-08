@@ -19,6 +19,7 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://d
     libsgx-dcap-ql-dev \
     libsgx-dcap-quote-verify \
     libsgx-dcap-quote-verify-dev \
+    libsgx-quote-ex \
     libsgx-dcap-default-qpl
 
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/occlum.gpg] https://occlum.io/occlum-package-repos/debian focal main" | tee -a /etc/apt/sources.list.d/occlum.list \
