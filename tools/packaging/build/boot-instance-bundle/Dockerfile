@@ -8,7 +8,8 @@ RUN cd /enclave-cc/src/runtime-boot/init && \
 # Start preparing boot-instance "bundle"
 FROM ubuntu:20.04
 RUN apt-get update && \
-    env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
     make \
     wget \
     gnupg
