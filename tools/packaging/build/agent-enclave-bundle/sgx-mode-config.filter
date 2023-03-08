@@ -1,7 +1,7 @@
 if $ENV.SGX_MODE == "SIM" then
 .process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=0"]
 else
-.process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=1"] |
+.process.env |= . + ["OCCLUM_RELEASE_ENCLAVE=1", "SGX_AESM_ADDR=1"] |
 .linux.devices |= . +
 [{
 	"path": "/dev/sgx_enclave",
@@ -10,14 +10,6 @@ else
 	"minor": 125,
 	"fileMode": 438
 }] |
-.linux.devices |= . +
-[{
-	"path": "/dev/sgx_provision",
-	"type": "c",
-	"major": 10,
-	"minor": 126,
-	"fileMode": 438
-}] |
 .linux.resources.devices |= . +
 [{
 	"allow": true,
@@ -26,30 +18,11 @@ else
 	"minor": 125,
 	"access": "rwm"
 }] |
-.linux.resources.devices |= . +
-[{
-	"allow": true,
-	"type": "c",
-	"major": 10,
-	"minor": 126,
-	"access": "rwm"
-}] |
 .mounts |= . +
 [{
-	"destination": "/etc/sgx_default_qcnl.conf",
+	"destination": "/var/run/aesmd",
 	"type": "bind",
-	"source": "/etc/sgx_default_qcnl.conf",
-	"options": [
-		"rbind",
-		"rprivate",
-		"ro"
-	]
-}] |
-.mounts |= . +
-[{
-	"destination": "/dev/sgx",
-	"type": "bind",
-	"source": "/dev/sgx",
+	"source": "/var/run/aesmd",
 	"options": [
 		"rbind",
 		"rw"
