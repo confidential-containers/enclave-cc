@@ -17,6 +17,7 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://d
  && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | gpg --dearmor --output /usr/share/keyrings/intel-sgx.gpg \
  && apt-get update \
  && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libsgx-uae-service \
     libsgx-dcap-ql \
     libsgx-dcap-quote-verify \
     libsgx-dcap-default-qpl
@@ -41,7 +42,9 @@ RUN wget ${SGX_SDK_URL} \
  && export SGX_SDK_INSTALLER=$(basename $SGX_SDK_URL) \
  && chmod +x  $SGX_SDK_INSTALLER \
  && echo "yes" | ./$SGX_SDK_INSTALLER \
- && rm $SGX_SDK_INSTALLER
+ && rm $SGX_SDK_INSTALLER \
+ && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
+ && /opt/sgxsdk/uninstall.sh
 
 WORKDIR /run/occlum
 COPY --from=builder /enclave-cc/src/runtime-boot/init/target/release/init .
@@ -72,7 +75,6 @@ RUN tar xzf /run/occlum/boot_instance/boot_instance.tar.gz && \
 
 RUN apt-get purge -y wget gnupg make tzdata jq occlum occlum-toolchains-glibc binutils libfuse2 libfuse3-3 rsync && apt-get autoremove -y
 RUN echo "/run/rune/boot_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
-    echo "/opt/sgxsdk/lib64" | tee /etc/ld.so.conf.d/sgxsdk.conf && \
     ldconfig
 
 ENTRYPOINT ["/bin/init"]

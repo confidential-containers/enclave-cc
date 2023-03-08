@@ -14,6 +14,7 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://d
  && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | gpg --dearmor --output /usr/share/keyrings/intel-sgx.gpg \
  && apt-get update \
  && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libsgx-uae-service \
     libsgx-dcap-ql \
     libsgx-dcap-ql-dev \
     libsgx-dcap-quote-verify \
@@ -47,7 +48,9 @@ RUN wget ${SGX_SDK_URL} \
  && export SGX_SDK_INSTALLER=$(basename $SGX_SDK_URL) \
  && chmod +x $SGX_SDK_INSTALLER \
  && echo "yes" | ./$SGX_SDK_INSTALLER \
- && rm $SGX_SDK_INSTALLER
+ && rm $SGX_SDK_INSTALLER \
+ && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
+ && /opt/sgxsdk/uninstall.sh
 
 RUN git clone https://github.com/inclavare-containers/rats-tls.git && \
     cd rats-tls && \
@@ -84,6 +87,5 @@ RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
 RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc
 RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
-    echo "/opt/sgxsdk/lib64" | tee /etc/ld.so.conf.d/sgxsdk.conf && \
     ldconfig
 ENTRYPOINT ["/bin/enclave-agent"]
