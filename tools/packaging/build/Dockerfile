@@ -1,24 +1,24 @@
 ARG IMAGE
-FROM ${IMAGE:-registry.centos.org/centos}:7
+FROM ${IMAGE:-ubuntu}:20.04
 ARG ENCLAVE_CC_ARTIFACTS=./enclave-cc-static.tar.xz
 ARG DESTINATION=/opt/enclave-cc-artifacts
 
 COPY ${ENCLAVE_CC_ARTIFACTS} ${WORKDIR}
 
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN \
-yum -y update && \
-yum -y install xz && \
-yum clean all && \
+apt-get update && \
+apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl xz-utils systemd && \
+mkdir -p /etc/apt/keyrings/ && \
+curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && \
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list && \
+apt-get update && \
+apt-get install -y --no-install-recommends kubectl && \
+apt-get clean && rm -rf /var/lib/apt/lists/ && \
 mkdir -p ${DESTINATION} && \
 tar xvf ${ENCLAVE_CC_ARTIFACTS} -C ${DESTINATION} && \
 rm ${WORKDIR}/${ENCLAVE_CC_ARTIFACTS}
 
-# hadolint will deny echo -e, heredocs don't work in Dockerfiles, shell substitution doesn't work with $'...'
-RUN \
-echo "[kubernetes]" >> /etc/yum.repos.d/kubernetes.repo && \
-echo "name=Kubernetes" >> /etc/yum.repos.d/kubernetes.repo && \
-echo "baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$(uname -m)" >> /etc/yum.repos.d/kubernetes.repo && \
-echo "gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" >> /etc/yum.repos.d/kubernetes.repo && \
-yum -y install kubectl && \
-yum clean all
 WORKDIR ${DESTINATION}
