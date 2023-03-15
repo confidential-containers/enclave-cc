@@ -52,6 +52,7 @@ RUN wget ${SGX_SDK_URL} \
  && echo "yes" | ./$SGX_SDK_INSTALLER \
  && rm $SGX_SDK_INSTALLER \
  && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
+ && cp /opt/sgxsdk/bin/x64/sgx_sign /usr/bin/ \
  && /opt/sgxsdk/uninstall.sh
 
 RUN git clone https://github.com/inclavare-containers/rats-tls.git && \
@@ -84,6 +85,7 @@ RUN export PATH="$PATH:/opt/occlum/build/bin" && \
 # TODO: add new build stage and copy occlum_instance.tar.gz to it
 WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
+    sgx_sign dump -dumpfile /run/enclave.txt -cssfile /run/sigstruct.bin -enclave occlum_instance/build/lib/libocclum-libos.signed.so && \
     rm -rf /run/enclave-agent
 
 RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc && sed -e '/cargo/d' -i /root/.profile && sed -e '/cargo/d' -i /root/.bashrc

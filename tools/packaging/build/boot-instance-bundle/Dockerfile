@@ -45,6 +45,7 @@ RUN wget ${SGX_SDK_URL} \
  && echo "yes" | ./$SGX_SDK_INSTALLER \
  && rm $SGX_SDK_INSTALLER \
  && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
+ && cp /opt/sgxsdk/bin/x64/sgx_sign /usr/bin/ \
  && /opt/sgxsdk/uninstall.sh
 
 WORKDIR /run/occlum
@@ -72,6 +73,7 @@ RUN export PATH="$PATH:/opt/occlum/build/bin" && \
 # "working directory".
 WORKDIR /run/rune
 RUN tar xzf /run/occlum/boot_instance/boot_instance.tar.gz && \
+    sgx_sign dump -dumpfile /run/enclave.txt -cssfile /run/sigstruct.bin -enclave occlum_instance/build/lib/libocclum-libos.signed.so && \
     rm -rf /run/occlum
 
 RUN apt-get purge -y wget gnupg make tzdata jq occlum occlum-toolchains-glibc binutils libfuse2 libfuse3-3 rsync && apt-get autoremove -y
