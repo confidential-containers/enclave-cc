@@ -62,7 +62,7 @@ mod test {
         Some(DECRYPT_OPT),
         Some(true)
     )]
-    #[case("decrypt_config_normal.conf", false, Some(DECRYPT_OPT), Some(false))]
+    #[case("decrypt_config_normal.conf", false, Some(DECRYPT_OPT), Some(true))]
     #[case(
         "decrypt_config_disable_validate.conf",
         false,
