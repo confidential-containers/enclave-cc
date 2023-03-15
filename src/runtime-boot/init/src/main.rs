@@ -26,12 +26,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Get the key of FS image if needed
     let key = {
+        const IMAGE_KEY_FILE: &str = "/etc/image_key";
         // TODO: Get the key through RA or LA
-        let mut file = File::create("/etc/image_key")?;
+        let mut file = File::create(IMAGE_KEY_FILE)?;
        // Writes key.
         file.write(rootfs_key)?;
 
-        const IMAGE_KEY_FILE: &str = "/etc/image_key";
         let key_str = load_key(IMAGE_KEY_FILE)?;
         let mut key: sgx_key_128bit_t = Default::default();
         parse_str_to_bytes(&key_str, &mut key)?;
