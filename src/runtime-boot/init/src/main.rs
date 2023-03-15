@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         // TODO: Get the key through RA or LA
         let mut file = File::create(IMAGE_KEY_FILE)?;
        // Writes key.
-        file.write(rootfs_key)?;
+        file.write_all(rootfs_key)?;
 
         let key_str = load_key(IMAGE_KEY_FILE)?;
         let mut key: sgx_key_128bit_t = Default::default();
