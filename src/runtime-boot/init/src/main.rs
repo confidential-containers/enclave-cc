@@ -4,15 +4,13 @@ extern crate serde_json;
 
 use libc::syscall;
 
-use std::io::prelude::*;
 use std::error::Error;
 use std::fs::File;
+use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
 
-use std::ffi::CString;
 use std::env;
-
-
+use std::ffi::CString;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
@@ -26,12 +24,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Get the key of FS image if needed
     let key = {
-        // TODO: Get the key through RA or LA
-        let mut file = File::create("/etc/image_key")?;
-       // Writes key.
-        file.write(rootfs_key)?;
-
         const IMAGE_KEY_FILE: &str = "/etc/image_key";
+        // TODO: Get the key through RA or LA
+        let mut file = File::create(IMAGE_KEY_FILE)?;
+        // Writes key.
+        file.write_all(rootfs_key)?;
+
         let key_str = load_key(IMAGE_KEY_FILE)?;
         let mut key: sgx_key_128bit_t = Default::default();
         parse_str_to_bytes(&key_str, &mut key)?;
@@ -47,10 +45,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     const SYS_MOUNT_FS: i64 = 363;
 
     // Set rootfs parameters
-    let upper_layer_path =
-        CString::new(rootfs_upper_layer).expect("CString::new failed");
-    let lower_layer_path =
-        CString::new(rootfs_lower_layer).expect("CString::new failed");
+    let upper_layer_path = CString::new(rootfs_upper_layer).expect("CString::new failed");
+    let lower_layer_path = CString::new(rootfs_lower_layer).expect("CString::new failed");
     let entry_point = CString::new(rootfs_entry).expect("CString::new failed");
     let hostfs_source = CString::new("/tmp").expect("CString::new failed");
     let rootfs_config: user_rootfs_config = user_rootfs_config {
@@ -58,14 +54,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         lower_layer_path: lower_layer_path.as_ptr(),
         entry_point: entry_point.as_ptr(),
         hostfs_source: hostfs_source.as_ptr(),
-        hostfs_target: std::ptr::null()
+        hostfs_target: std::ptr::null(),
     };
 
-    let ret = unsafe { syscall(
-        SYS_MOUNT_FS,
-        key_ptr,
-        &rootfs_config)
-    };
+    let ret = unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) };
     if ret < 0 {
         return Err(Box::new(std::io::Error::last_os_error()));
     }

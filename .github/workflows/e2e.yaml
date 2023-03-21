@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: sgx
+          - runner: sgx-ecc
             sgx_mode: HW
           - runner: ubuntu-22.04
             sgx_mode: SIM

@@ -43,3 +43,48 @@ jobs:
           version: v1.51.2
           args: -v --timeout 5m
           working-directory: 'src/shim'
+
+  rust:
+    name: rust basic checks
+    runs-on: ubuntu-22.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+        project:
+          - enclave-agent
+          - runtime-boot/init
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --check --manifest-path=src/${{ matrix.project }}/Cargo.toml
+
+      - name: Run Clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --manifest-path=src/${{ matrix.project }}/Cargo.toml
+
+      - name: Run Tests
+        if: ${{ matrix.project == 'enclave-agent' }}
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --features simple --no-default-features --manifest-path=src/${{ matrix.project }}/Cargo.toml
