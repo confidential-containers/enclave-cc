@@ -7,6 +7,8 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "github.com/containerd/containerd"
+      - dependency-name: "github.com/containerd/ttrpc"
+        update-types: ["version-update:semver-minor"]
 
   # Check updates to action versions in .github/workflows
   - package-ecosystem: "github-actions"
