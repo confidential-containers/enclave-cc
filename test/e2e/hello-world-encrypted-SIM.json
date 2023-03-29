@@ -3,7 +3,7 @@
     "name": "hello-world-encrypted-container"
   },
   "image":{
-    "image": "docker.io/mylinen/hello-world-encrypted:samplekbc2"
+    "image": "ghcr.io/confidential-containers/test-container-enclave-cc:sample_kbc_encrypted"
   },
   "envs": [
     {"key": "OCCLUM_RELEASE_ENCLAVE", "value": "0"}
