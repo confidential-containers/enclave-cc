@@ -31,13 +31,15 @@ jobs:
       PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
 
     steps:
-      - uses: actions/setup-go@v4
-        with:
-          go-version: 1.19
-          check-latest: true
       - uses: actions/checkout@v3
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
+
+      - uses: actions/setup-go@v4
+        with:
+          check-latest: true
+          go-version-file: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim/go.mod
+          cache-dependency-path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim/go.sum
 
       - name: Install confidential-containers/containerd
         if: ${{ matrix.runner == 'ubuntu-22.04' }}

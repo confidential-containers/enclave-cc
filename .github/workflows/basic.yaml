@@ -21,11 +21,12 @@ jobs:
         go-version: [1.19.x, 1.20.x]
 
     steps:
+      - uses: actions/checkout@v3
+
       - uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go-version }}
-
-      - uses: actions/checkout@v3
+          cache-dependency-path: src/shim/go.sum
 
       - name: Run build
         run: |
