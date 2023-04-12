@@ -206,7 +206,7 @@ checksum = "2ce4f10ea3abcd6617873bae9f91d1c5332b4a778bd9ce34d0cd517474c1de82"
 [[package]]
 name = "attestation_agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=d7ace56#d7ace56f2f2c861669ab07b50598a3d3c22709af"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=c939d21#c939d211fe5ac497715008e36161aff20cabb6e6"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1824,7 +1824,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/image-rs?rev=cc626a9#cc626a97a8225475d3a4c3c7490f6b212ca32466"
+source = "git+https://github.com/confidential-containers/image-rs?rev=b28eaae#b28eaae46bcea69ac28d079381b7aa1ef6851ad9"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -2510,7 +2510,7 @@ dependencies = [
 [[package]]
 name = "ocicrypt-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/ocicrypt-rs.git?rev=1053963#105396323715ea6787b2241c93ed87a3307dec2a"
+source = "git+https://github.com/confidential-containers/ocicrypt-rs?rev=55ab22d#55ab22d572ec385ba466085f3c78f4148dfd287e"
 dependencies = [
  "aes 0.8.2",
  "anyhow",
