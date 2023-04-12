@@ -3,7 +3,7 @@
     "name": "hello-world-encrypted-container"
   },
   "image":{
-    "image": "docker.io/eqmcc/helloworld_enc"
+    "image": "ghcr.io/confidential-containers/test-container-enclave-cc:encrypted"
   },
   "envs": [
     {"key": "OCCLUM_RELEASE_ENCLAVE", "value": "1"}

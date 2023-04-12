@@ -13,7 +13,7 @@ clap = "2.33.3"
 # logger module
 env_logger = "0.10.0"
 
-image-rs = { git = "https://github.com/confidential-containers/image-rs", default-features = false, rev = "v0.4.0" }
+image-rs = { git = "https://github.com/confidential-containers/image-rs", default-features = false, rev = "cc626a9" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.11"
 protocols = { path = "../libs/protocols" }
@@ -25,8 +25,11 @@ tokio = { version = "1.14.0", features = ["rt-multi-thread", "macros", "signal"]
 
 ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
 
+[patch.crates-io]
+oci-distribution = { git = "https://github.com/krustlet/oci-distribution.git", rev = "f44124c" }
+
 [features]
-default = ["image-rs/enclave-cc", "image-rs/signature-cosign"]
+default = ["image-rs/enclave-cc"]
 simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption"]
 
 [build-dependencies]
