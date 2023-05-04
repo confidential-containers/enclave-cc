@@ -1,6 +1,7 @@
 FROM ubuntu:20.04 as builder
 
 ARG RATS_TLS_REV=5de6fc308f2a18f4105429451c85e6173b42ab9d
+ARG KBC=cc-kbc
 
 RUN apt-get update && \
     env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -63,7 +64,7 @@ RUN git clone https://github.com/inclavare-containers/rats-tls.git && \
 COPY src/ /enclave-cc/src/
 RUN cd /enclave-cc/src/enclave-agent && \
     . $HOME/.cargo/env && \
-    make
+    make ${KBC}
 
 WORKDIR /run/enclave-agent
 COPY tools/packaging/build/agent-enclave-bundle/enclave-agent.yaml .

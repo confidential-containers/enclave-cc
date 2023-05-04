@@ -4,6 +4,7 @@ set -e
 CI=${CI:-no}
 PUSH=${PUSH:-no}
 SGX_MODE=${SGX_MODE:-HW}
+KBC=${KBC:-cc-kbc}
 GO_VERSION=${GO_VERSION:-1.19}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
@@ -22,7 +23,7 @@ mkdir -p ${PAYLOAD_ARTIFACTS}
 
 # build pre-installed OCI bundle for agent enclave container
 pushd ${SCRIPT_ROOT}/agent-enclave-bundle
-docker build ${ENCLAVE_CC_ROOT} -f ${SCRIPT_ROOT}/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t agent-instance
+docker build ${ENCLAVE_CC_ROOT} -f ${SCRIPT_ROOT}/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t agent-instance
 jq -a -f sgx-mode-config.filter config.json.template | tee ${PAYLOAD_ARTIFACTS}/config.json
 docker export $(docker create agent-instance) | tee > ${PAYLOAD_ARTIFACTS}/agent-instance.tar
 popd
