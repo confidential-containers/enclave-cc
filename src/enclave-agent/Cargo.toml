@@ -13,7 +13,7 @@ clap = "2.33.3"
 # logger module
 env_logger = "0.10.0"
 
-image-rs = { git = "https://github.com/confidential-containers/image-rs", default-features = false, tag = "v0.5.1" }
+image-rs = { git = "https://github.com/confidential-containers/image-rs.git", default-features = false, rev = "44f27c2" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.11"
 protocols = { path = "../libs/protocols" }
@@ -29,8 +29,18 @@ ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
 oci-distribution = { git = "https://github.com/krustlet/oci-distribution.git", rev = "f44124c" }
 
 [features]
-default = ["image-rs/enclave-cc"]
-simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption"]
+default = ["cc-kbc-rustls-tls"]
+
+# confidential resource injection using sample-kbc
+simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign-rustls", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption-ring", "image-rs/oci-distribution-rustls"]
+
+# confidential resource injection using eaa-kbc
+eaa-kbc-rustls-tls = [ "image-rs/enclave-cc-eaakbc-rustls-tls" ]
+eaa-kbc-native-tls = [ "image-rs/enclave-cc-eaakbc-native-tls" ]
+
+# confidential resource injection using cc-kbc (Recommended)
+cc-kbc-rustls-tls = [ "image-rs/enclave-cc-cckbc-rustls-tls" ]
+cc-kbc-native-tls = [ "image-rs/enclave-cc-cckbc-native-tls" ]
 
 [build-dependencies]
 ttrpc-codegen = "0.2.0"
