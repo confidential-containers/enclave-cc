@@ -7,11 +7,11 @@ SGX_MODE=${SGX_MODE:-HW}
 KBC=${KBC:-cc-kbc}
 GO_VERSION=${GO_VERSION:-1.19}
 if [ "${CI}" == "yes" ]; then
-	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-$(git rev-parse HEAD)
-	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-latest
+	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-${KBC}-$(git rev-parse HEAD)
+	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-${KBC}-latest
 else
-	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-$(git describe --tags --abbrev=0)
-	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-latest
+	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-${KBC}-$(git describe --tags --abbrev=0)
+	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload:enclave-cc-${SGX_MODE}-${KBC}-latest
 fi
 IMAGE=${IMAGE:-${DEFAULT_IMAGE}}
 
