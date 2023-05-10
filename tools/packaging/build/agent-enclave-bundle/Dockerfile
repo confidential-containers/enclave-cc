@@ -55,11 +55,11 @@ RUN wget ${SGX_SDK_URL} \
  && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
  && /opt/sgxsdk/uninstall.sh
 
-RUN git clone https://github.com/inclavare-containers/rats-tls.git && \
+RUN if [ "${KBC}" = "eaa-kbc" ] ; then git clone https://github.com/inclavare-containers/rats-tls.git && \
     cd rats-tls && \
     git checkout $RATS_TLS_REV && \
     cmake -DRATS_TLS_BUILD_MODE="occlum" -DBUILD_SAMPLES=on -H. -Bbuild && \
-    make -C build install
+    make -C build install; fi
 
 COPY src/ /enclave-cc/src/
 RUN cd /enclave-cc/src/enclave-agent && \
@@ -67,13 +67,13 @@ RUN cd /enclave-cc/src/enclave-agent && \
     make ${KBC}
 
 WORKDIR /run/enclave-agent
-COPY tools/packaging/build/agent-enclave-bundle/enclave-agent.yaml .
+COPY tools/packaging/build/agent-enclave-bundle/enclave-agent-${KBC}.yaml .
 COPY tools/packaging/build/agent-enclave-bundle/jq.filter .
 
 ARG SGX_MODE=HW
 RUN export PATH="$PATH:/opt/occlum/build/bin" && \
     occlum new occlum_instance && cd occlum_instance && \
-    copy_bom -f ../enclave-agent.yaml --root image \
+    copy_bom -f ../enclave-agent-${KBC}.yaml --root image \
     --include-dir /opt/occlum/etc/template && \
     mv Occlum.json Occlum.json.orig && \
     jq -a -f ../jq.filter Occlum.json.orig > Occlum.json && \

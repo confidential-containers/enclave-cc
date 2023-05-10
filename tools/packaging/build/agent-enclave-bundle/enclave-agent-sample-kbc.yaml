@@ -1,0 +1,29 @@
+includes:
+  - base.yaml
+targets:
+  - target: /bin
+    copy:
+      - files:
+        - /enclave-cc/src/enclave-agent/target/release/enclave-agent
+  # copy libnss_files
+  - target: /opt/occlum/glibc/lib
+    copy:
+      - files:
+         - /opt/occlum/glibc/lib/libnss_files.so.2
+         - /opt/occlum/glibc/lib/libnss_dns.so.2
+         - /lib/x86_64-linux-gnu/libdl.so.2
+         - /usr/lib/x86_64-linux-gnu/libssl.so.1.1
+         - /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
+  - target: /usr/lib/ssl
+    copy:
+      - dirs:
+        - /etc/ssl/certs
+  - target: /usr/lib
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libcurl.so.4
+  - target: /usr/lib/x86_64-linux-gnu/
+    copy:
+      - files:
+          - /usr/lib/x86_64-linux-gnu/libsgx_dcap_quoteverify.so
+          - /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
