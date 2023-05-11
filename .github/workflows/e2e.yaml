@@ -21,13 +21,19 @@ jobs:
         include:
           - runner: sgx-ecc
             sgx_mode: HW
+            kbc: eaa-kbc
+          - runner: sgx-ecc
+            sgx_mode: HW
+            kbc: cc-kbc
           - runner: ubuntu-22.04
             sgx_mode: SIM
+            kbc: sample-kbc
 
-    name: SGX_MODE=${{ matrix.sgx_mode }}
+    name: SGX_MODE=${{ matrix.sgx_mode }} KBC=${{ matrix.kbc }}
     runs-on: ${{ matrix.runner }}
     env:
       SGX_MODE: ${{ matrix.sgx_mode }}
+      KBC: ${{ matrix.kbc }}
       PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
 
     steps:
@@ -81,7 +87,7 @@ jobs:
       - name: Build agent-enclave bundle
         run: |
           mkdir $PAYLOAD_ARTIFACTS
-          docker build . -f tools/packaging/build/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t agent-instance:build
+          docker build . -f tools/packaging/build/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t agent-instance:build
           docker export $(docker create agent-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/agent-instance.tar
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
@@ -108,7 +114,7 @@ jobs:
       - name: Install decrypt_config.conf and ocicrypt.conf for agent-enclave bundle
         run: |
           sudo install -D -t $PAYLOAD_ARTIFACTS/opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs ocicrypt.conf
-          sudo install decrypt_config-$SGX_MODE.conf $PAYLOAD_ARTIFACTS/opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs/decrypt_config.conf
+          sudo install decrypt_config-$SGX_MODE-$KBC.conf $PAYLOAD_ARTIFACTS/opt/confidential-containers/share/enclave-cc-agent-instance/rootfs/configs/decrypt_config.conf
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/test/e2e
 
       - name: Test image pull and unpack
@@ -126,7 +132,7 @@ jobs:
       - name: Test image decryption
         run: |
           SANDBOX_ID=$(sudo crictl runp --runtime enclavecc sandbox.json)
-          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-encrypted-$SGX_MODE.json sandbox.json)
+          CONTAINER_ID=$(sudo crictl create --with-pull $SANDBOX_ID hello-world-encrypted-$SGX_MODE-$KBC.json sandbox.json)
           sudo crictl start $CONTAINER_ID
           sleep 5
           sudo crictl logs $CONTAINER_ID

@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "name": "hello-world-encrypted-container"
+  },
+  "image":{
+    "image": "ghcr.io/confidential-containers/test-container-enclave-cc:encrypted"
+  },
+  "envs": [
+    {"key": "OCCLUM_RELEASE_ENCLAVE", "value": "1"}
+  ],
+  "command": [
+    "/run/rune/boot_instance/build/bin/occlum-run",
+    "/bin/hello_world"
+  ],
+  "working_dir": "/run/rune/boot_instance/",
+  "log_path":"hello.log",
+  "devices": [
+    {"container_path": "/dev/sgx_enclave", "host_path": "/dev/sgx_enclave", "permissions": "rw"}
+  ]
+}
