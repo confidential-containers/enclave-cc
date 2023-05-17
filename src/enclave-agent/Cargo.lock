@@ -161,7 +161,7 @@ dependencies = [
 [[package]]
 name = "attestation_agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -175,7 +175,7 @@ dependencies = [
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
@@ -695,7 +695,7 @@ checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1891,7 +1891,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/image-rs.git?rev=44f27c2#44f27c27ea19b5cf354e809e4035423c240d87fd"
+source = "git+https://github.com/Xynnn007/image-rs.git?rev=c191a12#c191a121b8260d6e01f53ea37b46601958d61bf3"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -2120,7 +2120,7 @@ dependencies = [
 [[package]]
 name = "kbc"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2139,8 +2139,9 @@ dependencies = [
 
 [[package]]
 name = "kbs-types"
-version = "0.2.0"
-source = "git+https://github.com/mkulke/kbs-types?branch=mkulke/add-az-snp-vtpm-tee-on-v0.2#a4012638bcef3d7b8d13596598804f8a2219736e"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5b2b89d8b831b80f2f2ef164e08ef109d2e60a04e43b06dd85d465fc0c9b6ee"
 dependencies = [
  "serde",
  "serde_json",
@@ -2149,7 +2150,7 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2614,7 +2615,7 @@ dependencies = [
 [[package]]
 name = "ocicrypt-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/ocicrypt-rs.git?rev=bbbb95f#bbbb95f4bb44da3c553208a64f3c84a1dee9b4ba"
+source = "git+https://github.com/Xynnn007/ocicrypt-rs.git?rev=2be4fd2#2be4fd26af08f405c875e1ac0c498f0bfab3ae6b"
 dependencies = [
  "aes 0.8.2",
  "anyhow",
@@ -3444,7 +3445,7 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/Xynnn007/attestation-agent.git?rev=4a9936a#4a9936a3be1744f5875cd7b9c96e0fcc58aee133"
 dependencies = [
  "anyhow",
  "serde",
