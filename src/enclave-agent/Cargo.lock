@@ -143,8 +143,8 @@ dependencies = [
  "memchr",
  "pin-project-lite",
  "tokio",
- "zstd",
- "zstd-safe",
+ "zstd 0.11.2+zstd.1.5.2",
+ "zstd-safe 5.0.2+zstd.1.5.2",
 ]
 
 [[package]]
@@ -161,7 +161,7 @@ dependencies = [
 [[package]]
 name = "attestation_agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -175,7 +175,7 @@ dependencies = [
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
@@ -695,7 +695,7 @@ checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1891,7 +1891,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/image-rs.git?rev=44f27c2#44f27c27ea19b5cf354e809e4035423c240d87fd"
+source = "git+https://github.com/confidential-containers/image-rs.git?rev=22224d9#22224d9e3e795022c009150cd405b95b0f94aa83"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -1925,7 +1925,7 @@ dependencies = [
  "tokio",
  "url",
  "walkdir",
- "zstd",
+ "zstd 0.12.3+zstd.1.5.2",
 ]
 
 [[package]]
@@ -2120,7 +2120,7 @@ dependencies = [
 [[package]]
 name = "kbc"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2139,8 +2139,9 @@ dependencies = [
 
 [[package]]
 name = "kbs-types"
-version = "0.2.0"
-source = "git+https://github.com/mkulke/kbs-types?branch=mkulke/add-az-snp-vtpm-tee-on-v0.2#a4012638bcef3d7b8d13596598804f8a2219736e"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5b2b89d8b831b80f2f2ef164e08ef109d2e60a04e43b06dd85d465fc0c9b6ee"
 dependencies = [
  "serde",
  "serde_json",
@@ -2149,7 +2150,7 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2237,12 +2238,6 @@ checksum = "ecd207c9c713c34f95a097a5b029ac2ce6010530c7b49d7fea24d977dede04f5"
 dependencies = [
  "cc",
 ]
-
-[[package]]
-name = "linked-hash-map"
-version = "0.5.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
 
 [[package]]
 name = "linux-raw-sys"
@@ -2614,7 +2609,7 @@ dependencies = [
 [[package]]
 name = "ocicrypt-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/ocicrypt-rs.git?rev=bbbb95f#bbbb95f4bb44da3c553208a64f3c84a1dee9b4ba"
+source = "git+https://github.com/confidential-containers/ocicrypt-rs.git?rev=defbacc#defbacc393ea26c78f207eceb21ce8090b6a161e"
 dependencies = [
  "aes 0.8.2",
  "anyhow",
@@ -3444,7 +3439,7 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=80b84cf#80b84cf09ecc7bd7d0ba60715972c6ac05820225"
+source = "git+https://github.com/confidential-containers/attestation-agent.git?rev=aa1d3c5#aa1d3c510350cd2f2668aca374abba19e2b73b3f"
 dependencies = [
  "anyhow",
  "serde",
@@ -3844,14 +3839,15 @@ dependencies = [
 
 [[package]]
 name = "serde_yaml"
-version = "0.8.26"
+version = "0.9.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "578a7433b776b56a35785ed5ce9a7e777ac0598aac5a6dd1b4b18a307c7fc71b"
+checksum = "d9d684e3ec7de3bf5466b32bd75303ac16f0736426e5a4e0d6e489559ce1249c"
 dependencies = [
  "indexmap",
+ "itoa",
  "ryu",
  "serde",
- "yaml-rust",
+ "unsafe-libyaml",
 ]
 
 [[package]]
@@ -4600,6 +4596,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "unsafe-libyaml"
+version = "0.2.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1865806a559042e51ab5414598446a5871b561d21b6764f2eabb0dd481d880a6"
+
+[[package]]
 name = "untrusted"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4998,15 +5000,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "735a71d46c4d68d71d4b24d03fdc2b98e38cea81730595801db779c04fe80d70"
 
 [[package]]
-name = "yaml-rust"
-version = "0.4.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56c1936c4cc7a1c9ab21a1ebb602eb942ba868cbd44a99cb7cdc5892335e1c85"
-dependencies = [
- "linked-hash-map",
-]
-
-[[package]]
 name = "zeroize"
 version = "1.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5033,7 +5026,16 @@ version = "0.11.2+zstd.1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "20cc960326ece64f010d2d2107537f26dc589a6573a316bd5b1dba685fa5fde4"
 dependencies = [
- "zstd-safe",
+ "zstd-safe 5.0.2+zstd.1.5.2",
+]
+
+[[package]]
+name = "zstd"
+version = "0.12.3+zstd.1.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76eea132fb024e0e13fd9c2f5d5d595d8a967aa72382ac2f9d39fcc95afd0806"
+dependencies = [
+ "zstd-safe 6.0.5+zstd.1.5.4",
 ]
 
 [[package]]
@@ -5041,6 +5043,16 @@ name = "zstd-safe"
 version = "5.0.2+zstd.1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d2a5585e04f9eea4b2a3d1eca508c4dee9592a89ef6f450c11719da0726f4db"
+dependencies = [
+ "libc",
+ "zstd-sys",
+]
+
+[[package]]
+name = "zstd-safe"
+version = "6.0.5+zstd.1.5.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d56d9e60b4b1758206c238a10165fbcae3ca37b01744e394c463463f6529d23b"
 dependencies = [
  "libc",
  "zstd-sys",
