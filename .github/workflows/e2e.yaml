@@ -21,9 +21,6 @@ jobs:
         include:
           - runner: sgx-ecc
             sgx_mode: HW
-            kbc: eaa-kbc
-          - runner: sgx-ecc
-            sgx_mode: HW
             kbc: cc-kbc
           - runner: ubuntu-22.04
             sgx_mode: SIM
