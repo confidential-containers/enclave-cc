@@ -13,8 +13,6 @@ jobs:
           - sgx_mode: SIM
             kbc: sample-kbc
           - sgx_mode: HW
-            kbc: eaa-kbc
-          - sgx_mode: HW
             kbc: cc-kbc
     steps:
       - name: Login to quay.io
