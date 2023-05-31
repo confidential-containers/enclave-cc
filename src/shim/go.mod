@@ -14,7 +14,7 @@ require (
 	github.com/opencontainers/runtime-spec v1.1.0-rc.2
 	github.com/prashantv/gostub v1.1.0
 	github.com/sirupsen/logrus v1.9.2
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	golang.org/x/sys v0.8.0
 	google.golang.org/grpc v1.55.0
 )
