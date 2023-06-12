@@ -3,7 +3,7 @@ module github.com/confidential-containers/enclave-cc/src/shim
 go 1.20
 
 require (
-	github.com/BurntSushi/toml v1.3.0
+	github.com/BurntSushi/toml v1.3.2
 	github.com/containerd/cgroups v1.1.0
 	github.com/containerd/containerd v1.6.1
 	github.com/containerd/continuity v0.4.1
