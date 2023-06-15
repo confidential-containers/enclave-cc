@@ -41,19 +41,11 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     ca-certificates \
     protobuf-compiler \
     rsync \
-    occlum-runtime \
     occlum-toolchains-glibc \
-    occlum
-
-WORKDIR /opt
-ARG SGX_SDK_URL=https://download.01.org/intel-sgx/sgx-linux/2.18.1/distro/ubuntu20.04-server/sgx_linux_x64_sdk_2.18.101.1.bin
-RUN wget ${SGX_SDK_URL} \
- && export SGX_SDK_INSTALLER=$(basename $SGX_SDK_URL) \
- && chmod +x $SGX_SDK_INSTALLER \
- && echo "yes" | ./$SGX_SDK_INSTALLER \
- && rm $SGX_SDK_INSTALLER \
- && cp /opt/sgxsdk/lib64/libsgx_uae_service_sim.so /lib/x86_64-linux-gnu/ \
- && /opt/sgxsdk/uninstall.sh
+    occlum-pal=0.29.5-1 \
+    occlum-sgx-tools=0.29.5-1 \
+    occlum-runtime=0.29.5-1 \
+    occlum=0.29.5-1
 
 RUN if [ "${KBC}" = "eaa-kbc" ] ; then git clone https://github.com/inclavare-containers/rats-tls.git && \
     cd rats-tls && \
@@ -90,5 +82,6 @@ RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
 RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc && sed -e '/cargo/d' -i /root/.profile && sed -e '/cargo/d' -i /root/.bashrc
 RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-pal occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y
 RUN echo "/run/rune/occlum_instance/build/lib/" | tee /etc/ld.so.conf.d/occlum-pal.conf && \
+    echo "/opt/occlum/sgxsdk-tools/sdk_libs/" | tee -a /etc/ld.so.conf.d/occlum-pal.conf && \
     ldconfig
 ENTRYPOINT ["/bin/enclave-agent"]
