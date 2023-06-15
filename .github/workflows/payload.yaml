@@ -1,8 +1,8 @@
 name: Publish Enclave CC CI payloads for Confidential Containers
 on:
   push:
-    branch:
-      - main
+    branches:
+      - 'main'
 
 jobs:
   build-asset:
