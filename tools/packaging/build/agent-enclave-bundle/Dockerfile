@@ -1,6 +1,5 @@
 FROM ubuntu:20.04 as builder
 
-ARG RATS_TLS_REV=5de6fc308f2a18f4105429451c85e6173b42ab9d
 ARG KBC=cc-kbc
 
 RUN apt-get update && \
@@ -46,12 +45,6 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     occlum-sgx-tools=0.29.5-1 \
     occlum-runtime=0.29.5-1 \
     occlum=0.29.5-1
-
-RUN if [ "${KBC}" = "eaa-kbc" ] ; then git clone https://github.com/inclavare-containers/rats-tls.git && \
-    cd rats-tls && \
-    git checkout $RATS_TLS_REV && \
-    cmake -DRATS_TLS_BUILD_MODE="occlum" -DBUILD_SAMPLES=on -H. -Bbuild && \
-    make -C build install; fi
 
 COPY src/ /enclave-cc/src/
 RUN cd /enclave-cc/src/enclave-agent && \

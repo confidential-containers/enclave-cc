@@ -47,7 +47,7 @@ mod test {
     use super::*;
 
     const CONFIG_DIR: &str = "test_data/decrypt_config";
-    const DECRYPT_OPT: &str = "provider:attestation-agent:eaa_kbc::127.0.0.1:1234";
+    const DECRYPT_OPT: &str = "provider:attestation-agent:cc_kbc::http://127.0.0.1:8080";
 
     #[rstest::rstest]
     #[case(
