@@ -1,7 +1,7 @@
 .resource_limits.user_space_size = "2000MB" |
-.resource_limits.kernel_space_heap_size= "600MB" |
+.resource_limits.kernel_space_heap_size = "1024MB" |
 .resource_limits.kernel_space_stack_size= "128MB" |
-.resource_limits.max_num_of_threads = 16 |
+.resource_limits.max_num_of_threads = 8 |
 .entry_points = ["/bin/enclave-agent"] |
 .mount |= . +
 [{
