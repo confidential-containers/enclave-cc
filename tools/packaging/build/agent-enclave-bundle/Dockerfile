@@ -35,16 +35,18 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     jq \
     tzdata \
     binutils \
+    libclang-dev \
+    libdevmapper-dev \
     libfuse2 \
     libfuse3-3 \
     ca-certificates \
     protobuf-compiler \
     rsync \
     occlum-toolchains-glibc \
-    occlum-pal=0.29.5-1 \
-    occlum-sgx-tools=0.29.5-1 \
-    occlum-runtime=0.29.5-1 \
-    occlum=0.29.5-1
+    occlum-pal=0.29.7-1 \
+    occlum-sgx-tools=0.29.7-1 \
+    occlum-runtime=0.29.7-1 \
+    occlum=0.29.7-1
 
 COPY src/ /enclave-cc/src/
 RUN cd /enclave-cc/src/enclave-agent && \
