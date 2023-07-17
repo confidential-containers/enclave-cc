@@ -36,7 +36,7 @@ an enclave is at deployment time. One could for instance grab any unmodified con
 As a result, the non-workload components running inside enclave are not mandatory to be provided
 by image creator. Meanwhile, this approach can facilitate the development of standardization of
 implementing Enclave-CC, which reuses the methodology of image protections already applied to the
-container ecosystem, such as image [encryption](https://github.com/confidential-containers/ocicrypt-rs) and
+container ecosystem, such as image [encryption](https://github.com/confidential-containers/guest-components/tree/main/ocicrypt-rs) and
 [signing](https://github.com/containers/image/blob/main/docs/containers-signature.5.md), instead
 of using LibOSes specific approaches.
 
@@ -89,8 +89,8 @@ To do this securely both the agent and app enclaves establish trust through atte
 
 `agent enclave` is responsible for hosting a LibOS loaded from OCI bundle previously mentioned
 and `enclave-agent` on top of the LibOS. `enclave-agent` consists of
-[image management service](https://github.com/confidential-containers/image-rs) and
-[attestation agent](https://github.com/confidential-containers/attestation-agent). They are the
+[image management service](https://github.com/confidential-containers/guest-components/tree/main/image-rs) and
+[attestation agent](https://github.com/confidential-containers/guest-components/tree/main/attestation-agent). They are the
 common pieces from Confidential Containers project.
 
 FUSE encryption filesystem acts as a temporary storage, providing the protections for the metadata
