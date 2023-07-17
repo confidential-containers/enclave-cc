@@ -38,8 +38,25 @@ openssl pkey -in config/private.key -pubout -out config/public.pub
 
 4. Run with `docker compose up -d`, and KBS will listen to port `8080` for requests
 
-We can add default configs under `data/kbs-storage` the same as verdictd.
+We then add default configs under `data/kbs-storage`.
 
+1. Image policy
+```bash
+mkdir -p data/kbs-storage/default/security-policy
+cat << EOF > data/kbs-storage/default/security-policy/test
+{
+    "default": [{"type": "insecureAcceptAnything"}],
+    "transports": {}
+}
+EOF
+```
+2. Image decryption key (for ghcr.io/confidential-containers/test-container-enclave-cc:encrypted)
+
+The key and the key id are defined in the [test image's Dockerfile](../tools/packaging/build/test-image/Dockerfile)
+```bash
+mkdir -p data/kbs-storage/default/image-kek
+echo LieOhvkqFcGMzZrVzt6vPWlj/F/bgYMNe45vhQpdxAA= | base64 -d > data/kbs-storage/default/image-kek/11032d96-dccd-46a3-9244-93644d76745f
+```
 # Github Runner Service
 For `enclave-cc` e2e tests, we run a "job-started" pre-cleanup job configured
 for the runner:
