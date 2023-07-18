@@ -79,7 +79,7 @@ path of encrypted unionfs image in the next subsection(Create app container sect
 
 Below is the communication protocol between shim-rune and agent enclave container, the
 communication protocol is referred to
-[kata containers](https://github.com/confidential-containers/kata-containers/blob/CCv0/src/libs/protocols/protos/image.proto).
+[kata containers](https://github.com/kata-containers/kata-containers/blob/CCv0/src/libs/protocols/protos/image.proto).
 
 ```proto
 syntax = "proto3";
@@ -134,7 +134,7 @@ uses the following methods to run the app enclave container.
 ### Occlum
 
 Refer to the occlum guide of
-[Runtime boot pre-generated UnionFS image](https://github.com/qzheng527/occlum/blob/combine_jsons/demos/runtime_boot).
+[Runtime boot pre-generated UnionFS image](https://github.com/occlum/occlum/tree/master/demos/runtime_boot).
 A pre-installed OCI bundle for the boot instance is needed in the host. The boot instance is
 responsible for using the customized `init`, mount and boot a pre-generated UnionFS image.
 
@@ -157,7 +157,7 @@ One host only needs a pre-installed occlum OCI bundle for the boot instance. The
 
 The pre-generated boot template instance looks like an OCI bundle rootfs on the host side.
 It contains the
-[occlum boot template instance](https://github.com/qzheng527/occlum/blob/combine_jsons/demos/runtime_boot/README.md#build-a-boot-template-occlum-instance).
+[occlum boot template instance](https://github.com/occlum/occlum/blob/master/demos/runtime_boot/README.md#build-a-boot-template-occlum-instance).
 
 ```sh
 $ tree /opt/enclave-cc/boot-instance -L 1
@@ -237,7 +237,7 @@ with the agent container to perform PullImage. (support unix and tcp socket comm
 
 # Reference
 
-- [kata containers](https://github.com/confidential-containers/kata-containers-CCv0)
+- [kata containers](https://github.com/kata-containers/kata-containers/tree/CCv0)
 - [containerd](https://github.com/confidential-containers/containerd)
 - [occlum](https://github.com/occlum/occlum)
 - [inclavare containers](https://github.com/inclavare-containers/inclavare-containers)

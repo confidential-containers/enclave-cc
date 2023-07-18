@@ -70,7 +70,7 @@ Where:
 
 Deployment of enclave-cc runtime:
 - deploy of the operator according to [CoCo Operator installation guide](https://github.com/confidential-containers/operator/blob/main/docs/INSTALL.md)
-- install enclave-cc runtime according to [Getting started of CoCo](https://github.com/confidential-containers/documentation/blob/main/quickstart.md). This installation process will
+- install enclave-cc runtime according to [Getting started of CoCo](https://github.com/confidential-containers/confidential-containers/blob/main/quickstart.md). This installation process will
   execute enclave-cc runtime [deployment script](https://github.com/confidential-containers/enclave-cc/blob/main/tools/packaging/deploy/enclave-cc-deploy.sh) to: 1) copy shim-rune and containerd binaries into
   host directories 2) copy image bundles of agent enclave container and boot instance to host
   directories 3) copy config of shim-rune to host directory 4) reconfigure containerd to enable
@@ -79,7 +79,7 @@ Deployment of enclave-cc runtime:
 After the enclave-cc runtime is successfully installed by the operator, the application workload
 can be deployed. Below is the workflow of running an application workload:
 - end user defines a POD config yaml to describe the workload and runtime requirements according
-  to  [the example](https://github.com/confidential-containers/documentation/blob/main/quickstart.md#creating-a-sample-coco-workload-using-enclave-cc)
+  to [the example](https://github.com/confidential-containers/confidential-containers/blob/main/guides/enclave-cc.md#creating-a-sample-coco-workload-using-enclave-cc)
 - end user deploys the POD into Kubernetes and the request is propagated to containerd
 - shim-rune gets sandbox and container creation request from containerd and creates pause container
 - shim-rune creates agent enclave container with runc; runc references OCI spec and rootfs in host
