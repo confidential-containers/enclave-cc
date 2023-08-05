@@ -46,6 +46,7 @@ install -D ${SCRIPT_ROOT}/../deploy/enclave-cc-deploy.sh ${PAYLOAD_ARTIFACTS}/sc
 pushd $PAYLOAD_ARTIFACTS
 tar cfJ enclave-cc-static.tar.xz *
 cp ${SCRIPT_ROOT}/Dockerfile .
+cp -a ${SCRIPT_ROOT}/runtimeclass .
 docker build . -t ${IMAGE} -t ${DEFAULT_LATEST_IMAGE}
 if [ "${PUSH}" == "yes" ]; then
 	docker push ${IMAGE}
