@@ -65,8 +65,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          export DEBIAN_FRONTEND=noninteractive
+          sudo curl -L https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | sudo apt-key add -
+          sudo echo 'deb [arch=amd64] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main' | sudo tee /etc/apt/sources.list.d/intel-sgx.list
           sudo apt-get update
-          sudo apt-get install -y libtss2-dev libtdx-attest-dev
+          sudo apt-get install -y libtss2-dev libtdx-attest-dev libdevmapper-dev
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
