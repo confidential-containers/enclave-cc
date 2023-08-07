@@ -25,6 +25,16 @@ function print_usage() {
 	echo "Usage: $0 [install/cleanup/reset]"
 }
 
+function create_runtimeclass() {
+	echo "Creating the runtime classes"
+	kubectl apply -f /runtimeclass/enclave-cc.yaml
+}
+
+function delete_runtimeclass() {
+	echo "Deleting the runtime classes"
+	kubectl delete -f /runtimeclass/enclave-cc.yaml
+}
+
 function get_container_runtime() {
 
 	local runtime=$(kubectl get node $NODE_NAME -o jsonpath='{.status.nodeInfo.containerRuntimeVersion}')
@@ -167,10 +177,12 @@ function main() {
 	install)
 		install_artifacts
 		configure_cri_runtime "$runtime"
+		create_runtimeclass
 		kubectl label node "$NODE_NAME" --overwrite confidentialcontainers.org/enclave-cc=true
 		;;
 	cleanup)
 		cleanup_cri_runtime "$runtime"
+		delete_runtimeclass
 		kubectl label node "$NODE_NAME" --overwrite confidentialcontainers.org/enclave-cc=cleanup
 		remove_artifacts
 		;;

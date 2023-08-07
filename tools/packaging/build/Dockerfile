@@ -4,6 +4,7 @@ ARG ENCLAVE_CC_ARTIFACTS=./enclave-cc-static.tar.xz
 ARG DESTINATION=/opt/enclave-cc-artifacts
 
 COPY ${ENCLAVE_CC_ARTIFACTS} ${WORKDIR}
+COPY runtimeclass ${DESTINATION}/runtimeclass
 
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
