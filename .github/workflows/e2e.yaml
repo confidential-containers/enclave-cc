@@ -81,6 +81,11 @@ jobs:
           sed -e 's#\(.*container_instance = "\)\(.*\)$#\1'$PAYLOAD_ARTIFACTS'\2#g' config/config.toml | sudo tee /etc/enclave-cc/config.toml
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim
 
+      - name: Install TPM dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libtss2-dev
+
       - name: Build agent-enclave bundle
         run: |
           mkdir $PAYLOAD_ARTIFACTS
