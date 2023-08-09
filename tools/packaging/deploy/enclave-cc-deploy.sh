@@ -27,12 +27,12 @@ function print_usage() {
 
 function create_runtimeclass() {
 	echo "Creating the runtime classes"
-	kubectl apply -f /runtimeclass/enclave-cc.yaml
+	kubectl apply -f /opt/enclave-cc-artifacts/runtimeclass/enclave-cc.yaml
 }
 
 function delete_runtimeclass() {
 	echo "Deleting the runtime classes"
-	kubectl delete -f /runtimeclass/enclave-cc.yaml
+	kubectl delete -f /opt/enclave-cc-artifacts/runtimeclass/enclave-cc.yaml
 }
 
 function get_container_runtime() {
