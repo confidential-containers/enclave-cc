@@ -35,6 +35,10 @@ function delete_runtimeclass() {
 	kubectl delete -f /opt/enclave-cc-artifacts/runtimeclass/enclave-cc.yaml
 }
 
+function host_systemctl() {
+	nsenter --target 1 --mount systemctl "${@}"
+}
+
 function get_container_runtime() {
 
 	local runtime=$(kubectl get node $NODE_NAME -o jsonpath='{.status.nodeInfo.containerRuntimeVersion}')
@@ -42,11 +46,11 @@ function get_container_runtime() {
                 die "invalid node name"
 	fi
 	if echo "$runtime" | grep -qE 'containerd.*-k3s'; then
-		if systemctl is-active --quiet rke2-agent; then
+		if host_systemctl is-active --quiet rke2-agent; then
 			echo "rke2-agent"
-		elif systemctl is-active --quiet rke2-server; then
+		elif host_systemctl is-active --quiet rke2-server; then
 			echo "rke2-server"
-		elif systemctl is-active --quiet k3s-agent; then
+		elif host_systemctl is-active --quiet k3s-agent; then
 			echo "k3s-agent"
 		else
 			echo "k3s"
@@ -81,8 +85,8 @@ function configure_cri_runtime() {
 		configure_containerd
 		;;
 	esac
-	systemctl daemon-reload
-	systemctl restart "$1"
+	host_systemctl daemon-reload
+	host_systemctl restart "$1"
 }
 
 function configure_containerd() {
@@ -146,8 +150,8 @@ function cleanup_containerd() {
 
 function reset_runtime() {
 	kubectl label node "$NODE_NAME" confidentialcontainers.org/enclave-cc-
-	systemctl daemon-reload
-	systemctl restart "$1"
+	host_systemctl daemon-reload
+	host_systemctl restart "$1"
 }
 
 function main() {
