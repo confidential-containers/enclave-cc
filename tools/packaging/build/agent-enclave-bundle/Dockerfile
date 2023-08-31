@@ -36,7 +36,6 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     tzdata \
     binutils \
     libclang-dev \
-    libdevmapper-dev \
     libfuse2 \
     libfuse3-3 \
     ca-certificates \
