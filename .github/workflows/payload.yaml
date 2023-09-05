@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.COCO_QUAY_DEPLOYER_USERNAME }}
           password: ${{ secrets.COCO_QUAY_DEPLOYER_PASSWORD }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # This is needed in order to keep the commit ids history
       - name: Build Enclave CC Payload using SGX_MODE=${{ matrix.sgx_mode }} KBC=${{ matrix.kbc }}

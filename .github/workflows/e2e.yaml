@@ -34,7 +34,7 @@ jobs:
       PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
