@@ -1,5 +1,14 @@
 version: 2
 updates:
+  - package-ecosystem: "cargo"
+    directory: "/src/enclave-agent"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+
   # Dependencies listed in go.mod
   - package-ecosystem: "gomod"
     directory: "/src/shim" # Location of shim's go.mod
