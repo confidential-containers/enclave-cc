@@ -15,7 +15,7 @@ env_logger = "0.10.0"
 
 image-rs = { git = "https://github.com/piotrpalcz/image-rs.git", default-features = false, branch = "random_key_2" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
-log = "0.4.11"
+log = "0.4.20"
 protocols = { path = "../libs/protocols" }
 serde = ">=1.0.9"
 serde_json = ">=1.0.9"
