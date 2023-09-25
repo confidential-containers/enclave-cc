@@ -15,7 +15,7 @@ env_logger = "0.10.0"
 
 image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "f4f89dab52652c31ebda65aae797462d3697d8c2" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
-log = "0.4.11"
+log = "0.4.20"
 protocols = { path = "../libs/protocols" }
 serde = ">=1.0.9"
 serde_json = ">=1.0.9"
