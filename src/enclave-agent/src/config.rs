@@ -1,8 +1,6 @@
-use anyhow::anyhow;
+use anyhow::{anyhow, bail};
 use serde::{Deserialize, Serialize};
 use std::{fs::File, path::Path};
-
-pub const DEFAULT_OCICRYPT_CONFIG_PATH: &str = "/etc/ocicrypt.conf";
 
 #[derive(Serialize, Deserialize, Default)]
 pub struct DecryptConfig {
@@ -33,7 +31,7 @@ pub struct OcicryptConfig {
 impl OcicryptConfig {
     pub fn new(path: String) -> Result<Self, anyhow::Error> {
         if !Path::new(&path).exists() {
-            return Err(anyhow!("ocicrypt config not found"));
+            bail!("ocicrypt config {path} does not exist.");
         }
         Ok(Self { config_path: path })
     }
