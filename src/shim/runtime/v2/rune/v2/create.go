@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/config"
 	"github.com/confidential-containers/enclave-cc/src/shim/runtime/v2/rune/oci"
@@ -108,7 +109,14 @@ func handlePodContainer(ctx context.Context, s *service, r *taskAPI.CreateTaskRe
 			}
 		}
 		// sefsDir store the unionfs images (based on sefs)
-		sefsDir := filepath.Join(agentContainerRootDir, s.agentID, "merged/rootfs/images", cid)
+		lowerdirs := []string{
+			filepath.Join(agentContainerRootDir, s.agentID, "merged/rootfs/images", cid),
+			filepath.Join(bootContainerPath, "rootfs"),
+		}
+		sealDataDir := filepath.Join(agentContainerRootDir, s.agentID, "merged/rootfs/keys", cid)
+		if _, err := os.Stat(sealDataDir); !os.IsNotExist(err) {
+			lowerdirs = append(lowerdirs, sealDataDir)
+		}
 
 		var options []string
 		// Set index=off when mount overlayfs
@@ -117,7 +125,7 @@ func handlePodContainer(ctx context.Context, s *service, r *taskAPI.CreateTaskRe
 			fmt.Sprintf("workdir=%s", filepath.Join(workDir)),
 			fmt.Sprintf("upperdir=%s", filepath.Join(upperDir)),
 		)
-		options = append(options, fmt.Sprintf("lowerdir=%s:%s", sefsDir, filepath.Join(bootContainerPath, "rootfs")))
+		options = append(options, fmt.Sprintf("lowerdir=%s", strings.Join(lowerdirs, ":")))
 		r.Rootfs = append(r.Rootfs, &types.Mount{
 			Type:    "overlay",
 			Source:  "overlay",
