@@ -162,11 +162,11 @@ func (c *agent) PullImage(ctx context.Context, req *image.PullImageReq) (*image.
 	}
 
 	// Create dir for store unionfs image (based on sefs)
-	sefsDir := filepath.Join(c.Bundle, "rootfs/images/", cid, "sefs")
-	lowerDir := filepath.Join(sefsDir, "lower")
-	upperDir := filepath.Join(sefsDir, "upper")
-	for _, dir := range []string{lowerDir, upperDir} {
-		if err := os.MkdirAll(dir, defaultDirPerm); err != nil {
+	for _, dir := range []string{"upper", "lower"} {
+		if err := os.MkdirAll(filepath.Join(c.Bundle, "rootfs", "images", cid, "sefs", dir), defaultDirPerm); err != nil {
+			return nil, err
+		}
+		if err := os.MkdirAll(filepath.Join(c.Bundle, "rootfs", "images", cid, "keys", "sefs", dir), defaultDirPerm); err != nil {
 			return nil, err
 		}
 	}
