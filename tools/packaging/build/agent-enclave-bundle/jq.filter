@@ -8,5 +8,9 @@
    "target": "/etc/",
    "type": "hostfs",
    "source": "/configs"
+},{
+   "target": "/keys/",
+   "type": "hostfs",
+   "source": "/keys"
 }] |
 if $ENV.SGX_MODE == "SIM" then .metadata.debuggable = true else .metadata.debuggable = false end
