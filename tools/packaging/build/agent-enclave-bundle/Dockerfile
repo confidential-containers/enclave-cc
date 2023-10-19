@@ -72,7 +72,8 @@ RUN export PATH="$PATH:/opt/occlum/build/bin" && \
 # TODO: add new build stage and copy occlum_instance.tar.gz to it
 WORKDIR /run/rune
 RUN tar xzf /run/enclave-agent/occlum_instance/occlum_instance.tar.gz && \
-    rm -rf /run/enclave-agent
+    rm -rf /run/enclave-agent && \
+    mkdir /keys
 
 RUN rm -rf $HOME/.cargo $HOME/.rustup /enclave-cc && sed -e '/cargo/d' -i /root/.profile && sed -e '/cargo/d' -i /root/.bashrc
 RUN apt-get purge -y wget gnupg tzdata jq occlum occlum-pal occlum-toolchains-glibc make binutils libfuse2 libfuse3-3 ca-certificates rsync build-essential cmake git && apt-get autoremove -y

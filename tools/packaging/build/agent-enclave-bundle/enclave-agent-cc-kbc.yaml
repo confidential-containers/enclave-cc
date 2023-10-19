@@ -1,6 +1,9 @@
 includes:
   - base.yaml
 targets:
+  - target: /
+    mkdirs:
+      - keys
   - target: /bin
     copy:
       - files:
