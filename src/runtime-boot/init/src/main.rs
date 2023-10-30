@@ -4,16 +4,20 @@ extern crate serde_json;
 
 use libc::syscall;
 
+use anyhow::{anyhow, Result};
+use nix::mount::MsFlags;
 use std::error::Error;
+use std::ffi::CString;
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
-use std::path::{Path, PathBuf};
-use std::fs;
-use nix::mount::MsFlags;
+
 use anyhow::{anyhow, Result};
 use std::ffi::CString;
+use std::fs;
 use std::mem::size_of;
+use std::path::{Path, PathBuf};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let rootfs_upper_layer = "/sefs/upper";
@@ -34,13 +38,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         Some(fs_type.as_str()),
         flags,
         Some("dir=/keys"),
-    ).unwrap_or_else(|e| panic!("mount failed: {e}"));
+    )
+    .unwrap_or_else(|e| panic!("mount failed: {e}"));
 
-    let KEY_FILE : &str = "/mnt/key.txt";
-    
+    let KEY_FILE: &str = "/mnt/key.txt";
     // Get the key of FS image
     let key = {
-
         let key_str = load_key(KEY_FILE)?;
         let mut key: sgx_key_128bit_t = Default::default();
         parse_str_to_bytes(&key_str, &mut key)?;
