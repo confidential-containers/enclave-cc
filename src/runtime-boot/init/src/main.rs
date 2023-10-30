@@ -8,26 +8,40 @@ use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
-
+use std::path::{Path, PathBuf};
+use std::fs;
+use nix::mount::MsFlags;
+use anyhow::{anyhow, Result};
 use std::ffi::CString;
 use std::mem::size_of;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // TODO: Get the rootfs key and other parameters through RA/LA or PAL
-    let rootfs_key = b"c7-32-b3-ed-44-df-ec-7b-25-2d-9a-32-38-8d-58-61";
     let rootfs_upper_layer = "/sefs/upper";
     let rootfs_lower_layer = "/sefs/lower";
     let rootfs_entry = "/";
 
-    // Get the key of FS image if needed
-    let key = {
-        const IMAGE_KEY_FILE: &str = "/etc/image_key";
-        // TODO: Get the key through RA or LA
-        let mut file = File::create(IMAGE_KEY_FILE)?;
-        // Writes key.
-        file.write_all(rootfs_key)?;
+    // Create and mount directory for fs key from agent enclave
+    fs::create_dir("/mnt");
+    let fs_type = String::from("hostfs");
+    let source = Path::new("/host");
+    let mount_path = Path::new("/mnt");
+    let flags = MsFlags::empty();
+    let source_c = CString::new(source.to_str().unwrap()).unwrap();
+    let mountpoint_c = CString::new(mount_path.to_str().unwrap()).unwrap();
+    nix::mount::mount(
+        Some(fs_type.as_str()),
+        mountpoint_c.as_c_str(),
+        Some(fs_type.as_str()),
+        flags,
+        Some("dir=/keys"),
+    ).unwrap_or_else(|e| panic!("mount failed: {e}"));
 
-        let key_str = load_key(IMAGE_KEY_FILE)?;
+    let KEY_FILE : &str = "/mnt/key.txt";
+    
+    // Get the key of FS image
+    let key = {
+
+        let key_str = load_key(KEY_FILE)?;
         let mut key: sgx_key_128bit_t = Default::default();
         parse_str_to_bytes(&key_str, &mut key)?;
         Some(key)
