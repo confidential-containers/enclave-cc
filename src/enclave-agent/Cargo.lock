@@ -160,7 +160,7 @@ dependencies = [
 [[package]]
 name = "attestation_agent"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -179,7 +179,7 @@ dependencies = [
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -757,7 +757,7 @@ checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2005,7 +2005,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -2276,7 +2276,7 @@ dependencies = [
 [[package]]
 name = "kbc"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2305,7 +2305,7 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2321,6 +2321,7 @@ dependencies = [
  "serde_json",
  "sha2 0.10.7",
  "thiserror",
+ "tokio",
  "url",
  "zeroize",
 ]
@@ -2764,7 +2765,7 @@ dependencies = [
 [[package]]
 name = "ocicrypt-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "aes",
  "anyhow",
@@ -3610,7 +3611,7 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components.git?rev=e5e6e69ae0ea01393a125cde8e2772ad98aba39c#e5e6e69ae0ea01393a125cde8e2772ad98aba39c"
+source = "git+https://github.com/confidential-containers/guest-components.git?rev=615a46ff16ee8670014946d14e44e85cede82f01#615a46ff16ee8670014946d14e44e85cede82f01"
 dependencies = [
  "anyhow",
  "serde",
