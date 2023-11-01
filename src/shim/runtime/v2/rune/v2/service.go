@@ -130,7 +130,7 @@ type service struct {
 	cancel      func()
 }
 
-func newCommand(ctx context.Context, id, containerdBinary, containerdAddress, containerdTTRPCAddress string) (*exec.Cmd, error) {
+func newCommand(ctx context.Context, id, containerdAddress string) (*exec.Cmd, error) {
 	ns, err := namespaces.NamespaceRequired(ctx)
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func readSpec() (*spec, error) {
 }
 
 func (s *service) StartShim(ctx context.Context, opts shim.StartOpts) (_ string, retErr error) {
-	cmd, err := newCommand(ctx, opts.ID, opts.ContainerdBinary, opts.Address, opts.TTRPCAddress)
+	cmd, err := newCommand(ctx, opts.ID, opts.Address)
 	if err != nil {
 		return "", err
 	}
@@ -245,11 +245,11 @@ func (s *service) StartShim(ctx context.Context, opts shim.StartOpts) (_ string,
 	go cmd.Wait()
 	if data, err := io.ReadAll(os.Stdin); err == nil {
 		if len(data) > 0 {
-			var any ptypes.Any
-			if err := proto.Unmarshal(data, &any); err != nil {
+			var anyv ptypes.Any
+			if err := proto.Unmarshal(data, &anyv); err != nil {
 				return "", err
 			}
-			v, err := typeurl.UnmarshalAny(&any)
+			v, err := typeurl.UnmarshalAny(&anyv)
 			if err != nil {
 				return "", err
 			}
@@ -370,7 +370,7 @@ func (s *service) Cleanup(ctx context.Context) (*taskAPI.DeleteResponse, error) 
 	}, nil
 }
 
-func setOCIRuntime(ctx context.Context, r *taskAPI.CreateTaskRequest) (err error) {
+func setOCIRuntime(r *taskAPI.CreateTaskRequest) (err error) {
 	var opts options.Options
 	// read options to get OCI Runtime
 	if r.Options != nil {
@@ -398,7 +398,7 @@ func (s *service) Create(ctx context.Context, r *taskAPI.CreateTaskRequest) (_ *
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	err = setOCIRuntime(ctx, r)
+	err = setOCIRuntime(r)
 	if err != nil {
 		return nil, err
 	}
@@ -809,7 +809,7 @@ func (s *service) Update(ctx context.Context, r *taskAPI.UpdateTaskRequest) (*pt
 }
 
 // Wait for a process to exit
-func (s *service) Wait(ctx context.Context, r *taskAPI.WaitRequest) (*taskAPI.WaitResponse, error) {
+func (s *service) Wait(_ context.Context, r *taskAPI.WaitRequest) (*taskAPI.WaitResponse, error) {
 	logrus.WithField("container", r.ID).Debug("Wait() start")
 	defer logrus.WithField("container", r.ID).Debug("Wait() end")
 
@@ -830,7 +830,7 @@ func (s *service) Wait(ctx context.Context, r *taskAPI.WaitRequest) (*taskAPI.Wa
 }
 
 // Connect returns shim information such as the shim's pid
-func (s *service) Connect(ctx context.Context, r *taskAPI.ConnectRequest) (*taskAPI.ConnectResponse, error) {
+func (s *service) Connect(_ context.Context, r *taskAPI.ConnectRequest) (*taskAPI.ConnectResponse, error) {
 	logrus.WithField("container", r.ID).Debug("Connect() start")
 	defer logrus.WithField("container", r.ID).Debug("Connect() end")
 
@@ -844,7 +844,7 @@ func (s *service) Connect(ctx context.Context, r *taskAPI.ConnectRequest) (*task
 	}, nil
 }
 
-func (s *service) Shutdown(ctx context.Context, r *taskAPI.ShutdownRequest) (*ptypes.Empty, error) {
+func (s *service) Shutdown(_ context.Context, _ *taskAPI.ShutdownRequest) (*ptypes.Empty, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -868,7 +868,7 @@ func (s *service) Shutdown(ctx context.Context, r *taskAPI.ShutdownRequest) (*pt
 	return empty, nil
 }
 
-func (s *service) Stats(ctx context.Context, r *taskAPI.StatsRequest) (*taskAPI.StatsResponse, error) {
+func (s *service) Stats(_ context.Context, r *taskAPI.StatsRequest) (*taskAPI.StatsResponse, error) {
 	container, err := s.getContainer(r.ID)
 	if err != nil {
 		return nil, err

@@ -3,7 +3,6 @@
 package client
 
 import (
-	"context"
 	"net"
 	"net/url"
 	"os"
@@ -42,7 +41,7 @@ type AgentClient struct {
 //
 // Supported sock address format is:
 //   - tcp://<ip>:<port>
-func NewAgentClient(ctx context.Context, sock string, timeout uint32) (*AgentClient, error) {
+func NewAgentClient(sock string, timeout uint32) (*AgentClient, error) {
 	addr, err := url.Parse(sock)
 	if err != nil {
 		return nil, err
