@@ -1,7 +1,6 @@
 linters:
   enable:
-    - structcheck
-    - varcheck
+    - unused
     - staticcheck
     - unconvert
     - goerr113
