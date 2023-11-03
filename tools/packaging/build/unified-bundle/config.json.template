@@ -18,6 +18,7 @@
                 ],
                 "env": [
                         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                        "ENCLAVE_AGENT=true",
                         "TERM=xterm"
                 ],
                 "cwd": "/run/rune/occlum_instance",

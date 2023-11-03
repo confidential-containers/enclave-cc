@@ -4,7 +4,10 @@ extern crate serde_json;
 
 use libc::syscall;
 
+<<<<<<< HEAD
 use nix::mount::MsFlags;
+=======
+>>>>>>> a80b2be (build: create unified libOS bundle)
 use std::env;
 use std::error::Error;
 use std::fs;
@@ -90,6 +93,18 @@ fn main() -> Result<(), Box<dyn Error>> {
             unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) }
         }
     };
+<<<<<<< HEAD
+=======
+
+    let agent_boot = matches!(env::var("ENCLAVE_AGENT"), Ok(val) if val == "true" || val == "TRUE" || val == "1");
+    let ret = match agent_boot {
+        true => {
+            let root_config_ptr: *const i8 = std::ptr::null();
+            unsafe { syscall(SYS_MOUNT_FS, root_config_ptr) }
+        }
+        false => unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) },
+    };
+>>>>>>> a80b2be (build: create unified libOS bundle)
     if ret < 0 {
         println!("ret is : {}", ret);
         return Err(Box::new(std::io::Error::last_os_error()));

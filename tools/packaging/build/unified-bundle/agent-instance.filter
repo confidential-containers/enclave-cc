@@ -3,6 +3,8 @@
 .resource_limits.kernel_space_stack_size= "128MB" |
 .resource_limits.max_num_of_threads = 8 |
 .entry_points = ["/bin/enclave-agent"] |
+.env.default |= . + ["LD_LIBRARY_PATH=/opt/occlum/glibc/lib:/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"] |
+.env.untrusted |= . + ["ENCLAVE_AGENT"] |
 .mount |= . +
 [{
    "target": "/etc/",

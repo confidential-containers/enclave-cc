@@ -1,4 +1,0 @@
-.resource_limits.user_space_size = "600MB" |
-.resource_limits.kernel_space_stack_size= "2MB" |
-.env.default |= . + ["LD_LIBRARY_PATH=/opt/occlum/glibc/lib:/lib/x86_64-linux-gnu/:/usr/local/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/lib"] |
-if $ENV.SGX_MODE == "SIM" then .metadata.debuggable = true else .metadata.debuggable = false end

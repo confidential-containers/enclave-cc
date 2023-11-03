@@ -22,15 +22,11 @@ export PAYLOAD_ARTIFACTS="${SCRIPT_ROOT}/payload_artifacts"
 mkdir -p ${PAYLOAD_ARTIFACTS}
 
 # build pre-installed OCI bundle for agent enclave container
-pushd ${SCRIPT_ROOT}/agent-enclave-bundle
-docker build ${ENCLAVE_CC_ROOT} -f ${SCRIPT_ROOT}/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t agent-instance
+pushd ${SCRIPT_ROOT}/unified-bundle
+docker build ${ENCLAVE_CC_ROOT} -f ${SCRIPT_ROOT}/unified-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t unified-instance
 jq -a -f sgx-mode-config.filter config.json.template | tee ${PAYLOAD_ARTIFACTS}/config.json
-docker export $(docker create agent-instance) | tee > ${PAYLOAD_ARTIFACTS}/agent-instance.tar
+docker export $(docker create unified-instance) | tee > ${PAYLOAD_ARTIFACTS}/unified-instance.tar
 popd
-
-# build pre-installed OCI bundle for boot instance
-docker build ${ENCLAVE_CC_ROOT} -f ${SCRIPT_ROOT}/boot-instance-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t boot-instance
-docker export $(docker create boot-instance) | tee > ${PAYLOAD_ARTIFACTS}/boot-instance.tar
 
 # build shim-rune binary: "containerd-shim-rune-v2"
 pushd ${ENCLAVE_CC_ROOT}/src/shim
@@ -55,5 +51,5 @@ fi
 popd
 
 #cleanup
-docker rmi ${IMAGE} boot-instance agent-instance -f
+docker rmi ${IMAGE} unified-instance -f
 rm -rf payload_artifacts
