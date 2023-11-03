@@ -4,6 +4,7 @@ extern crate serde_json;
 
 use libc::syscall;
 
+use std::env;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
@@ -59,7 +60,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         envp: envp.as_ptr(),
     };
 
-    let ret = unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) };
+    let agent_boot = matches!(env::var("ENCLAVE_AGENT"), Ok(val) if val == "true" || val == "TRUE" || val == "1");
+    let ret = match agent_boot {
+        true => {
+            let root_config_ptr: *const i8 = std::ptr::null();
+            unsafe { syscall(SYS_MOUNT_FS, root_config_ptr) }
+        }
+        false => unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) },
+    };
     if ret < 0 {
         return Err(Box::new(std::io::Error::last_os_error()));
     }

@@ -4,4 +4,4 @@ targets:
   - target: /bin/
     copy:
       - files:
-        - ../init
+        - /enclave-cc/src/runtime-boot/init/target/release/init
