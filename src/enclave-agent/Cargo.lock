@@ -2237,7 +2237,7 @@ dependencies = [
  "lalrpop-util",
  "petgraph 0.6.4",
  "regex",
- "regex-syntax 0.7.5",
+ "regex-syntax 0.6.28",
  "string_cache",
  "term",
  "tiny-keccak",
@@ -3425,6 +3425,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
 
 [[package]]
+name = "regex-syntax"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
+
+[[package]]
 name = "reqwest"
 version = "0.11.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3841,7 +3847,7 @@ dependencies = [
  "rand 0.8.5",
  "rand_core 0.6.4",
  "regex",
- "regex-syntax 0.8.2",
+ "regex-syntax 0.6.28",
  "ripemd",
  "rsa 0.9.6",
  "sha1collisiondetection",
