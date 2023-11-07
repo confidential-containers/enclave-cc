@@ -34,10 +34,10 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommend
     libfuse3-3 \
     rsync \
     occlum-toolchains-glibc \
-    occlum-pal=0.29.7-1 \
-    occlum-sgx-tools=0.29.7-1 \
-    occlum-runtime=0.29.7-1 \
-    occlum=0.29.7-1
+    occlum-pal=0.30.0-1 \
+    occlum-sgx-tools=0.30.0-1 \
+    occlum-runtime=0.30.0-1 \
+    occlum=0.30.0-1
 
 WORKDIR /run/occlum
 COPY --from=builder /enclave-cc/src/runtime-boot/init/target/release/init .
