@@ -28,7 +28,7 @@ func TestAgentConnect(t *testing.T) {
 		URL: url,
 	}
 
-	err = k.connect(context.Background())
+	err = k.connect()
 	assert.NoError(err)
 	assert.NotNil(k.client)
 }
@@ -48,8 +48,8 @@ func TestAgentDisconnect(t *testing.T) {
 		URL: url,
 	}
 
-	assert.NoError(k.connect(context.Background()))
-	assert.NoError(k.disconnect(context.Background()))
+	assert.NoError(k.connect())
+	assert.NoError(k.disconnect())
 	assert.Nil(k.client)
 }
 
