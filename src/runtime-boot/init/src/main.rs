@@ -4,7 +4,7 @@ extern crate serde_json;
 
 use libc::syscall;
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use nix::mount::MsFlags;
 use std::error::Error;
 use std::ffi::CString;
@@ -13,11 +13,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
 
-use anyhow::{anyhow, Result};
-use std::ffi::CString;
-use std::fs;
 use std::mem::size_of;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let rootfs_upper_layer = "/sefs/upper";
