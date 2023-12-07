@@ -38,7 +38,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           check-latest: true
           go-version-file: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim/go.mod
