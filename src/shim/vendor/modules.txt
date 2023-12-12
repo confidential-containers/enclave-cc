@@ -180,7 +180,7 @@ go.opencensus.io/trace/tracestate
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
 golang.org/x/exp/slices
-# golang.org/x/sync v0.3.0
+# golang.org/x/sync v0.4.0
 ## explicit; go 1.17
 golang.org/x/sync/errgroup
 # golang.org/x/sys v0.15.0
@@ -188,10 +188,10 @@ golang.org/x/sync/errgroup
 golang.org/x/sys/execabs
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# google.golang.org/genproto v0.0.0-20230822172742-b8732ec3820d => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+# google.golang.org/genproto v0.0.0-20231002182017-d307bd883b97 => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 ## explicit
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.59.0
+# google.golang.org/grpc v1.60.0
 ## explicit; go 1.19
 google.golang.org/grpc/attributes
 google.golang.org/grpc/codes
