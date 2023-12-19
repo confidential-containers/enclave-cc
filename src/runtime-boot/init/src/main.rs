@@ -4,80 +4,96 @@ extern crate serde_json;
 
 use libc::syscall;
 
-use anyhow::Result;
 use nix::mount::MsFlags;
+use std::env;
 use std::error::Error;
-use std::ffi::CString;
 use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
 
+use anyhow::Result;
+use std::ffi::CString;
 use std::mem::size_of;
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let rootfs_upper_layer = "/sefs/upper";
-    let rootfs_lower_layer = "/sefs/lower";
-    let rootfs_entry = "/";
-
-    // Create and mount directory for fs key from agent enclave
-    fs::create_dir("/mnt");
-    let fs_type = String::from("hostfs");
-    let source = Path::new("/host");
-    let mount_path = Path::new("/mnt");
-    let flags = MsFlags::empty();
-    let source_c = CString::new(source.to_str().unwrap()).unwrap();
-    let mountpoint_c = CString::new(mount_path.to_str().unwrap()).unwrap();
-    nix::mount::mount(
-        Some(fs_type.as_str()),
-        mountpoint_c.as_c_str(),
-        Some(fs_type.as_str()),
-        flags,
-        Some("dir=/keys"),
-    )
-    .unwrap_or_else(|e| panic!("mount failed: {e}"));
-
-    let KEY_FILE: &str = "/mnt/key.txt";
-    // Get the key of FS image
-    let key = {
-        let key_str = load_key(KEY_FILE)?;
-        let mut key: sgx_key_128bit_t = Default::default();
-        parse_str_to_bytes(&key_str, &mut key)?;
-        Some(key)
-    };
-
-    let key_ptr = key
-        .as_ref()
-        .map(|key| key as *const sgx_key_128bit_t)
-        .unwrap_or(std::ptr::null());
+    let agent_boot = matches!(env::var("ENCLAVE_AGENT"), Ok(val) if val == "true" || val == "TRUE" || val == "1");
 
     // Mount the image
     const SYS_MOUNT_FS: i64 = 363;
+    let ret = match agent_boot {
+        true => {
+            let root_config_ptr: *const i8 = std::ptr::null();
+            unsafe { syscall(SYS_MOUNT_FS, root_config_ptr) }
+        }
+        false => {
+            let rootfs_upper_layer = "/sefs/upper";
+            let rootfs_lower_layer = "/sefs/lower";
+            let rootfs_entry = "/";
 
-    // Example envs. must end with null
-    let env1 = CString::new("TEST=1234").unwrap();
-    let envp = [env1.as_ptr(), std::ptr::null()];
-    // Set rootfs parameters
-    let upper_layer_path = CString::new(rootfs_upper_layer).expect("CString::new failed");
-    let lower_layer_path = CString::new(rootfs_lower_layer).expect("CString::new failed");
-    let entry_point = CString::new(rootfs_entry).expect("CString::new failed");
-    let hostfs_source = CString::new("/tmp").expect("CString::new failed");
-    let rootfs_config: user_rootfs_config = user_rootfs_config {
-        len: size_of::<user_rootfs_config>(),
-        upper_layer_path: upper_layer_path.as_ptr(),
-        lower_layer_path: lower_layer_path.as_ptr(),
-        entry_point: entry_point.as_ptr(),
-        hostfs_source: hostfs_source.as_ptr(),
-        hostfs_target: std::ptr::null(),
-        envp: envp.as_ptr(),
+            let fs_type = String::from("sefs");
+            let source = Path::new(&fs_type);
+
+            // Create and mount directory for fs key from agent enclave
+            fs::create_dir("/mnt")?;
+            let mount_path = Path::new("/tmp");
+            let flags = MsFlags::empty();
+
+            let options = format!(
+                "dir={}",
+                Path::new("/keys").join("sefs").join("lower").display()
+            );
+            nix::mount::mount(
+                Some(source),
+                mount_path,
+                Some(fs_type.as_str()),
+                flags,
+                Some(options.as_str()),
+            )
+            .unwrap_or_else(|err| {
+                eprintln!("Error reading file: {}", err);
+            });
+
+            let KEY_FILE: &str = "/tmp/key.txt";
+            // Get the key of FS image
+            let key = {
+                let key_str = load_key(KEY_FILE)?;
+                let mut key: sgx_key_128bit_t = Default::default();
+                parse_str_to_bytes(&key_str, &mut key)?;
+                Some(key)
+            };
+
+            let key_ptr = key
+                .as_ref()
+                .map(|key| key as *const sgx_key_128bit_t)
+                .unwrap_or(std::ptr::null());
+
+            // Example envs. must end with null
+            let env1 = CString::new("TEST=1234").unwrap();
+            let envp = [env1.as_ptr(), std::ptr::null()];
+            // Set rootfs parameters
+            let upper_layer_path = CString::new(rootfs_upper_layer).expect("CString::new failed");
+            let lower_layer_path = CString::new(rootfs_lower_layer).expect("CString::new failed");
+            let entry_point = CString::new(rootfs_entry).expect("CString::new failed");
+            let hostfs_source = CString::new("/tmp").expect("CString::new failed");
+            let rootfs_config: user_rootfs_config = user_rootfs_config {
+                len: size_of::<user_rootfs_config>(),
+                upper_layer_path: upper_layer_path.as_ptr(),
+                lower_layer_path: lower_layer_path.as_ptr(),
+                entry_point: entry_point.as_ptr(),
+                hostfs_source: hostfs_source.as_ptr(),
+                hostfs_target: std::ptr::null(),
+                envp: envp.as_ptr(),
+            };
+            let key_null_ptr: *const i8 = std::ptr::null();
+            unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) }
+        }
     };
-
-    let ret = unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) };
     if ret < 0 {
+        println!("ret is : {}", ret);
         return Err(Box::new(std::io::Error::last_os_error()));
     }
-
     Ok(())
 }
 
