@@ -63,11 +63,11 @@ function get_container_runtime() {
 function install_artifacts() {
 	echo "copying enclave-cc artifacts onto host"
 	mkdir -p  /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
-	tar -xf agent-instance.tar -C /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
+	tar -xf unified-instance.tar -C /opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
 	cp config.json /opt/confidential-containers/share/enclave-cc-agent-instance
 
 	mkdir -p  /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
-	tar -xf boot-instance.tar -C /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
+	tar -xf unified-instance.tar -C /opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
 
 	cp shim-rune-config.toml /etc/enclave-cc/config.toml
 

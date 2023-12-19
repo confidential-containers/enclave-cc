@@ -75,6 +75,6 @@ func (st *SockTTRPCMock) Stop() error {
 
 type SockTTRPCMockImp struct{}
 
-func (p *SockTTRPCMockImp) PullImage(ctx context.Context, req *pb.PullImageRequest) (*pb.PullImageResponse, error) {
+func (p *SockTTRPCMockImp) PullImage(_ context.Context, _ *pb.PullImageRequest) (*pb.PullImageResponse, error) {
 	return &pb.PullImageResponse{}, nil
 }

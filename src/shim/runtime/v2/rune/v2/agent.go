@@ -65,7 +65,7 @@ func (c *agent) Logger() *logrus.Entry {
 	return logrus.WithField("source", "agent_enclave_container")
 }
 
-func (c *agent) connect(ctx context.Context) error {
+func (c *agent) connect() error {
 	if c.dead {
 		return fmt.Errorf("%w: Dead agent", errAgent)
 	}
@@ -82,19 +82,19 @@ func (c *agent) connect(ctx context.Context) error {
 	}
 
 	c.Logger().WithField("url", c.URL).Info("New client")
-	client, err := agentClient.NewAgentClient(ctx, c.URL, c.dialTimout)
+	client, err := agentClient.NewAgentClient(c.URL, c.dialTimout)
 	if err != nil {
 		c.dead = true
 		return err
 	}
 
-	c.installReqFunc(client)
 	c.client = client
+	c.installReqFunc()
 
 	return nil
 }
 
-func (c *agent) disconnect(ctx context.Context) error {
+func (c *agent) disconnect() error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -114,7 +114,7 @@ func (c *agent) disconnect(ctx context.Context) error {
 
 type reqFunc func(context.Context, interface{}) (interface{}, error)
 
-func (c *agent) installReqFunc(client *agentClient.AgentClient) {
+func (c *agent) installReqFunc() {
 	c.reqHandlers = make(map[string]reqFunc)
 	c.reqHandlers[grpcPullImageRequest] = func(ctx context.Context, req interface{}) (interface{}, error) {
 		return c.client.ImageServiceClient.PullImage(ctx, req.(*grpc.PullImageRequest))
@@ -122,11 +122,11 @@ func (c *agent) installReqFunc(client *agentClient.AgentClient) {
 }
 
 func (c *agent) sendReq(spanCtx context.Context, request interface{}) (interface{}, error) {
-	if err := c.connect(spanCtx); err != nil {
+	if err := c.connect(); err != nil {
 		return nil, err
 	}
 
-	defer c.disconnect(spanCtx)
+	defer c.disconnect()
 
 	msgName := proto.MessageName(request.(proto.Message))
 
@@ -162,11 +162,11 @@ func (c *agent) PullImage(ctx context.Context, req *image.PullImageReq) (*image.
 	}
 
 	// Create dir for store unionfs image (based on sefs)
-	sefsDir := filepath.Join(c.Bundle, "rootfs/images/", cid, "sefs")
-	lowerDir := filepath.Join(sefsDir, "lower")
-	upperDir := filepath.Join(sefsDir, "upper")
-	for _, dir := range []string{lowerDir, upperDir} {
-		if err := os.MkdirAll(dir, defaultDirPerm); err != nil {
+	for _, dir := range []string{"upper", "lower"} {
+		if err := os.MkdirAll(filepath.Join(c.Bundle, "rootfs", "images", cid, "sefs", dir), defaultDirPerm); err != nil {
+			return nil, err
+		}
+		if err := os.MkdirAll(filepath.Join(c.Bundle, "rootfs", "images", cid, "keys", "sefs", dir), defaultDirPerm); err != nil {
 			return nil, err
 		}
 	}

@@ -7,15 +7,15 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.32"
-async-trait = "0.1.42"
-clap = "2.33.3"
+async-trait = "0.1.73"
+clap = { version = "4.4.6", features = ["derive"] }
 
 # logger module
 env_logger = "0.10.0"
 
 image-rs = { git = "https://github.com/piotrpalcz/image-rs.git", default-features = false, branch = "random_key_2" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
-log = "0.4.11"
+log = "0.4.20"
 protocols = { path = "../libs/protocols" }
 serde = ">=1.0.9"
 serde_json = ">=1.0.9"
@@ -47,7 +47,7 @@ cc-kbc-rustls-tls = [ "image-rs/enclave-cc-cckbc-rustls-tls" ]
 cc-kbc-native-tls = [ "image-rs/enclave-cc-cckbc-native-tls" ]
 
 [build-dependencies]
-ttrpc-codegen = "0.2.0"
+ttrpc-codegen = "0.3.0"
 
 [dev-dependencies]
 rstest = "0.16.0"

@@ -34,11 +34,11 @@ jobs:
       PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           check-latest: true
           go-version-file: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim/go.mod
@@ -81,31 +81,25 @@ jobs:
           sed -e 's#\(.*container_instance = "\)\(.*\)$#\1'$PAYLOAD_ARTIFACTS'\2#g' config/config.toml | sudo tee /etc/enclave-cc/config.toml
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim
 
-      - name: Build agent-enclave bundle
+      - name: Build unified bundle
         run: |
           mkdir $PAYLOAD_ARTIFACTS
-          docker build . -f tools/packaging/build/agent-enclave-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t agent-instance:build
-          docker export $(docker create agent-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/agent-instance.tar
+          docker build . -f tools/packaging/build/unified-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} --build-arg KBC=${KBC} -t unified-instance:build
+          docker export $(docker create unified-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/unified-instance.tar
         working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
       - name: Install config.json for agent-enclave bundle
         run: |
           jq -a -f sgx-mode-config.filter config.json.template | tee ${PAYLOAD_ARTIFACTS}/config.json
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/tools/packaging/build/agent-enclave-bundle
-
-      - name: Build boot-instance bundle
-        run: |
-          docker build . -f tools/packaging/build/boot-instance-bundle/Dockerfile --build-arg SGX_MODE=${SGX_MODE} -t boot-instance:build
-          docker export $(docker create boot-instance:build) | tee > ${PAYLOAD_ARTIFACTS}/boot-instance.tar
-        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
+        working-directory: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/tools/packaging/build/unified-bundle
 
       - name: Install enclave-cc bundles
         run: |
           mkdir -p opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
-          sudo tar -xf agent-instance.tar -C opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
+          sudo tar -xf unified-instance.tar -C opt/confidential-containers/share/enclave-cc-agent-instance/rootfs
           cp config.json opt/confidential-containers/share/enclave-cc-agent-instance/
           mkdir -p opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
-          sudo tar -xf boot-instance.tar -C opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
+          sudo tar -xf unified-instance.tar -C opt/confidential-containers/share/enclave-cc-boot-instance/rootfs
         working-directory: ${{env.PAYLOAD_ARTIFACTS}}
 
       - name: Install decrypt_config.conf and ocicrypt.conf for agent-enclave bundle

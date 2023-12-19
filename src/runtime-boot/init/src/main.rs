@@ -18,10 +18,12 @@ use std::mem::size_of;
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn Error>> {
+    
     let agent_boot = matches!(env::var("ENCLAVE_AGENT"), Ok(val) if val == "true" || val == "TRUE" || val == "1");
 
     // Mount the image
     const SYS_MOUNT_FS: i64 = 363;
+
     let ret = match agent_boot {
         true => {
             let root_config_ptr: *const i8 = std::ptr::null();
@@ -56,6 +58,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             });
 
             let KEY_FILE: &str = "/tmp/key.txt";
+            
             // Get the key of FS image
             let key = {
                 let key_str = load_key(KEY_FILE)?;

@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.3.2
 	github.com/containerd/cgroups v1.1.0
 	github.com/containerd/containerd v1.6.1
-	github.com/containerd/continuity v0.4.1
+	github.com/containerd/continuity v0.4.3
 	github.com/containerd/go-runc v1.0.0
 	github.com/containerd/ttrpc v1.1.2
 	github.com/containerd/typeurl v1.0.2
@@ -15,8 +15,8 @@ require (
 	github.com/prashantv/gostub v1.1.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/sys v0.11.0
-	google.golang.org/grpc v1.57.0
+	golang.org/x/sys v0.15.0
+	google.golang.org/grpc v1.60.0
 )
 
 require (
@@ -40,9 +40,10 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	go.opencensus.io v0.23.0 // indirect
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
+	golang.org/x/sync v0.4.0 // indirect
+	google.golang.org/genproto v0.0.0-20231002182017-d307bd883b97 // indirect
+	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.1.0 // indirect
 )
@@ -51,3 +52,5 @@ replace (
 	github.com/containerd/containerd => github.com/confidential-containers/containerd v1.6.7-0.20220619164525-4b12e77e79dc
 	google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 )
+
+replace github.com/cilium/ebpf => github.com/cilium/ebpf v0.11.0

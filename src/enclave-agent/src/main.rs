@@ -1,76 +1,49 @@
-use std::env;
 use std::sync::Arc;
 
 use anyhow::Result;
-use clap::{crate_authors, crate_version, App, Arg};
-use log::info;
+use clap::Parser;
+use log::{info, warn};
 use protocols::image_ttrpc;
 use tokio::signal::unix::{signal, SignalKind};
 use ttrpc::asynchronous::Server;
 
 mod config;
-use config::{DecryptConfig, OcicryptConfig, DEFAULT_OCICRYPT_CONFIG_PATH};
+use config::{DecryptConfig, OcicryptConfig};
 
 mod services;
 use services::images::ImageService;
 
-// TODO: will replace with unix socket
-const TCP_SOCK_ADDR: &str = "tcp://0.0.0.0:7788";
+#[derive(Debug, Parser)]
+#[command(version, long_about = None)]
+struct Cli {
+    /// enclave-agent socket listen address
+    #[arg(default_value_t = String::from("tcp://0.0.0.0:7788"), short, long)]
+    listen: String,
+
+    /// decrypt configuration file path
+    #[arg(default_value_t = String::default(), short = 'c', long)]
+    decrypt_config: String,
+
+    /// ocicrypt configuration file path
+    #[arg(default_value_t = String::from("/etc/ocicrypt.conf"), short, long)]
+    ocicrypt_config: String,
+}
 
 #[tokio::main(worker_threads = 1)]
 async fn main() -> Result<()> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
-    let matches = App::new("Enclave agent")
-        .version(crate_version!())
-        .author(crate_authors!())
-        .arg(
-            Arg::with_name("listen")
-                .short("l")
-                .long("listen")
-                .value_name("sockaddr")
-                .help(&format!(
-                    "{}{}",
-                    "Specify the socket listen addr. Default is ", TCP_SOCK_ADDR
-                ))
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("decrypt-config")
-                .short("c")
-                .long("decrypt-config")
-                .help("The decrypt config file path".as_ref())
-                .takes_value(true)
-                .required(false),
-        )
-        .arg(
-            Arg::with_name("ocicrypt-config")
-                .short("o")
-                .long("ocicrypt-config")
-                .help("The ocicrypt config file path".as_ref())
-                .takes_value(true)
-                .required(false),
-        )
-        .get_matches();
+    let cli = Cli::parse();
 
-    let sockaddr = if let Some(addr) = matches.value_of("listen") {
-        addr
-    } else {
-        TCP_SOCK_ADDR
+    let dc = match DecryptConfig::load_from_file(&cli.decrypt_config) {
+        Ok(config) => config,
+        Err(e) => {
+            warn!("Setting default DecryptConfig because: {:?}", e);
+            DecryptConfig::default()
+        }
     };
 
-    let dc = if let Some(file_path) = matches.value_of("decrypt-config") {
-        DecryptConfig::load_from_file(&file_path.to_string())?
-    } else {
-        DecryptConfig::default()
-    };
-
-    let oc = if let Some(file_path) = matches.value_of("ocicrypt-config") {
-        OcicryptConfig::new(file_path.to_string())?
-    } else {
-        OcicryptConfig::new(DEFAULT_OCICRYPT_CONFIG_PATH.to_string())?
-    };
-    oc.export_to_env();
+    OcicryptConfig::new(cli.ocicrypt_config)?.export_to_env();
 
     let image_service =
         Box::new(ImageService::new(dc)) as Box<dyn image_ttrpc::Image + Send + Sync>;
@@ -78,13 +51,13 @@ async fn main() -> Result<()> {
     let image_service = image_ttrpc::create_image(Arc::new(image_service));
 
     let mut server = Server::new()
-        .bind(sockaddr)?
+        .bind(&cli.listen)?
         .register_service(image_service);
 
     let mut interrupt = signal(SignalKind::interrupt())?;
     server.start().await?;
 
-    info!("ttRPC server started: {:?}", sockaddr);
+    info!("ttRPC server started: {:?}", cli.listen);
 
     tokio::select! {
         _ = interrupt.recv() => {

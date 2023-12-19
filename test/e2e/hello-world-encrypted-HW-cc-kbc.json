@@ -9,10 +9,10 @@
     {"key": "OCCLUM_RELEASE_ENCLAVE", "value": "1"}
   ],
   "command": [
-    "/run/rune/boot_instance/build/bin/occlum-run",
+    "/run/rune/occlum_instance/build/bin/occlum-run",
     "/bin/hello_world"
   ],
-  "working_dir": "/run/rune/boot_instance/",
+  "working_dir": "/run/rune/occlum_instance/",
   "log_path":"hello.log",
   "devices": [
     {"container_path": "/dev/sgx_enclave", "host_path": "/dev/sgx_enclave", "permissions": "rw"}

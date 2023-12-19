@@ -32,13 +32,15 @@ github.com/Microsoft/hcsshim/internal/vmcompute
 github.com/Microsoft/hcsshim/internal/wclayer
 github.com/Microsoft/hcsshim/internal/winapi
 github.com/Microsoft/hcsshim/osversion
-# github.com/cilium/ebpf v0.9.1
-## explicit; go 1.17
+# github.com/cilium/ebpf v0.9.1 => github.com/cilium/ebpf v0.11.0
+## explicit; go 1.19
 github.com/cilium/ebpf
 github.com/cilium/ebpf/asm
 github.com/cilium/ebpf/btf
 github.com/cilium/ebpf/internal
+github.com/cilium/ebpf/internal/kconfig
 github.com/cilium/ebpf/internal/sys
+github.com/cilium/ebpf/internal/tracefs
 github.com/cilium/ebpf/internal/unix
 github.com/cilium/ebpf/link
 # github.com/containerd/cgroups v1.1.0
@@ -84,7 +86,7 @@ github.com/containerd/containerd/runtime/v2/task
 github.com/containerd/containerd/sys
 github.com/containerd/containerd/sys/reaper
 github.com/containerd/containerd/version
-# github.com/containerd/continuity v0.4.1
+# github.com/containerd/continuity v0.4.3
 ## explicit; go 1.19
 github.com/containerd/continuity/fs
 github.com/containerd/continuity/sysx
@@ -173,20 +175,24 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-## explicit
-golang.org/x/sync/errgroup
-# golang.org/x/sys v0.11.0
+# golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
+## explicit; go 1.18
+golang.org/x/exp/constraints
+golang.org/x/exp/maps
+golang.org/x/exp/slices
+# golang.org/x/sync v0.4.0
 ## explicit; go 1.17
+golang.org/x/sync/errgroup
+# golang.org/x/sys v0.15.0
+## explicit; go 1.18
 golang.org/x/sys/execabs
-golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54 => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+# google.golang.org/genproto v0.0.0-20231002182017-d307bd883b97 => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 ## explicit
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.57.0
-## explicit; go 1.17
+# google.golang.org/grpc v1.60.0
+## explicit; go 1.19
 google.golang.org/grpc/attributes
 google.golang.org/grpc/codes
 google.golang.org/grpc/connectivity
@@ -200,7 +206,7 @@ google.golang.org/grpc/metadata
 google.golang.org/grpc/resolver
 google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/status
-# google.golang.org/protobuf v1.30.0
+# google.golang.org/protobuf v1.31.0
 ## explicit; go 1.11
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -239,3 +245,4 @@ gopkg.in/yaml.v3
 ## explicit; go 1.11
 # github.com/containerd/containerd => github.com/confidential-containers/containerd v1.6.7-0.20220619164525-4b12e77e79dc
 # google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+# github.com/cilium/ebpf => github.com/cilium/ebpf v0.11.0
