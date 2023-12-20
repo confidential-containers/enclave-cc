@@ -17,7 +17,7 @@ ARG RUST_VERSION=1.72.0
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain=${RUST_VERSION}
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main" | tee -a /etc/apt/sources.list.d/intel-sgx.list \
  && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | gpg --dearmor --output /usr/share/keyrings/intel-sgx.gpg \
- && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/apt_preference_files/99sgx_${SGXSDK_VERSION}_focal_custom_version.cfg | tee -a /etc/apt/preferences.d/99sgx_sdk.cfg \
+ && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/apt_preference_files/99sgx_${SGXSDK_VERSION}_focal_custom_version.cfg | tee -a /etc/apt/preferences.d/99sgx_sdk \
  && apt-get update \
  && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     libsgx-uae-service \
@@ -95,7 +95,7 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://d
  && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/occlum.gpg] https://occlum.io/occlum-package-repos/debian focal main" | tee -a /etc/apt/sources.list.d/occlum.list \
  && wget -qO - https://occlum.io/occlum-package-repos/debian/public.key | gpg --dearmor --output /usr/share/keyrings/occlum.gpg \
  && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/intel-sgx-deb.key | gpg --dearmor --output /usr/share/keyrings/intel-sgx.gpg \
- && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/apt_preference_files/99sgx_${SGXSDK_VERSION}_focal_custom_version.cfg | tee -a /etc/apt/preferences.d/99sgx_sdk.cfg \
+ && wget -qO - https://download.01.org/intel-sgx/sgx_repo/ubuntu/apt_preference_files/99sgx_${SGXSDK_VERSION}_focal_custom_version.cfg | tee -a /etc/apt/preferences.d/99sgx_sdk \
  && apt-get update \
  && env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     libsgx-uae-service \
