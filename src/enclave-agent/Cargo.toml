@@ -13,7 +13,7 @@ clap = { version = "4.4.6", features = ["derive"] }
 # logger module
 env_logger = "0.10.0"
 
-image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "5d4bb95578b611d15d6907b3419f5cb129572e51" }
+image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "ee6306cc96f40c7488f2e3d22b6de4b39b377ad5" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.20"
 protocols = { path = "../libs/protocols" }
@@ -33,14 +33,6 @@ default = ["cc-kbc-rustls-tls"]
 
 # confidential resource injection using sample-kbc
 simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign-rustls", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption-ring", "image-rs/oci-distribution-rustls"]
-
-# confidential resource injection using eaa-kbc. (Deprecated)
-#
-# Note: eaa-kbc support for enclave-cc has been deprecated.
-# Check issue https://github.com/confidential-containers/enclave-cc/issues/160
-# for more information.
-eaa-kbc-rustls-tls = [ "image-rs/enclave-cc-eaakbc-rustls-tls" ]
-eaa-kbc-native-tls = [ "image-rs/enclave-cc-eaakbc-native-tls" ]
 
 # confidential resource injection using cc-kbc (Recommended)
 cc-kbc-rustls-tls = [ "image-rs/enclave-cc-cckbc-rustls-tls" ]
