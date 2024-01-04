@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.32"
-async-trait = "0.1.73"
+async-trait = "0.1.77"
 clap = { version = "4.4.6", features = ["derive"] }
 
 # logger module
