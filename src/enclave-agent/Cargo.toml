@@ -50,4 +50,4 @@ cc-kbc-native-tls = [ "image-rs/enclave-cc-cckbc-native-tls" ]
 ttrpc-codegen = "0.3.0"
 
 [dev-dependencies]
-rstest = "0.16.0"
+rstest = "0.18.2"
