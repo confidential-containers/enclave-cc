@@ -7,9 +7,7 @@ use libc::syscall;
 use nix::mount::MsFlags;
 use std::env;
 use std::error::Error;
-use std::fs;
 use std::fs::File;
-use std::io::prelude::*;
 use std::io::{ErrorKind, Read};
 
 use anyhow::Result;
@@ -22,6 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Mount the image
     const SYS_MOUNT_FS: i64 = 363;
+    const KEY_FILE: &str = "/tmp/key.txt";
 
     let ret = match agent_boot {
         true => {
@@ -50,7 +49,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                 eprintln!("Error mounting keys: {}", err);
             });
 
-            let KEY_FILE: &str = "/tmp/key.txt";
             // Get the key of FS image
             let key = {
                 let key_str = load_key(KEY_FILE)?;
@@ -81,7 +79,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                 hostfs_target: std::ptr::null(),
                 envp: envp.as_ptr(),
             };
-            let key_null_ptr: *const i8 = std::ptr::null();
             unsafe { syscall(SYS_MOUNT_FS, key_ptr, &rootfs_config) }
         }
     };
