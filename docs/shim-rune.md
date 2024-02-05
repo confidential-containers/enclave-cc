@@ -15,7 +15,7 @@ Kubernetes can launch Pod and OCI-compatible containers with one shim per Pod.
 
 ## Goals
 
-- Implements [Containerd Runtime V2 (Shim API)](https://github.com/containerd/containerd/tree/main/runtime/v2)
+- Implements [Containerd Runtime V2 (Shim API)](https://github.com/containerd/containerd/tree/96bf529cbf55940ddb96bb8adc8be51b11922ebb/core/runtime/v2)
 - Use `rune` OCI runtime to manage container
 - Launch agent enclave container during PodSandbox creation
 - Complete PullImage with agent enclave container with ttrpc communication
