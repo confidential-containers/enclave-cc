@@ -39,7 +39,7 @@ jobs:
         working-directory: src/shim
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: v1.55.1
           args: -v --timeout 5m
