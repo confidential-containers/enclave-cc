@@ -5,7 +5,7 @@ CI=${CI:-no}
 PUSH=${PUSH:-no}
 SGX_MODE=${SGX_MODE:-HW}
 KBC=${KBC:-cc-kbc}
-GO_VERSION=${GO_VERSION:-1.21}
+GO_VERSION=${GO_VERSION:-1.22}
 if [ "${CI}" == "yes" ]; then
 	DEFAULT_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-${KBC}-$(git rev-parse HEAD)
 	DEFAULT_LATEST_IMAGE=quay.io/confidential-containers/runtime-payload-ci:enclave-cc-${SGX_MODE}-${KBC}-latest
