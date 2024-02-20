@@ -6,27 +6,24 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.79"
+anyhow = "1.0.80"
 async-trait = "0.1.77"
 clap = { version = "4.5.1", features = ["derive"] }
 
 # logger module
 env_logger = "0.10.2"
 
-image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "ee6306cc96f40c7488f2e3d22b6de4b39b377ad5" }
+image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "4eb69cf1211d60c04f71fc440b35a157cbaacc79" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.20"
 protocols = { path = "../libs/protocols" }
-serde = ">=1.0.9"
-serde_json = ">=1.0.9"
+serde = "1.0.197"
+serde_json = "1.0.114"
 
 # Async runtime
 tokio = { version = "1.36.0", features = ["rt-multi-thread", "macros", "signal"] }
 
 ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
-
-[patch.crates-io]
-oci-distribution = { git = "https://github.com/krustlet/oci-distribution.git", rev = "f44124c" }
 
 [features]
 default = ["cc-kbc-rustls-tls"]
