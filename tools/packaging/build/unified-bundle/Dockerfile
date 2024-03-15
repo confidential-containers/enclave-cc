@@ -10,8 +10,8 @@ RUN apt-get update && \
     wget \
     gnupg
 
-ARG OCCLUM_VERSION=0.30.0-1
-ARG SGXSDK_VERSION=2_22_100
+ARG OCCLUM_VERSION=0.30.1-1
+ARG SGXSDK_VERSION=2_23_100
 ARG RUST_VERSION=1.76.0
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain=${RUST_VERSION}
@@ -88,8 +88,8 @@ RUN apt-get update && \
     wget \
     gnupg
 
-ARG OCCLUM_VERSION=0.30.0-1
-ARG SGXSDK_VERSION=2_22_100
+ARG OCCLUM_VERSION=0.30.1-1
+ARG SGXSDK_VERSION=2_23_100
 
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main" | tee -a /etc/apt/sources.list.d/intel-sgx.list \
  && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/occlum.gpg] https://occlum.io/occlum-package-repos/debian focal main" | tee -a /etc/apt/sources.list.d/occlum.list \
