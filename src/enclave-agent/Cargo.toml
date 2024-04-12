@@ -13,7 +13,7 @@ clap = { version = "4.5.4", features = ["derive"] }
 # logger module
 env_logger = "0.11.3"
 
-image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "4eb69cf1211d60c04f71fc440b35a157cbaacc79" }
+image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "83bdec2c7445db1eca263be9daf516d2e4f0975c" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", rev = "4b57c04c3379d6adc7f440d156f0e4c42ac157df" }
 log = "0.4.21"
 protocols = { path = "../libs/protocols" }
