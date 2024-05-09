@@ -18,7 +18,7 @@ kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", re
 log = "0.4.21"
 protocols = { path = "../libs/protocols" }
 serde = "1.0.200"
-serde_json = "1.0.116"
+serde_json = "1.0.117"
 
 # Async runtime
 tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "signal"] }
