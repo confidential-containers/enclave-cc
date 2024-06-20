@@ -70,9 +70,8 @@ The script content:
 #!/bin/bash
 
 echo "delete previous workspace $GITHUB_WORKSPACE"
-pushd $GITHUB_WORKSPACE
-sudo rm -rf coco src
-popd
+sudo rm -rf $GITHUB_WORKSPACE/coco
+sudo rm -rf $GITHUB_WORKSPACE/src
 
 echo "delete lingering pods"
 for i in $(sudo crictl pods -q); do
