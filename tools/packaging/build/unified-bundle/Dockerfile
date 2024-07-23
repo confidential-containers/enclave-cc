@@ -10,7 +10,7 @@ RUN apt-get update && \
     wget \
     gnupg
 
-ARG OCCLUM_VERSION=0.30.1-1
+ARG OCCLUM_VERSION=0.30.1-focal-1
 ARG SGXSDK_VERSION=2_23_100
 ARG RUST_VERSION=1.76.0
 
@@ -88,7 +88,7 @@ RUN apt-get update && \
     wget \
     gnupg
 
-ARG OCCLUM_VERSION=0.30.1-1
+ARG OCCLUM_VERSION=0.30.1-focal-1
 ARG SGXSDK_VERSION=2_23_100
 
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-sgx.gpg] https://download.01.org/intel-sgx/sgx_repo/ubuntu focal main" | tee -a /etc/apt/sources.list.d/intel-sgx.list \
