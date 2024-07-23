@@ -14,6 +14,8 @@ targets:
       - files:
          - /opt/occlum/glibc/lib/libnss_files.so.2
          - /opt/occlum/glibc/lib/libnss_dns.so.2
+         - /opt/occlum/glibc/lib/libresolv.so.2
+         - /opt/occlum/glibc/lib/librt.so.1
          - /lib/x86_64-linux-gnu/libdl.so.2
   - target: /usr/lib/ssl
     copy:
