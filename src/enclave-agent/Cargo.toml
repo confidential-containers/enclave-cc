@@ -11,7 +11,7 @@ async-trait = "0.1.80"
 clap = { version = "4.5.11", features = ["derive"] }
 
 # logger module
-env_logger = "0.11.3"
+env_logger = "0.11.5"
 
 image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, tag = "v0.9.0" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", tag = "3.7.0" }
