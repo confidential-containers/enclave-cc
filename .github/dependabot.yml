@@ -1,15 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: "cargo"
-    directory: "/src/enclave-agent"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 1
-    allow:
-      - dependency-type: direct
-
-  - package-ecosystem: "cargo"
-    directory: "/src/runtime-boot/init"
+    directories:
+      - "/src/enclave-agent"
+      - "/src/runtime-boot/init"
     schedule:
       interval: daily
     open-pull-requests-limit: 1
