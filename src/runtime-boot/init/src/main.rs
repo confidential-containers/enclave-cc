@@ -24,8 +24,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let ret = match agent_boot {
         true => {
-            let root_config_ptr: *const i8 = std::ptr::null();
-            unsafe { syscall(SYS_MOUNT_FS, root_config_ptr) }
+            let null_ptr: *const i8 = std::ptr::null();
+            unsafe { syscall(SYS_MOUNT_FS, null_ptr, null_ptr) }
         }
         false => {
             let rootfs_upper_layer = "/sefs/upper";
