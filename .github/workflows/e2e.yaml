@@ -34,11 +34,11 @@ jobs:
       PAYLOAD_ARTIFACTS: ${{ github.workspace }}/coco
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           path: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
         with:
           check-latest: true
           go-version-file: ${{ github.workspace }}/src/github.com/confidential-containers/enclave-cc/src/shim/go.mod
