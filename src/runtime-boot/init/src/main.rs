@@ -1,6 +1,4 @@
 extern crate libc;
-extern crate serde;
-extern crate serde_json;
 
 use libc::syscall;
 
