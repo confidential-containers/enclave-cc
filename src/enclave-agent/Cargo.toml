@@ -13,7 +13,7 @@ clap = { version = "4.5.13", features = ["derive"] }
 # logger module
 env_logger = "0.11.5"
 
-image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, tag = "v0.9.0" }
+image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "v0.10.0" }
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", tag = "3.7.0" }
 log = "0.4.22"
 protocols = { path = "../libs/protocols" }
@@ -29,7 +29,7 @@ ttrpc = { git = "https://github.com/haosanzi/ttrpc-rust", features = ["async"] }
 default = ["cc-kbc-rustls-tls"]
 
 # confidential resource injection using sample-kbc
-simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign-rustls", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption-ring", "image-rs/oci-distribution-rustls"]
+simple = ["image-rs/snapshot-unionfs", "image-rs/signature-cosign-rustls", "image-rs/signature-simple", "image-rs/keywrap-native", "image-rs/encryption-ring", "image-rs/oci-client-rustls"]
 
 # confidential resource injection using cc-kbc (Recommended)
 cc-kbc-rustls-tls = [ "image-rs/enclave-cc-cckbc-rustls-tls" ]
