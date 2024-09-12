@@ -17,7 +17,7 @@ image-rs = { git = "https://github.com/confidential-containers/guest-components.
 kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", tag = "3.7.0" }
 log = "0.4.22"
 protocols = { path = "../libs/protocols" }
-serde = "1.0.209"
+serde = "1.0.210"
 serde_json = "1.0.128"
 
 # Async runtime
