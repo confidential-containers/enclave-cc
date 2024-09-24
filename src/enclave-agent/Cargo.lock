@@ -2245,7 +2245,7 @@ dependencies = [
 [[package]]
 name = "kata-sys-util"
 version = "0.1.0"
-source = "git+https://github.com/kata-containers/kata-containers?tag=3.8.0#09a13da8ece6f5c1f80703e9331d986a5994178d"
+source = "git+https://github.com/kata-containers/kata-containers?tag=3.9.0#cdaaf708a18da8e5f7e2b9824fa3e43b524893a5"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2274,7 +2274,7 @@ dependencies = [
 [[package]]
 name = "kata-types"
 version = "0.1.0"
-source = "git+https://github.com/kata-containers/kata-containers?tag=3.8.0#09a13da8ece6f5c1f80703e9331d986a5994178d"
+source = "git+https://github.com/kata-containers/kata-containers?tag=3.9.0#cdaaf708a18da8e5f7e2b9824fa3e43b524893a5"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
@@ -3827,7 +3827,7 @@ dependencies = [
 [[package]]
 name = "runtime-spec"
 version = "0.1.0"
-source = "git+https://github.com/kata-containers/kata-containers?tag=3.8.0#09a13da8ece6f5c1f80703e9331d986a5994178d"
+source = "git+https://github.com/kata-containers/kata-containers?tag=3.9.0#cdaaf708a18da8e5f7e2b9824fa3e43b524893a5"
 dependencies = [
  "libc",
  "serde",
@@ -3953,7 +3953,7 @@ checksum = "6518fc26bced4d53678a22d6e423e9d8716377def84545fe328236e3af070e7f"
 [[package]]
 name = "safe-path"
 version = "0.1.0"
-source = "git+https://github.com/kata-containers/kata-containers?tag=3.8.0#09a13da8ece6f5c1f80703e9331d986a5994178d"
+source = "git+https://github.com/kata-containers/kata-containers?tag=3.9.0#cdaaf708a18da8e5f7e2b9824fa3e43b524893a5"
 dependencies = [
  "libc",
 ]
