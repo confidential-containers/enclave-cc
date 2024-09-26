@@ -14,7 +14,7 @@ clap = { version = "4.5.13", features = ["derive"] }
 env_logger = "0.11.5"
 
 image-rs = { git = "https://github.com/confidential-containers/guest-components.git", default-features = false, rev = "v0.10.0" }
-kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", tag = "3.8.0" }
+kata-sys-util = { git = "https://github.com/kata-containers/kata-containers", tag = "3.9.0" }
 log = "0.4.22"
 protocols = { path = "../libs/protocols" }
 serde = "1.0.210"
