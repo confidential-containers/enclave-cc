@@ -1,6 +1,11 @@
 # enclave-cc
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fconfidential-containers%2Fenclave-cc.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fconfidential-containers%2Fenclave-cc?ref=badge_shield)
 
+## Proposed Deprecation
+
+If you are relying on this subproject and you can provide long term maintenance
+please comment in [RFC: deprecate and archive enclave-cc](https://github.com/confidential-containers/confidential-containers/issues/315)
+
 ## Introduction
 
 Confidential containers are the product of the combination of confidential computing technology and
